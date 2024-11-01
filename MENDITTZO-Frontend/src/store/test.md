@@ -1,0 +1,1 @@
+vuex, pinia 등 store 파일 저장 디렉토리
