@@ -7,10 +7,13 @@ spring:
     url: jdbc:mariadb://localhost:${db.port}/${db.dbname}
     username: ${db.username}
     password: ${db.password}
+
   config:
     import: "classpath:API-KEY.yml"
+
   jpa:
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy:
+          org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
