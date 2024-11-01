@@ -1,3 +1,16 @@
-springdoc:
-  swagger-ui:
-    path: /
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:${db.port}/${db.dbname}
+    username: ${db.username}
+    password: ${db.password}
+
+  config:
+    import: "classpath:API-KEY.yml"
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy:
+          org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
