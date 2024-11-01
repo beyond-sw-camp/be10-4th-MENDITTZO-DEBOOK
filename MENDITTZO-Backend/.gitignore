@@ -38,6 +38,4 @@ out/
 API-KEY.yml
 
 ### 기타 설정 파일 ###
-.idea/vcs.xml
-.idea/misc.xml
-.idea/material_theme_project_new.xml
+.idea/
