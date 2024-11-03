@@ -25,14 +25,26 @@ const isLogin = ref(true);
         </ul>
       </div>
     </div>
+    <div id="bottom-nav">
+      <div><p class="nav-bottom-text">도서목록</p></div>
+      <div><p class="nav-bottom-text">도서추천</p></div>
+      <div><p class="nav-bottom-text">독서토론방</p></div>
+    </div>
   </header>
+  <hr id="bottom-hr">
 </template>
 
 <style scoped>
+
 header{
   width: 1440px;
   padding: 0;
-  margin: 0;
+  margin: 0 auto; /* 좌우 여백 자동으로 설정하여 가운데 정렬 */
+}
+#bottom-hr{
+  border: none;
+  height: 1px;
+  background-color: #78AE6B;
 }
 #top-nav{
   display: grid;
@@ -40,6 +52,12 @@ header{
   gap: 10px;
   place-items: center; /* 모든 셀의 콘텐츠를 가운데 정렬 */
   margin: 30px 0 15px 0;
+}
+#bottom-nav{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 예: 3열 그리드 */
+  gap: 10px;
+  place-items: center; /* 모든 셀의 콘텐츠를 가운데 정렬 */
 }
 
 #logo{
@@ -99,6 +117,13 @@ header{
   background-color: #78AE6B;
   border-radius: 10px;
 }
-
+.nav-bottom-text{
+  white-space: nowrap;
+  color: #444444;
+  font-weight: bold;
+  justify-content: center;  /* 수평 중앙 정렬 */
+  align-items: center;      /* 수직 중앙 정렬 */
+  cursor: pointer;
+}
 
 </style>
