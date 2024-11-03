@@ -22,41 +22,53 @@
 </template>
 
 <style scoped>
+/* 푸터 상단 선 */
 #footer-top-hr{
   border: none;
   height: 2px;
   background-color: #78AE6B;
 }
+/* 푸터 */
 footer{
   width: 1440px;
   margin: 0 auto;
   height: 300px;
   padding: 20px;
 }
+/* 푸터 책론을박 로고 */
 #footer-logo{
   padding: 0 10px;
 }
+/* 푸터 깃허브 로고 */
 #github-logo{
   width: 20px;
   height: 20px;
   margin-top: 17px;
 }
+
+/* 푸터 일반 텍스트 */
 .footer-text{
   color: #888888;
   padding: 0 10px;
 }
+/* 푸터 안 div */
 .footer-div{
   display: flex;
 }
+/* div 안 p 태그 */
 .footer-div > p {
   padding: 0 10px;
 }
+
+/* 고객센터 */
 #csr{
   color: #888888;
   background-color: #EFEFEF;
   border-radius: 15px;
   height: 25px;
 }
+
+/* 전화번호 */
 #phone{
   color: #444444;
   font-weight: bold;
