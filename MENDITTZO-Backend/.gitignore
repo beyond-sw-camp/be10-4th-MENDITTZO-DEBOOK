@@ -36,3 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 API-KEY.yml
+
+### 기타 설정 파일 ###
+.idea/
