@@ -1,0 +1,17 @@
+version: '3'
+services:
+  elasticsearch:
+    image: elasticsearch:8.15.3  # 버전 8.15.3
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=elastic # 비밀번호 elastic 아이디도 동일
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - elastic-net
+
+networks:
+  elastic-net:
+    driver: bridge

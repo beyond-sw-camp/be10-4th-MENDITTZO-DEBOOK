@@ -11,6 +11,8 @@ spring:
   elasticsearch:
     rest:
       uris: http://localhost:9200
+      username: "elastic" # 아이디 elastic
+      password: "elastic"  #비밀번호 elastic
 
   config:
     import: "classpath:API-KEY.yml"
