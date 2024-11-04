@@ -21,6 +21,6 @@ public class ReportCommandController {
 
         reportCommandService.requestReport(reportRequestDTO);
 
-        return ResponseEntity.ok(SuccessCode.SUCCESS);
+        return ResponseEntity.ok(SuccessCode.REPORT_CREATE_SUCCESS);
     }
 }
