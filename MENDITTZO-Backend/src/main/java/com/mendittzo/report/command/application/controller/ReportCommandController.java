@@ -17,10 +17,10 @@ public class ReportCommandController {
     private final ReportCommandService reportCommandService;
 
     @PostMapping
-    public ResponseEntity<?> requestReport(@RequestBody ReportRequestDTO reportRequestDTO) {
+    public ResponseEntity<String> requestReport(@RequestBody ReportRequestDTO reportRequestDTO) {
 
         reportCommandService.requestReport(reportRequestDTO);
 
-        return ResponseEntity.ok(SuccessCode.REPORT_CREATE_SUCCESS);
+        return ResponseEntity.ok(SuccessCode.REPORT_CREATE_SUCCESS.getMessage());
     }
 }
