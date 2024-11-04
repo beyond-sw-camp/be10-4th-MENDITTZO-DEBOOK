@@ -8,6 +8,10 @@ spring:
     username: ${db.username}
     password: ${db.password}
 
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
+
   config:
     import: "classpath:API-KEY.yml"
 
