@@ -33,6 +33,6 @@ public class UserCommandController {
 
         userCommandService.updateUser(userUpdateDTO);
 
-        return ResponseEntity.ok(SuccessCode.SUCCESS.getMessage());
+        return ResponseEntity.ok(SuccessCode.USER_UPDATE_SUCCESS.getMessage());
     }
 }
