@@ -1,5 +1,6 @@
 package com.mendittzo.auth.query.application.controller;
 
+import com.mendittzo.auth.query.application.dto.DebookTokenDTO;
 import com.mendittzo.auth.query.application.dto.KakaoLoginUrlResponseDTO;
 import com.mendittzo.auth.query.application.dto.KakaoTokenResponseDTO;
 import com.mendittzo.auth.query.application.dto.UserResponseDTO;
@@ -21,6 +22,7 @@ public class KakaoLoginController {
     public ResponseEntity<KakaoLoginUrlResponseDTO> getKakaoLoginPage() {
 
         KakaoLoginUrlResponseDTO loginUrlResponse = kakaoAuthService.getKakaoLoginUrl();
+        // todo: success code 등등 넘기게 바꾸기
         return new ResponseEntity<>(loginUrlResponse, HttpStatus.OK);
     }
 
@@ -31,9 +33,10 @@ public class KakaoLoginController {
     // 3. 액세스 토큰으로 카카오 고유 사용자 id 요청
     // 4. 카카오 고유 사용자 id 로 DB 에서 서비스 사용자 정보 조회
     @GetMapping("/auth/callback")
-    public ResponseEntity<UserResponseDTO> getAuthorizationCode(@RequestParam String code) {
+    public ResponseEntity<DebookTokenDTO> getAuthorizationCode(@RequestParam String code) {
 
-        UserResponseDTO userResponse = kakaoAuthService.kakaoLogin(code);
-        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        DebookTokenDTO token = kakaoAuthService.kakaoLogin(code);
+        // todo: success code 등등 넘기게 바꾸기
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 }
