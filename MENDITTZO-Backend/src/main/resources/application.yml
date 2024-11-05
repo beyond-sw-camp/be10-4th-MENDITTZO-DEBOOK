@@ -24,6 +24,7 @@ spring:
         physical-strategy:
           org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
 
+
   logstash:
     image: logstash:8.15.3
     container_name: logstash
@@ -40,3 +41,12 @@ spring:
       - mariadb
     networks:
       - elastic-net
+
+kakao:
+  client_id:
+    rest_api_key: ${kakao.client_id.rest_api_key}
+  redirect_uri: ${kakao.redirect_uri}
+
+token:
+  secret: ${token.secret}
+
