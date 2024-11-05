@@ -52,16 +52,21 @@ public class UserCommandService {
 
     }
 
+    // 유저 정보 업데이트
     public void updateUser(UserUpdateDTO userUpdateDTO) throws IOException {
 
+        // 업데이트 할 유저 조회
         User updateUser = userRepository.findByLoginId(userUpdateDTO.getUserId());
 
+        // S3에서 이미지 삭제를 위해 기존 프로필 이미지 URL 반환
         String oldImageUrl = updateUser.getProfileImg();
 
+        // 새 이미지 업로드 및 예전 이미지 삭제
         String newImageUrl = imageService.updateImage(userUpdateDTO.getProfileImage(), oldImageUrl);
 
         updateUser.updateUser(userUpdateDTO.getNickname(), newImageUrl);
 
+        // 유저 DB 업데이트
         userRepository.save(updateUser);
 
     }

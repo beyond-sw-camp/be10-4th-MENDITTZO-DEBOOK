@@ -41,7 +41,6 @@ public class ImageService {
     @Transactional
     public String upload(MultipartFile multipartFile) throws IOException {
 
-        log.info("upload 시작");
         String originalFileName;
         String uuid;
         String uniqueFileName;
@@ -64,14 +63,16 @@ public class ImageService {
 
         uniqueFileName = uuid + "_" + originalFileName.replaceAll("\\s", "_");
 
-        // 저장될 directory 명 + 파일명 >> filName
+        // 저장될 directory 명 + 파일명 >> DB에 저장될 filName
         fileName ="profileImages/" + uniqueFileName;
-        log.info("fileName: " + fileName);
 
+        // MultiPartFile을 File로 변환
         File uploadFile = convert(multipartFile,uniqueFileName);
 
+        // S3에 업로드 후 업로드 된 URL 반환
         String uploadImageUrl = putS3(uploadFile, fileName);
 
+        // 업로드를 위해 변환하며 생긴 File 제거
         removeNewFile(uploadFile);
 
         return uploadImageUrl;
@@ -84,7 +85,6 @@ public class ImageService {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
             } catch (IOException e) {
-                log.error("파일 변환 중 오류 발생: {}", e.getMessage());
                 throw e;
             }
             return convertFile;
@@ -92,11 +92,11 @@ public class ImageService {
         throw new IllegalArgumentException(String.format("파일 변환에 실패했습니다."));
     }
 
+    // S3에 이미지 등록 후 등록된 이미지 URL 반환
     private String putS3(File uploadFile, String fileName) {
 
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        log.info(uploadFile + "업로드");
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
@@ -109,6 +109,7 @@ public class ImageService {
         }
     }
 
+    // 이미지 삭제 후 업로드
     @Transactional
     public String updateImage(MultipartFile newImage, String oldImage) throws IOException {
 
@@ -117,6 +118,7 @@ public class ImageService {
         return upload(newImage);
     }
 
+    // URL에서 파일명 추출 후 삭제
     public void deleteS3File(String fileName) {
 
         try {
