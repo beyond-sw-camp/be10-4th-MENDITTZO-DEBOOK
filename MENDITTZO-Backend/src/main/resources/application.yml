@@ -23,6 +23,25 @@ spring:
       naming:
         physical-strategy:
           org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+
+
+  logstash:
+    image: logstash:8.15.3
+    container_name: logstash
+    volumes:
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf # 이 부분이 맞는지는 다시 한번 확인 및 검증이 필요함
+      - /usr/local/lib/mariadb-java-client.jar:/usr/share/logstash/mariadb-java-client.jar # 이 부분이 맞는지는 다시 한번 확인 및 검증이 필요함
+    environment:
+      - LS_JAVA_OPTS="-Xmx1g -Xms1g"
+      - JDBC_USER=${db.username}
+      - JDBC_PASSWORD=${db.password}
+    command: logstash -f /usr/share/logstash/pipeline/logstash.conf
+    depends_on:
+      - elasticsearch
+      - mariadb
+    networks:
+      - elastic-net
+
 kakao:
   client_id:
     rest_api_key: ${kakao.client_id.rest_api_key}
@@ -30,3 +49,4 @@ kakao:
 
 token:
   secret: ${token.secret}
+
