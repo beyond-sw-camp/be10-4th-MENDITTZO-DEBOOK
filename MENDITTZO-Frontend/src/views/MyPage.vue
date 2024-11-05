@@ -1,4 +1,9 @@
 <script setup>
+import {reactive, ref} from "vue";
+
+const user = reactive();
+const reviews = ref([]);
+const chatrooms = ref([]);
 
 </script>
 
