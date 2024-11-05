@@ -66,7 +66,6 @@ public class User {
                 .status(status)
                 .authProvider(authProvider)
                 .profileImg(profileImg)
-                .createDatetime(createDatetime)
                 .build();
     }
 
