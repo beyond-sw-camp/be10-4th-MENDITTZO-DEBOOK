@@ -1,89 +1,5 @@
 <script setup>
-import {reactive, ref} from "vue";
 
-const user = reactive(
-    {
-      id:1,
-      img:`https://cdn.pixabay.com/photo/2019/07/23/13/51/shepherd-dog-4357790_1280.jpg`
-    }
-);
-const reviews = ref([
-  {
-    "review_id": 1,
-    "book_id": 6352228,
-    "user_id": 1,
-    "create_datetime": "2024-11-01 10:00:00",
-    "update_datetime": null,
-    "delete_datetime": null,
-    "title": "감동적, 추억의 목소리가 들리는 기분",
-    "content": "90년대생에게 보석 같은 추억을 선물해준 성우 이용신의 이야기를 잘 담아낸 책입니다. 감동적이고 따뜻합니다.",
-    "book_title": "너에게 목소리를 보낼게",
-    "author": "이용신",
-    "rating": 5,
-    "status": "active"
-  },
-  {
-    "review_id": 2,
-    "book_id": 6352229,
-    "user_id": 2,
-    "create_datetime": "2024-11-01 10:30:00",
-    "update_datetime": null,
-    "delete_datetime": null,
-    "title": "솔직한 에세이에 그렇지 못한 제목",
-    "book_title": "일기에도 거짓말을 쓰는 사람",
-    "content": "자의식 넘치는 차도하 시인의 첫 에세이, 솔직하고 도발적인 내용이 흥미로웠습니다.",
-    "author": "차도하",
-    "rating": 4,
-    "status": "active"
-  },
-  {
-    "review_id": 3,
-    "book_id": 6352230,
-    "user_id": 3,
-    "create_datetime": "2024-11-01 11:00:00",
-    "update_datetime": null,
-    "delete_datetime": null,
-    "title": "역사적 통찰이 뛰어난 책",
-    "book_title": "함께보는 동아시아 전쟁",
-    "content": "임오군란과 통킹 위기를 통해 한중일의 관계를 재조명한 흥미로운 역사서입니다.",
-    "author": "한국역사관",
-    "rating": 3,
-    "status": "active"
-  }
-]);
-
-const chatrooms = ref([
-  {
-    "chatroom_id": 1,
-    "book_id": 6352228,
-    "open_datetime": "2024-11-01 10:00:00",
-    "max_member_count": 10,
-    "member_count":5,
-    "title": "고전문학 독서 모임",
-    "book_title": "너에게 목소리를 보낼게",
-    "status": "active"
-  },
-  {
-    "chatroom_id": 2,
-    "book_id": 6352229,
-    "open_datetime": "2024-11-02 14:00:00",
-    "max_member_count": 10,
-    "member_count":6,
-    "title": "과학 서적 토론",
-    "book_title": "일기에도 거짓말 하는 사람",
-    "status": "active"
-  },
-  {
-    "chatroom_id": 3,
-    "book_id": 6352230,
-    "open_datetime": "2024-11-03 18:30:00",
-    "max_member_count": 3,
-    "member_count":1,
-    "title": "역사책 함께 읽기",
-    "book_title": "너에게 목소리를 보낼게",
-    "status": "active"
-  }
-]);
 </script>
 
 <template>
@@ -149,7 +65,7 @@ const chatrooms = ref([
     </article>
     <p class="menu">회원관리</p>
     <hr class="cross">
-    <button class="myButton" id="delete-button">삭제하기</button>
+    <button class="myButton" id="delete-button">탈퇴하기</button>
   </section>
 </template>
 
