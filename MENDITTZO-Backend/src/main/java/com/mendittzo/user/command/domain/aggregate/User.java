@@ -1,5 +1,6 @@
 package com.mendittzo.user.command.domain.aggregate;
 
+import com.mendittzo.user.command.application.dto.UserUpdateDTO;
 import com.mendittzo.user.query.application.dto.UserQueryResponseDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -67,6 +68,12 @@ public class User {
                 .authProvider(authProvider)
                 .profileImg(profileImg)
                 .build();
+    }
+
+    public void updateUser(String newNickname, String newImageUrl){
+
+        this.nickname = newNickname;
+        this.profileImg = newImageUrl;
     }
 
 }

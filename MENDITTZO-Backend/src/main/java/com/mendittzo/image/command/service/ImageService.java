@@ -17,7 +17,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -39,6 +38,7 @@ public class ImageService {
     }
 
     // 요청받은 이미지 리스트를 S3와 DB에 저장
+    @Transactional
     public String upload(MultipartFile multipartFile) throws IOException {
 
         log.info("upload 시작");
@@ -47,34 +47,32 @@ public class ImageService {
         String uniqueFileName;
         String fileName;
         String fileType;
-        List<String> uploadImageUrls = new ArrayList<>();
 
+        // 파일 이름에서 공백을 제거한 새로운 파일 이름 생성 >> origin_file_name
+        originalFileName = multipartFile.getOriginalFilename();
 
-            // 파일 이름에서 공백을 제거한 새로운 파일 이름 생성 >> origin_file_name
-            originalFileName = multipartFile.getOriginalFilename();
+        // 확장자 추출
+        fileType = FilenameUtils.getExtension(originalFileName).toLowerCase();
 
-            // 확장자 추출
-            fileType = FilenameUtils.getExtension(originalFileName).toLowerCase();
+        // 확장자 검증
+        if (!ALLOWED_EXTENSIONS.contains(fileType)) {
+            throw new CustomException(ErrorCode.NOT_MATCH_FILE_EXTENSION); // 유효하지 않은 확장자 처리
+        }
 
-            // 확장자 검증
-            if (!ALLOWED_EXTENSIONS.contains(fileType)) {
-                throw new CustomException(ErrorCode.NOT_MATCH_FILE_EXTENSION); // 유효하지 않은 확장자 처리
-            }
+        // UUID를 파일명에 추가
+        uuid = UUID.randomUUID().toString();
 
-            // UUID를 파일명에 추가
-            uuid = UUID.randomUUID().toString();
+        uniqueFileName = uuid + "_" + originalFileName.replaceAll("\\s", "_");
 
-            uniqueFileName = uuid + "_" + originalFileName.replaceAll("\\s", "_");
+        // 저장될 directory 명 + 파일명 >> filName
+        fileName ="profileImages/" + uniqueFileName;
+        log.info("fileName: " + fileName);
 
-            // 저장될 directory 명 + 파일명 >> filName
-            fileName = "profileImages/" + uniqueFileName;
-            log.info("fileName: " + fileName);
+        File uploadFile = convert(multipartFile,uniqueFileName);
 
-            File uploadFile = convert(multipartFile,uniqueFileName);
+        String uploadImageUrl = putS3(uploadFile, fileName);
 
-            String uploadImageUrl = putS3(uploadFile, fileName);
-
-            removeNewFile(uploadFile);
+        removeNewFile(uploadFile);
 
         return uploadImageUrl;
     }
@@ -112,11 +110,11 @@ public class ImageService {
     }
 
     @Transactional
-    public void updateImage(MultipartFile newImage, String oldImage) throws IOException {
+    public String updateImage(MultipartFile newImage, String oldImage) throws IOException {
 
         deleteS3File(oldImage);
 
-        upload(newImage);
+        return upload(newImage);
     }
 
     public void deleteS3File(String fileName) {
