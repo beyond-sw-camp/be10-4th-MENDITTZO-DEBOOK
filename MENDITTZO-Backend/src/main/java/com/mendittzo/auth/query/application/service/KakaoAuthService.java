@@ -182,11 +182,9 @@ public class KakaoAuthService {
         );
 
         createToken(tokenRequest);
-
         return token;
     }
 
-    @Transactional
     public void createToken(TokenCreateRequestDTO tokenRequest) {
 
         Token newToken = TokenMapper.toEntity(tokenRequest);
