@@ -43,11 +43,11 @@ public class User {
     private Long loginId;   // 소셜 로그인 사용자 고유 id
 
     // 신고한 기록 리스트
-    @OneToMany(mappedBy = "reporterUser")
+    @OneToMany(mappedBy = "reporterUser", cascade = CascadeType.ALL)
     private List<Report> reporterUser;
 
     // 신고당한 기록 리스트
-    @OneToMany(mappedBy = "reportedUser")
+    @OneToMany(mappedBy = "reportedUser", cascade = CascadeType.ALL)
     private List<Report> reportedUser;
 
     public User(Long userId, String email, String nickname, Status status, String authProvider, String profileImg, LocalDateTime createDatetime, LocalDateTime withdrawDatetime, Long loginId) {

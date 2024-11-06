@@ -1,6 +1,7 @@
 package com.mendittzo.report.command.application.dto;
 import com.mendittzo.report.command.domain.aggregate.Report;
 import com.mendittzo.report.command.domain.aggregate.ReportType;
+import com.mendittzo.review.command.domain.aggregate.Review;
 import com.mendittzo.user.command.domain.aggregate.User;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
@@ -27,15 +28,5 @@ public class ReportRequestDTO {
 
     private ReportType reportType;
 
-    public Report toEntity(User reporterUser, User reportedUser) {
-
-        return Report.builder().
-                chatroomId(chatroomId).
-                reviewId(reviewId).
-                reporterUser(reporterUser).
-                reportedUser(reportedUser).
-                chatId(chatId).
-                build();
-    }
 
 }

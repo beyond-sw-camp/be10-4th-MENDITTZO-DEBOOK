@@ -1,5 +1,6 @@
 package com.mendittzo.report.command.domain.aggregate;
 
+import com.mendittzo.review.command.domain.aggregate.Review;
 import com.mendittzo.user.command.domain.aggregate.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
@@ -35,8 +36,9 @@ public class Report {
     @Column(nullable = true)
     private Long chatroomId;
 
-    @Column(nullable = true)
-    private Long reviewId;
+    @ManyToOne
+    @JoinColumn(name = "review_id", nullable = true)
+    private Review review;
 
     @Column(nullable = true)
     private Long chatId;
@@ -45,9 +47,9 @@ public class Report {
     private LocalDateTime createDatetime;
 
     @Builder
-    public Report(Long chatroomId, Long reviewId, User reporterUser, User reportedUser, Long chatId) {
+    public Report(Long chatroomId, Review review, User reporterUser, User reportedUser, Long chatId) {
         this.chatroomId = chatroomId;
-        this.reviewId = reviewId;
+        this.review = review;
         this.reporterUser = reporterUser;
         this.reportedUser = reportedUser;
         this.chatId = chatId;
