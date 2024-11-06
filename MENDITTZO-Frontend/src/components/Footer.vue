@@ -32,7 +32,7 @@
 footer{
   width: 1440px;
   margin: 0 auto;
-  height: 300px;
+  height: 200px;
   padding: 20px;
 }
 /* 푸터 책론을박 로고 */
