@@ -1,14 +1,14 @@
 package com.mendittzo.restriction.mapper;
 
-import com.mendittzo.restriction.domain.aggregate.Restriction;
+import com.mendittzo.restriction.domain.aggregate.RestrictionHistory;
 import com.mendittzo.user.command.domain.aggregate.User;
 
 import java.time.LocalDateTime;
 
-public class RestrictionMapper {
+public class RestrictionHistoryMapper {
 
-    public Restriction toEntity(User user, LocalDateTime endDate) {
-        return Restriction.builder()
+    public RestrictionHistory toEntity(User user, LocalDateTime endDate) {
+        return RestrictionHistory.builder()
                 .user(user)
                 .end_datetime(endDate)
                 .build();

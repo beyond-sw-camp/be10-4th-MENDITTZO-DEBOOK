@@ -1,7 +1,7 @@
 package com.mendittzo.user.command.domain.aggregate;
 
 import com.mendittzo.report.command.domain.aggregate.Report;
-import com.mendittzo.restriction.domain.aggregate.Restriction;
+import com.mendittzo.restriction.domain.aggregate.RestrictionHistory;
 import com.mendittzo.user.query.application.dto.UserQueryResponseDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -52,7 +52,7 @@ public class User {
     private List<Report> reportedUser;
 
     @OneToMany(mappedBy = "restrictionUser")
-    private List<Restriction> restrictionUser;
+    private List<RestrictionHistory> restrictionHistoryUser;
 
     public User(Long userId, String email, String nickname, Status status, String authProvider, String profileImg, LocalDateTime createDatetime, LocalDateTime withdrawDatetime, Long loginId) {
 
@@ -89,9 +89,14 @@ public class User {
         this.profileImg = newImageUrl;
     }
 
-    public void restrictUser(LocalDateTime endDate){
+    public void restrictUser(){
+
         this.status = Status.SUSPENDED;
-        this.withdrawDatetime = endDate;
+    }
+
+    public void restrictionLifted(){
+
+        this.status = Status.ACTIVE;
     }
 
 }

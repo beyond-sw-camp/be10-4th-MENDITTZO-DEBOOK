@@ -25,12 +25,12 @@ public class Report {
 
     // 신고한 유저와의 연관관계 매핑
     @ManyToOne
-    @JoinColumn(name = "reporter_user_id", nullable = false)
+    @JoinColumn(name = "reporter_user_id", nullable = true)
     private User reporterUser; // 신고한 유저
 
     // 신고당한 유저와의 연관관계 매핑
     @ManyToOne
-    @JoinColumn(name = "reported_user_id", nullable = false)
+    @JoinColumn(name = "reported_user_id", nullable = true)
     private User reportedUser; // 신고당한 유저
 
     @Column(nullable = true)

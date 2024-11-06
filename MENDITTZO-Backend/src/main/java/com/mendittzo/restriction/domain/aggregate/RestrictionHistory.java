@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Restriction {
+public class RestrictionHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,19 +25,26 @@ public class Restriction {
     @JoinColumn(name = "user_id", nullable = false)
     User restrictionUser;
 
+    @Column
+    @Enumerated(EnumType.STRING)
     RestrictionStatus restrictionStatus;
 
     @Column
     @CreatedDate
-    LocalDateTime create_datetime;
+    LocalDateTime createDatetime;
 
     @Column
-    LocalDateTime end_datetime;
+    LocalDateTime endDatetime;
 
     @Builder
-    public Restriction(User user, LocalDateTime end_datetime) {
+    public RestrictionHistory(User user, LocalDateTime end_datetime) {
 
         this.restrictionUser = user;
-        this.end_datetime = end_datetime;
+        this.restrictionStatus = RestrictionStatus.ACTIVE;
+        this.endDatetime = end_datetime;
+    }
+
+    public void endRestriction() {
+        this.restrictionStatus = RestrictionStatus.END;
     }
 }
