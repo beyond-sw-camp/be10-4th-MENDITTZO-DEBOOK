@@ -52,3 +52,12 @@ token:
   access_token_expiration_time: ${token.access_token_expiration_time}
   refresh_token_expiration_time: ${token.refresh_token_expiration_time}
 
+cloud:
+  aws:
+    s3:
+      bucket: ${s3.bucket} # Amazon S3 버킷 이름
+    stack.auto: false
+    region.static: ap-southeast-2
+    credentials:
+      accessKey: ${im.access} # IAM 액세스 키
+      secretKey: ${im.secret} # IAM 시크릿 키

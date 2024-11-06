@@ -8,4 +8,6 @@ public interface UserRepository {
     User findByLoginIdAndAuthProvider(Long loginId, String authProvider);
 
     User save(User newUser);
+
+    User findByLoginId(Long userId);
 }
