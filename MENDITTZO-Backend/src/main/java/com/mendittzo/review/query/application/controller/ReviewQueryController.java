@@ -21,9 +21,10 @@ public class ReviewQueryController {
             @PathVariable(name = "bookId") Long bookId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
-            @RequestParam(value = "sort", defaultValue = "createDateTime,desc") String sort) {
+            @RequestParam(value = "sort", defaultValue = "createDatetime,desc") String sort) {
 
-        Sort sortOrder = Sort.by(Sort.Order.desc("createDateTime"));
+        // 기본값으로 최신순 정렬
+        Sort sortOrder = Sort.by(Sort.Order.desc("createDatetime"));
 
         String[] sortParams = sort.split(",");
         if (sortParams.length == 2 && "rating".equalsIgnoreCase(sortParams[0])) {
