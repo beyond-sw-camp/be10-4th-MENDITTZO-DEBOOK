@@ -1,5 +1,6 @@
 package com.mendittzo.user.command.domain.aggregate;
 
+import com.mendittzo.report.command.domain.aggregate.Report;
 import com.mendittzo.user.query.application.dto.UserQueryResponseDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,6 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -39,6 +41,14 @@ public class User {
     private LocalDateTime withdrawDatetime; // 회원탈퇴 날짜
     @Column(nullable = false)
     private Long loginId;   // 소셜 로그인 사용자 고유 id
+
+    // 신고한 기록 리스트
+    @OneToMany(mappedBy = "reporterUser")
+    private List<Report> reporterUser;
+
+    // 신고당한 기록 리스트
+    @OneToMany(mappedBy = "reportedUser")
+    private List<Report> reportedUser;
 
     public User(Long userId, String email, String nickname, Status status, String authProvider, String profileImg, LocalDateTime createDatetime, LocalDateTime withdrawDatetime, Long loginId) {
 
