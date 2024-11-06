@@ -3,9 +3,9 @@
 </script>
 
 <template>
-  <div>
-    <RouterView />
-  </div>
+  <NavigationBar/>
+
+  <Footer/>
 </template>
 
 <style scoped>
