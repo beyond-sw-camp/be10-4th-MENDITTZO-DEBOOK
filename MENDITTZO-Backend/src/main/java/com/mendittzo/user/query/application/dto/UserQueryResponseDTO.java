@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 // 회원과 관련된 모든 정보에 대한 DTO
 // 다른 API 에서 회원의 일부 정보를 필요로 할 때 사용한다.
 @Getter

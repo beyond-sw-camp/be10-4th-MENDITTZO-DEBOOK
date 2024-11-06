@@ -5,8 +5,11 @@ import com.mendittzo.user.command.domain.aggregate.Status;
 import com.mendittzo.user.command.domain.aggregate.User;
 
 public class UserMapper {
+
     public static User toEntity(UserCreateRequestDTO userRequest) {
+
         return User.create(
+
                 userRequest.getUserId(),
                 userRequest.getEmail(),
                 userRequest.getNickname(),

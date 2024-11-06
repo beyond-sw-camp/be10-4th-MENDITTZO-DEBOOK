@@ -1,6 +1,10 @@
 package com.mendittzo.auth.query.application.service;
 
 import com.mendittzo.auth.query.application.dto.*;
+import com.mendittzo.auth.query.domain.aggregate.Token;
+import com.mendittzo.auth.query.domain.repository.TokenRepository;
+import com.mendittzo.auth.query.mapper.TokenMapper;
+import com.mendittzo.security.util.JwtUtil;
 import com.mendittzo.user.command.application.dto.UserCreateRequestDTO;
 import com.mendittzo.user.command.application.service.UserCommandService;
 import com.mendittzo.user.command.domain.aggregate.User;
@@ -27,6 +31,8 @@ public class KakaoAuthService {
 
     private final UserRepository userRepository;
     private final UserCommandService userCommandService;
+    private final TokenRepository tokenRepository;
+    private final JwtUtil jwtUtil;
 
     // 필수 쿼리 파라미터
     // (1) client_id : REST API 키
@@ -118,7 +124,6 @@ public class KakaoAuthService {
         User existsUser = userRepository.findByLoginIdAndAuthProvider(
                 kakaoUserInfo.getLoginId(), "KAKAO");
 
-
         // DB에 사용자가 없으면 생성
         if (existsUser == null) {
             UserCreateRequestDTO userRequestDTO = new UserCreateRequestDTO(
@@ -145,7 +150,7 @@ public class KakaoAuthService {
     }
 
     @Transactional
-    public UserResponseDTO kakaoLogin(String code) {
+    public DebookTokenDTO kakaoLogin(String code) {
 
         // 1. 인증 코드로 액세스 토큰 요청
         String accessToken = requestAccessToken(code);
@@ -163,6 +168,27 @@ public class KakaoAuthService {
         // 3. 카카오 고유 사용자 id 로 DB 에서 서비스 사용자 조회 및 저장
         User user = findOrCreateUser(kakaoUserInfo);
 
-        return new UserResponseDTO(user);
+        // 4. access token, refresh token 생성
+        DebookTokenDTO token = jwtUtil.generateToken(user);
+
+        // 5. DB(redis 로 바꾸기 전 임시 mariaDB)에 토큰 저장
+        TokenCreateRequestDTO tokenRequest = new TokenCreateRequestDTO(
+                null,
+                user.getLoginId(),
+                token.getAccessToken(),
+                token.getAccessTokenExpiresIn(),
+                token.getRefreshToken(),
+                token.getRefreshTokenExpiresIn()
+        );
+
+        createToken(tokenRequest);
+        return token;
     }
+
+    public void createToken(TokenCreateRequestDTO tokenRequest) {
+
+        Token newToken = TokenMapper.toEntity(tokenRequest);
+        tokenRepository.save(newToken);
+    }
+
 }

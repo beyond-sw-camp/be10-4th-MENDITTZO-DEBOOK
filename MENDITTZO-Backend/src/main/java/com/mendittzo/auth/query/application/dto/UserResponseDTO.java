@@ -20,6 +20,7 @@ public class UserResponseDTO {
     private Long loginId;
 
     public UserResponseDTO(User user) {
+
         this.userId = user.getUserId();
         this.email = user.getEmail();
         this.nickname = user.getNickname();
