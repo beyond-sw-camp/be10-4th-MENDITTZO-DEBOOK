@@ -1,9 +1,13 @@
 package com.mendittzo.booklist.query.application.service;
 
 import com.mendittzo.booklist.command.domain.aggregate.Book;
+import com.mendittzo.booklist.query.application.dto.BookDetailResponseDTO;
 import com.mendittzo.booklist.query.application.dto.BookListListResponseDTO;
 import com.mendittzo.booklist.query.application.dto.BookListResponseDTO;
+import com.mendittzo.booklist.query.application.dto.BookResponseDTO;
 import com.mendittzo.booklist.query.domain.repository.BookListRepository;
+import com.mendittzo.common.exception.CustomException;
+import com.mendittzo.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,5 +43,17 @@ public class BookListQueryService {
                 .currentPage(page.getNumber() + 1)
                 .pageSize(page.getSize())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public BookDetailResponseDTO getBook(Long bookId) {
+
+        BookResponseDTO book = bookListRepository.findBookByBookId(bookId);
+
+        if(book == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_BOOK);
+        }
+
+        return new BookDetailResponseDTO(book);
     }
 }
