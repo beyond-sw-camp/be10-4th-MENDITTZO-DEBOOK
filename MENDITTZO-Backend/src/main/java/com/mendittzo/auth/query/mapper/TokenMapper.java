@@ -4,6 +4,7 @@ import com.mendittzo.auth.query.application.dto.TokenCreateRequestDTO;
 import com.mendittzo.auth.query.domain.aggregate.Token;
 
 public class TokenMapper {
+
     public static Token toEntity(TokenCreateRequestDTO tokenRequest) {
 
         return Token.create(

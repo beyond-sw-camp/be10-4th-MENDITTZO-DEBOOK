@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TokenCreateRequestDTO {
+
     private Long tokenId;
 
     @NotNull

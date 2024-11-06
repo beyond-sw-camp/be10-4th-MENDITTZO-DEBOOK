@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DebookTokenDTO {
+
     private String accessToken;
     private Long accessTokenExpiresIn;
     private String refreshToken;

@@ -7,7 +7,9 @@ import java.util.Base64;
 // JWT 검증을 위한 비밀 키 생성하는 클래스 (직접 사용 X)
 
 public class HMACKeyGenerator {
+
     public static void main(String[] args) {
+
         try {
             /* HS512를 위한 KeyGenerator 생성 */
             KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA512");
