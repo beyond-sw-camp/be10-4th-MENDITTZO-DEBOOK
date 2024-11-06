@@ -1,6 +1,7 @@
 package com.mendittzo.user.command.domain.aggregate;
 
 import com.mendittzo.report.command.domain.aggregate.Report;
+import com.mendittzo.restriction.domain.aggregate.Restriction;
 import com.mendittzo.user.query.application.dto.UserQueryResponseDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -43,12 +44,15 @@ public class User {
     private Long loginId;   // 소셜 로그인 사용자 고유 id
 
     // 신고한 기록 리스트
-    @OneToMany(mappedBy = "reporterUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reporterUser")
     private List<Report> reporterUser;
 
     // 신고당한 기록 리스트
-    @OneToMany(mappedBy = "reportedUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reportedUser")
     private List<Report> reportedUser;
+
+    @OneToMany(mappedBy = "restrictionUser")
+    private List<Restriction> restrictionUser;
 
     public User(Long userId, String email, String nickname, Status status, String authProvider, String profileImg, LocalDateTime createDatetime, LocalDateTime withdrawDatetime, Long loginId) {
 
@@ -83,6 +87,11 @@ public class User {
 
         this.nickname = newNickname;
         this.profileImg = newImageUrl;
+    }
+
+    public void restrictUser(LocalDateTime endDate){
+        this.status = Status.SUSPENDED;
+        this.withdrawDatetime = endDate;
     }
 
 }
