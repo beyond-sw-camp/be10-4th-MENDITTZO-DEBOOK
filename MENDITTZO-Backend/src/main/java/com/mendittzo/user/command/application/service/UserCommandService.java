@@ -1,12 +1,15 @@
 package com.mendittzo.user.command.application.service;
 
+import com.mendittzo.image.command.service.ImageService;
 import com.mendittzo.user.command.application.dto.UserCreateRequestDTO;
+import com.mendittzo.user.command.application.dto.UserUpdateDTO;
 import com.mendittzo.user.command.domain.aggregate.User;
 import com.mendittzo.user.command.domain.repository.UserRepository;
 import com.mendittzo.user.command.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -14,6 +17,7 @@ import java.util.UUID;
 public class UserCommandService {
 
     private final UserRepository userRepository;
+    private final ImageService imageService;
 
     private static final String[] adj = {
             "책 먹는", "열정적인", "교양 있는", "다독하는", "문학",
@@ -45,6 +49,25 @@ public class UserCommandService {
         String uuid = UUID.randomUUID().toString().substring(0, 8);
 
         return prefix + " " + postfix + uuid;
+
+    }
+
+    // 유저 정보 업데이트
+    public void updateUser(UserUpdateDTO userUpdateDTO) throws IOException {
+
+        // 업데이트 할 유저 조회
+        User updateUser = userRepository.findByLoginId(userUpdateDTO.getUserId());
+
+        // S3에서 이미지 삭제를 위해 기존 프로필 이미지 URL 반환
+        String oldImageUrl = updateUser.getProfileImg();
+
+        // 새 이미지 업로드 및 예전 이미지 삭제
+        String newImageUrl = imageService.updateImage(userUpdateDTO.getProfileImage(), oldImageUrl);
+
+        updateUser.updateUser(userUpdateDTO.getNickname(), newImageUrl);
+
+        // 유저 DB 업데이트
+        userRepository.save(updateUser);
 
     }
 }

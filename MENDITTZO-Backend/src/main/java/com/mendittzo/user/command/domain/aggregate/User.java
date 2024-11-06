@@ -1,5 +1,7 @@
 package com.mendittzo.user.command.domain.aggregate;
 
+import com.mendittzo.user.command.application.dto.UserUpdateDTO;
+import com.mendittzo.user.query.application.dto.UserQueryResponseDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -55,6 +57,23 @@ public class User {
     public static User create(Long UserId, String email, String nickname, Status status, String authProvider, String profileImg, LocalDateTime createDatetime, LocalDateTime withdrawDatetime, Long loginId) {
 
         return new User(UserId, email, nickname, status, authProvider, profileImg, createDatetime, withdrawDatetime, loginId);
+    }
+
+    public UserQueryResponseDTO createQueryResponseDTO() {
+
+        return UserQueryResponseDTO.builder()
+                .email(email)
+                .nickName(nickname)
+                .status(status)
+                .authProvider(authProvider)
+                .profileImg(profileImg)
+                .build();
+    }
+
+    public void updateUser(String newNickname, String newImageUrl){
+
+        this.nickname = newNickname;
+        this.profileImg = newImageUrl;
     }
 
 }
