@@ -17,7 +17,7 @@ public class UserQueryService {
     public UserQueryResponseDTO findUserInfo(Long userId) {
 
         User user = userQueryRepository.findById(userId)
-                .orElseThrow( () -> new CustomException(ErrorCode.NOT_FOUND_USER) );
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
         return user.createQueryResponseDTO();
     }

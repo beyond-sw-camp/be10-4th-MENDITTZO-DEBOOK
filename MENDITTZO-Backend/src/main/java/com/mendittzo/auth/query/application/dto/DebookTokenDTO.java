@@ -1,7 +1,5 @@
 package com.mendittzo.auth.query.application.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mendittzo.auth.query.domain.aggregate.Token;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

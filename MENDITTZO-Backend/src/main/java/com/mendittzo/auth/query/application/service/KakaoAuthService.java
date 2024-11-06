@@ -171,7 +171,7 @@ public class KakaoAuthService {
         // 4. access token, refresh token 생성
         DebookTokenDTO token = jwtUtil.generateToken(user);
 
-         // 5. DB(redis 로 바꾸기 전 임시 mariaDB)에 토큰 저장
+        // 5. DB(redis 로 바꾸기 전 임시 mariaDB)에 토큰 저장
         TokenCreateRequestDTO tokenRequest = new TokenCreateRequestDTO(
                 null,
                 user.getLoginId(),

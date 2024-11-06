@@ -20,7 +20,7 @@ public class ErrorResponse {
         this.code = errorCode.name();
         this.message = errorCode.getMessage();
     }
-    
+
     public static ResponseEntity<ErrorResponse> error(CustomException e) {
 
         return ResponseEntity
