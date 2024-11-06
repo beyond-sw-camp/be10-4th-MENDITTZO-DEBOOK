@@ -1,5 +1,6 @@
 package com.mendittzo.security.util;
 
+import com.mendittzo.auth.command.application.dto.AccessTokenResponseDTO;
 import com.mendittzo.auth.query.application.dto.DebookTokenDTO;
 import com.mendittzo.common.exception.CustomException;
 import com.mendittzo.common.exception.ErrorCode;
@@ -31,8 +32,9 @@ public class JwtUtil {
     @Value(("${token.refresh_token_expiration_time}"))
     private String refreshExpirationTime;
 
-    // 토큰 생성하는 메소드
+    // 액세스, 리프레시 토큰 생성하는 메소드
     public DebookTokenDTO generateToken(User user) {
+        log.info("generateToken 함수 실행 - userId={}, nickname={}", user.getLoginId(), user.getNickname());
 
         log.info("secret Key: {}", secretKey);
         Long accessTokenExpirationTime = Long.parseLong(accessExpirationTime) * 1000L;
@@ -50,6 +52,8 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS512, secretKey)  // 암호화 알고리즘
                 .compact();
 
+        log.info("Access Token 생성 성공: {}", accessToken);
+
         String refreshToken = Jwts.builder()
                 .setClaims(claims)  // payload 에 사용자 및 추가 데이터 저장
                 .setIssuedAt(new Date(System.currentTimeMillis()))   // 토큰 발행 시간
@@ -57,11 +61,37 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS512, secretKey)  // 암호화 알고리즘
                 .compact();
 
+        log.info("Refresh Token 생성 성공: {}", refreshToken);
+
         return DebookTokenDTO.create(
                 accessToken,
                 System.currentTimeMillis() + accessTokenExpirationTime,
                 refreshToken,
                 System.currentTimeMillis() + refreshTokenExpirationTime
+        );
+    }
+
+    // 액세스 토큰만 새로 생성하는 메소드
+    public AccessTokenResponseDTO generateAccessToken(User user) {
+        Long accessTokenExpirationTime = Long.parseLong(accessExpirationTime) * 1000L;
+
+        // JWT payload
+        Claims claims = Jwts.claims().setSubject(user.getNickname());
+        claims.put("socialLoginId", user.getLoginId());
+
+        // 토큰 발급
+        String accessToken = Jwts.builder()
+                .setClaims(claims)  // payload 에 사용자 및 추가 데이터 저장
+                .setIssuedAt(new Date(System.currentTimeMillis()))   // 토큰 발행 시간
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpirationTime))  // 토큰 만료 시간
+                .signWith(SignatureAlgorithm.HS512, secretKey)  // 암호화 알고리즘
+                .compact();
+
+        log.info("새 Access Token 생성 성공: {}", accessToken);
+
+        return new AccessTokenResponseDTO(
+                accessToken,
+                System.currentTimeMillis() + accessTokenExpirationTime
         );
     }
 

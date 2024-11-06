@@ -50,6 +50,14 @@ services:
     networks:
       - elastic-net
 
+  redis:
+    image: redis:latest # 최신 redis 이미지 사용
+    container_name: redis_container
+    ports:
+      - "6379:6379" # 6379 포트 사용
+    networks:
+      - elastic-net
+
 # 네트워크 설정
 networks:
   elastic-net:

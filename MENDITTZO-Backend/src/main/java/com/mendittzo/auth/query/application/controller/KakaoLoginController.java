@@ -2,26 +2,27 @@ package com.mendittzo.auth.query.application.controller;
 
 import com.mendittzo.auth.query.application.dto.DebookTokenDTO;
 import com.mendittzo.auth.query.application.dto.KakaoLoginUrlResponseDTO;
-import com.mendittzo.auth.query.application.dto.KakaoTokenResponseDTO;
-import com.mendittzo.auth.query.application.dto.UserResponseDTO;
-import com.mendittzo.auth.query.application.service.KakaoAuthService;
+import com.mendittzo.auth.query.application.service.KakaoLoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class KakaoLoginController {
 
-    private final KakaoAuthService kakaoAuthService;
+    private final KakaoLoginService kakaoLoginService;
 
     // 1. 카카오 인증 서버에서 카카오 로그인 URL 리턴 받기
     @GetMapping("/public/auth/kakao-url")
     public ResponseEntity<KakaoLoginUrlResponseDTO> getKakaoLoginPage() {
 
-        KakaoLoginUrlResponseDTO loginUrlResponse = kakaoAuthService.getKakaoLoginUrl();
+        KakaoLoginUrlResponseDTO loginUrlResponse = kakaoLoginService.getKakaoLoginUrl();
         // todo: success code 등등 넘기게 바꾸기
         return new ResponseEntity<>(loginUrlResponse, HttpStatus.OK);
     }
@@ -35,7 +36,7 @@ public class KakaoLoginController {
     @GetMapping("/auth/callback")
     public ResponseEntity<DebookTokenDTO> getAuthorizationCode(@RequestParam String code) {
 
-        DebookTokenDTO token = kakaoAuthService.kakaoLogin(code);
+        DebookTokenDTO token = kakaoLoginService.kakaoLogin(code);
         // todo: success code 등등 넘기게 바꾸기
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
