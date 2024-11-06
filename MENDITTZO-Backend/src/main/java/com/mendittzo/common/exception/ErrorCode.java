@@ -22,6 +22,7 @@ public enum ErrorCode {
 
     // 404 에러
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "유저정보를 찾을 수 없습니다."),
+    NOT_FOUND_REVIEW(HttpStatus.NOT_FOUND, "해당하는 리뷰를 찾을 수 없습니다."),
     ;
 
     private final HttpStatus httpStatus;

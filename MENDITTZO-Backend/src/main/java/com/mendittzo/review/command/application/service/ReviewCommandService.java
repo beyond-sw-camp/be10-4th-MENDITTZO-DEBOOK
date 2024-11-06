@@ -29,7 +29,7 @@ public class ReviewCommandService {
     public void updateReview(Long reviewId, ReviewUpdateRequestDTO reviewUpdateRequestDTO) {
 
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REVIEW));
 
         review.updateReviewDetails(
                 reviewUpdateRequestDTO.getTitle(),
