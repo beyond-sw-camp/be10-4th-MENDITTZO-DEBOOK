@@ -23,19 +23,14 @@ public class ReviewQueryController {
             @RequestParam(value = "size", defaultValue = "5") int size,
             @RequestParam(value = "sort", defaultValue = "createDateTime,desc") String sort) {
 
+        Sort sortOrder = Sort.by(Sort.Order.desc("createDateTime"));
+
         String[] sortParams = sort.split(",");
-        Sort sortOrder = Sort.by(Sort.Order.desc("createDateTime")); // 기본값으로 최신순 설정
-
-        if (sortParams.length == 2) {
-            String field = sortParams[0];
+        if (sortParams.length == 2 && "rating".equalsIgnoreCase(sortParams[0])) {
             String direction = sortParams[1];
-
-            // direction 값에 따라 정렬 방향 설정
-            if ("createDateTime".equalsIgnoreCase(field) || "rating".equalsIgnoreCase(field)) {
-                sortOrder = "desc".equalsIgnoreCase(direction)
-                        ? Sort.by(Sort.Order.desc(field))
-                        : Sort.by(Sort.Order.asc(field));
-            }
+            sortOrder = "desc".equalsIgnoreCase(direction)
+                    ? Sort.by(Sort.Order.desc("rating"))
+                    : Sort.by(Sort.Order.asc("rating"));
         }
 
         Pageable pageable = PageRequest.of(page - 1, size, sortOrder);
