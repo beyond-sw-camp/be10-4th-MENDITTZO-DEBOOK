@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class ReviewUpdateRequestDTO {
+
     private final String title;
     private final String content;
     private final int rating;
