@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @RequiredArgsConstructor
 public class UserCreateRequestDTO {
+
     private final Long userId;
     private final String email;
     private final String nickname;

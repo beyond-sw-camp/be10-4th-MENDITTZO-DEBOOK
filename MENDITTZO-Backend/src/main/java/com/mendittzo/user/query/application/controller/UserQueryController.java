@@ -17,7 +17,7 @@ public class UserQueryController {
     private final UserQueryService userQueryService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserQueryResponseDTO> findUserInfo(@PathVariable(name = "userId") Long userId){
+    public ResponseEntity<UserQueryResponseDTO> findUserInfo(@PathVariable(name = "userId") Long userId) {
 
         UserQueryResponseDTO findUserInfo = userQueryService.findUserInfo(userId);
 

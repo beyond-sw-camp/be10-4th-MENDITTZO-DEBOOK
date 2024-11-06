@@ -30,6 +30,10 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
     // 소셜 로그인 시 필요한 서버 -> 외부 API HTTP 요청 처리
     implementation 'org.springframework.boot:spring-boot-starter-webflux:3.3.5'
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
     // AWS S3 의존성 추가
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     // 파일 및 디렉터리 조작, 입출력, 파일 필터링 기능 제공 라이브러리
