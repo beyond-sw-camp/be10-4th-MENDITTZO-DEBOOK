@@ -1,12 +1,20 @@
 import {createRouter, createWebHistory} from "vue-router";
 import MyPage from "@/views/MyPage.vue";
 import MainPage from "@/views/MainPage.vue";
+import BookListView from "@/views/BookListView.vue";
 
 const routes = [
 
     {
         path: '/myPage',
         component: MyPage // 검색 결과 페이지
+    },
+    {
+        path: '/booklists',
+        component: BookListView
+    },
+    {
+        path: '/booklists/:id'
     },
     {
         path: '/',
