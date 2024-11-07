@@ -44,8 +44,14 @@ export const useAuthStore = defineStore('auth', () => {
         accessToken.value = newAccessToken;
         refreshToken.value = newRefreshToke;
         localStorage.setItem("accessToken", newAccessToken);
-        localStorage.setItem("refreeshToken", newRefreshToke);
+        localStorage.setItem("refreshToken", newRefreshToke);
     };
 
-    return {accessToken, refreshToken, loginId, nickname};
+    // 로그인 id 저장
+    const setLoginId = (newLoginId) => {
+        loginId.value = newLoginId;
+        localStorage.setItem("loginId", newLoginId);
+    };
+
+    return {accessToken, refreshToken, loginId, nickname, logout, setTokens, setLoginId};
 });

@@ -1,8 +1,16 @@
 <script setup>
 import ButtonLong from "@/components/common/ButtonLong.vue";
 import axios from "axios";
+import {useAuthStore} from "@/store/auth.js";
+import router from "@/router/router.js";
+import {useRouter} from "vue-router";
+import {onMounted} from "vue";
 
+const authStore = useAuthStore();
+
+// 로그인 버튼 누르면 서버에서 로그인 url을 가져온다.
 const handleKakaoLogin = async () => {
+
   console.log("handleKakaoLogin 함수 호출");
 
   try {
@@ -17,22 +25,12 @@ const handleKakaoLogin = async () => {
 
     window.location.href = loginUrl;
 
-    // 팝업 창 설정
-    // const popupWidth = 500;
-    // const popupHeight = 600;
-    // const popupX = (window.screen.width - popupWidth) / 2;
-    // const popupY = (window.screen.height - popupHeight) / 2;
-    //
-    // // 카카오 로그인 URL을 팝업으로 열기
-    // window.open(
-    //     loginUrl,
-    //     "_blank",
-    //     `width=${popupWidth},height=${popupHeight},left=${popupX},top=${popupY}`
-    // );
   } catch (error) {
     console.error(('카카오 로그인 url 가져오기 실패'), error);
   }
-}
+};
+
+
 </script>
 
 <template>
