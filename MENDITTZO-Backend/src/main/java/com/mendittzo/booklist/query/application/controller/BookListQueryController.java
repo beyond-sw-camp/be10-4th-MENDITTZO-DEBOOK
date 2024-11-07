@@ -2,7 +2,6 @@ package com.mendittzo.booklist.query.application.controller;
 
 import com.mendittzo.booklist.query.application.dto.BookDetailResponseDTO;
 import com.mendittzo.booklist.query.application.dto.BookListListResponseDTO;
-import com.mendittzo.booklist.query.application.dto.BookListResponseDTO;
 import com.mendittzo.booklist.query.application.service.BookListQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

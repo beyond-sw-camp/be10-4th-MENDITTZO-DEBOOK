@@ -11,6 +11,7 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class BookListResponseDTO {
 
+    private final Long bookId;
     private final String title;
     private final String author;
     private final String publisher;
