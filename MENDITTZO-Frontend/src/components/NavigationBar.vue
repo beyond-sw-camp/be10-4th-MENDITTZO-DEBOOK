@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import {RouterLink} from "vue-router";
 
 const isLogin = ref(true);
 </script>
@@ -30,7 +31,11 @@ const isLogin = ref(true);
     </div>
 
     <div id="bottom-nav">
-      <div><p class="nav-bottom-text">도서목록</p></div>
+      <div>
+        <RouterLink to="/booklists" active-class="active" replace>
+          <p class="nav-bottom-text">도서목록</p>
+        </RouterLink>
+      </div>
       <div><p class="nav-bottom-text">도서추천</p></div>
       <div><p class="nav-bottom-text">독서토론방</p></div>
     </div>
@@ -141,6 +146,10 @@ header{
   justify-content: center;  /* 수평 중앙 정렬 */
   align-items: center;      /* 수직 중앙 정렬 */
   cursor: pointer;
+}
+
+.active .nav-bottom-text {
+  color: #78AE6B; /* 활성화 상태일 때 색상 */
 }
 
 </style>
