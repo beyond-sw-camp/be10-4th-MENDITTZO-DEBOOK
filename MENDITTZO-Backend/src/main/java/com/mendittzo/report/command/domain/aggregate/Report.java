@@ -1,5 +1,7 @@
 package com.mendittzo.report.command.domain.aggregate;
 
+import com.mendittzo.review.command.domain.aggregate.Review;
+import com.mendittzo.user.command.domain.aggregate.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
 import lombok.AccessLevel;
@@ -21,14 +23,22 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long reportId;
 
+    // 신고한 유저와의 연관관계 매핑
+    @ManyToOne
+    @JoinColumn(name = "reporter_user_id", nullable = true)
+    private User reporterUser; // 신고한 유저
+
+    // 신고당한 유저와의 연관관계 매핑
+    @ManyToOne
+    @JoinColumn(name = "reported_user_id", nullable = true)
+    private User reportedUser; // 신고당한 유저
+
     @Column(nullable = true)
     private Long chatroomId;
 
-    @Column(nullable = true)
-    private Long reviewId;
-
-    @Column(nullable = true)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "review_id", nullable = true)
+    private Review review;
 
     @Column(nullable = true)
     private Long chatId;
@@ -37,10 +47,11 @@ public class Report {
     private LocalDateTime createDatetime;
 
     @Builder
-    public Report(Long chatroomId, Long reviewId, Long userId, Long chatId) {
+    public Report(Long chatroomId, Review review, User reporterUser, User reportedUser, Long chatId) {
         this.chatroomId = chatroomId;
-        this.reviewId = reviewId;
-        this.userId = userId;
+        this.review = review;
+        this.reporterUser = reporterUser;
+        this.reportedUser = reportedUser;
         this.chatId = chatId;
     }
 
