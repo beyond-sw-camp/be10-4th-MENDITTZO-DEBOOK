@@ -4,6 +4,7 @@ import 'swiper/swiper-bundle.css'; // Swiper 스타일
 import {Navigation, Pagination} from "swiper/modules";
 import {onMounted, ref} from "vue";
 import axios from "axios";
+import PagingBar from "@/components/PagingBar.vue";
 
 const images = [
   "/src/assets/image/ad1.png",
@@ -44,29 +45,42 @@ const chatrooms = ref([
   }
 ]);
 
+const pageSize = ref(10);
+const currentPage = ref(1);
+const totalItems = ref(50);
+const totalPages = ref(10);
+
 const bestBooks = ref([]);
 const books = ref([]);
+
 const fetchBestBooks = async () => {
   const response = (await axios.get(`/api/v1/booklists`, {
     params: {
       page: 1,
-      size: '3'
+      size: '5'
     }
   })).data;
   bestBooks.value = response.bookLists;
 }
-const fetchBooks = async () => {
+
+const fetchBooks = async (currentPage) => {
   const response = (await axios.get(`/api/v1/booklists`, {
     params: {
-      page: 1,
-      size: '9'
+      page: currentPage,
+      size: '10'
     }
   })).data;
   books.value = response.bookLists;
 }
+
+const changePage = (changePage) => {
+  currentPage.value = changePage;
+  fetchBooks(page);
+}
+
 onMounted(() => {
       fetchBestBooks();
-      fetchBooks();
+      fetchBooks(1);
     }
 )
 </script>
@@ -89,7 +103,7 @@ onMounted(() => {
 
     <div id="books-and-chatrooms">
       <article class="list-div">
-        <h2>리뷰많은 책 순위</h2>
+        <h2>리뷰많은 책</h2>
         <div class="chat" v-for="book in bestBooks">
           <div class="list-left">
             <img class="bmk-image" src="../assets/image/bookmark.png" alt="북마크이미지">
@@ -127,6 +141,12 @@ onMounted(() => {
         </div>
       </div>
     </div>
+    <PagingBar
+        v-model:pageSize=pageSize
+        v-model:currentPage=currentPage
+        v-model:totalItems=totalItems
+        v-model:totalPages=totalPages
+        @page-changed="changePage"/>
   </section>
 
 </template>
@@ -148,8 +168,8 @@ section{
 }
 #books-and-chatrooms{
   display: grid;
-  width: 900px;
-  margin: 50px auto;
+  width: 940px;
+  margin: 30px auto;
   grid-template-columns: 1fr 1fr;
 }
 .chat{
@@ -197,16 +217,19 @@ section{
   padding: 20px 20px;
   display: grid;
   width: 1000px;
-  margin: 50px auto;
+  margin: 20px auto;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
 }
 .book{
   padding: 10px;
+  cursor: pointer;
 }
 .book-img{
   width: 150px;
   height: 225px;
+  border-radius: 0 15px 15px 0;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3); /* x-offset, y-offset, blur, color */
 }
 
 .book-info{
@@ -218,16 +241,16 @@ section{
   white-space: nowrap;    /* 텍스트를 한 줄로 유지 */
   overflow: hidden;       /* 넘치는 텍스트를 숨김 */
   text-overflow: ellipsis; /* 넘칠 경우 '...'으로 표시 */
-  font-size: 10px;
+  font-size: 12px;
   width: 150px;
 }
 .book-author{
-  margin-top: 15px;
+  margin-top: 5px;
   font-weight: bold;
   white-space: nowrap;    /* 텍스트를 한 줄로 유지 */
   overflow: hidden;       /* 넘치는 텍스트를 숨김 */
   text-overflow: ellipsis; /* 넘칠 경우 '...'으로 표시 */
-  font-size: 7px;
+  font-size: 10px;
   width: 50px;
   color: #888888;
 }
