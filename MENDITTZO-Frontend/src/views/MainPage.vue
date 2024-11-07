@@ -2,7 +2,7 @@
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css'; // Swiper 스타일
 import {Navigation, Pagination} from "swiper/modules";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import PagingBar from "@/components/PagingBar.vue";
 
@@ -45,16 +45,18 @@ const chatrooms = ref([
   }
 ]);
 
-const pageSize = ref(10);
-const currentPage = ref(1);
-const totalItems = ref(50);
-const totalPages = ref(10);
+const state = reactive({
+  books: [],
+  currentPage: 1,
+  totalPages: 1,
+  totalItems: 0,
+  pageSize: 10
+});
 
 const bestBooks = ref([]);
-const books = ref([]);
 
 const fetchBestBooks = async () => {
-  const response = (await axios.get(`/api/v1/booklists`, {
+  const response = (await axios.get(`/booklists`, {
     params: {
       page: 1,
       size: '5'
@@ -63,24 +65,27 @@ const fetchBestBooks = async () => {
   bestBooks.value = response.bookLists;
 }
 
-const fetchBooks = async (currentPage) => {
-  const response = (await axios.get(`/api/v1/booklists`, {
-    params: {
-      page: currentPage,
-      size: '10'
-    }
-  })).data;
-  books.value = response.bookLists;
-}
-
-const changePage = (changePage) => {
-  currentPage.value = changePage;
-  fetchBooks(page);
-}
+const fetchBooks = async (page = 1) => {
+  try {
+    const response = await axios.get(`/booklists`, {
+      params: {
+        page,
+        size: 10
+      }
+    });
+    state.books = response.data.bookLists;
+    state.currentPage = response.data.currentPage;
+    state.totalPages = response.data.totalPages;
+    state.totalItems = response.data.totalItems;
+    state.pageSize = response.data.pageSize;
+  } catch (error) {
+    console.error('도서 목록을 불러오는 중 에러가 발생했습니다: ', error);
+  }
+};
 
 onMounted(() => {
       fetchBestBooks();
-      fetchBooks(1);
+      fetchBooks();
     }
 )
 </script>
@@ -92,7 +97,7 @@ onMounted(() => {
           :modules="[Navigation, Pagination]"
           navigation
           pagination
-          loop="true"
+          loop
           class="my-swiper-container"
       >
         <SwiperSlide v-for="(image, index) in images" :key="index">
@@ -132,7 +137,7 @@ onMounted(() => {
 
     <h1>최근 도서</h1>
     <div id="books">
-      <div class="book" v-for="book in books">
+      <div class="book" v-for="book in state.books">
         <img class="book-img" :src="book.img" alt="책 이미지">
           <p class="book-title">{{book.title}}</p>
         <div class="book-info">
@@ -142,11 +147,12 @@ onMounted(() => {
       </div>
     </div>
     <PagingBar
-        v-model:pageSize=pageSize
-        v-model:currentPage=currentPage
-        v-model:totalItems=totalItems
-        v-model:totalPages=totalPages
-        @page-changed="changePage"/>
+        :currentPage="state.currentPage"
+        :totalPages="state.totalPages"
+        :totalItems="state.totalItems"
+        :pageSize="state.totalPages"
+        @page-changed="fetchBooks"
+    />
   </section>
 
 </template>
