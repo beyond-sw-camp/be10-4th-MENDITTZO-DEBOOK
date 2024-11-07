@@ -21,6 +21,7 @@ public class ReviewCommandController {
     public ResponseEntity<String> createReview(
             @RequestBody ReviewCreateRequestDTO reviewCreateRequestDTO
     ) {
+
         reviewCommandService.createReview(reviewCreateRequestDTO);
 
         return ResponseEntity.ok(SuccessCode.REVIEW_CREATE_SUCCESS.getMessage());
@@ -31,6 +32,7 @@ public class ReviewCommandController {
             @PathVariable Long reviewId,
             @RequestBody ReviewUpdateRequestDTO reviewUpdateRequestDTO
     ) {
+
         reviewCommandService.updateReview(reviewId, reviewUpdateRequestDTO);
 
         return ResponseEntity.ok(SuccessCode.REVIEW_UPDATE_SUCCESS.getMessage());
@@ -38,6 +40,7 @@ public class ReviewCommandController {
 
     @DeleteMapping("/reviews/{reviewId}")
     public ResponseEntity<String> deleteReview(@PathVariable Long reviewId) {
+
         reviewCommandService.deleteReview(reviewId);
 
         return ResponseEntity.ok(SuccessCode.REVIEW_DELETE_SUCCESS.getMessage());

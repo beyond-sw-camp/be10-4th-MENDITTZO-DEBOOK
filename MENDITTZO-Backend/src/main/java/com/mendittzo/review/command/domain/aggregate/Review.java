@@ -27,10 +27,10 @@ public class Review {
     @Column(nullable = false)
     private Long userId;
     @CreatedDate
-    private LocalDateTime createDateTime;
+    private LocalDateTime createDatetime;
     @LastModifiedDate
-    private LocalDateTime updateDateTime;
-    private LocalDateTime deleteDateTime;
+    private LocalDateTime updateDatetime;
+    private LocalDateTime deleteDatetime;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
