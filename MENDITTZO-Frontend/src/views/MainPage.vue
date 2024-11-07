@@ -2,7 +2,8 @@
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css'; // Swiper 스타일
 import {Navigation, Pagination} from "swiper/modules";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+import axios from "axios";
 
 const images = [
   "/src/assets/image/ad1.png",
@@ -42,59 +43,100 @@ const chatrooms = ref([
     "status": "active"
   }
 ]);
+
+const bestBooks = ref([]);
+const books = ref([]);
+const fetchBestBooks = async () => {
+  const response = (await axios.get(`/api/v1/booklists`, {
+    params: {
+      page: 1,
+      size: '3'
+    }
+  })).data;
+  bestBooks.value = response.bookLists;
+}
+const fetchBooks = async () => {
+  const response = (await axios.get(`/api/v1/booklists`, {
+    params: {
+      page: 1,
+      size: '9'
+    }
+  })).data;
+  books.value = response.bookLists;
+}
+onMounted(() => {
+      fetchBestBooks();
+      fetchBooks();
+    }
+)
 </script>
 
 <template>
+  <section>
+    <div class="my-swiper">
+      <Swiper
+          :modules="[Navigation, Pagination]"
+          navigation
+          pagination
+          loop="true"
+          class="my-swiper-container"
+      >
+        <SwiperSlide v-for="(image, index) in images" :key="index">
+          <img class="slide-image" :src="image" alt="Slide Image" />
+        </SwiperSlide>
+      </Swiper>
+    </div>
 
-  <div class="my-swiper">
-    <Swiper
-        :modules="[Navigation, Pagination]"
-        navigation
-        pagination
-        loop="true"
-        class="my-swiper-container"
-    >
-      <SwiperSlide v-for="(image, index) in images" :key="index">
-        <img class="slide-image" :src="image" alt="Slide Image" />
-      </SwiperSlide>
-    </Swiper>
-  </div>
-
-  <div id="books-and-chatrooms">
-    <article class="list-div">
-      <div class="chat" v-for="chatroom in chatrooms">
-        <div class="chat-left">
-          <img class="bmk-image" src="../assets/image/bookmark2.png" alt="북마크이미지">
-          <p class="review-title">{{chatroom.title}}</p>
+    <div id="books-and-chatrooms">
+      <article class="list-div">
+        <h2>리뷰많은 책 순위</h2>
+        <div class="chat" v-for="book in bestBooks">
+          <div class="list-left">
+            <img class="bmk-image" src="../assets/image/bookmark.png" alt="북마크이미지">
+            <p class="list-title">{{book.title}}</p>
+          </div>
+          <div class="list-right">
+            <p class="list_info">{{book.author}}</p>
+            <p class="list_info">{{book.publisher}}</p>
+          </div>
         </div>
-        <div class="chat-right">
-          <p class="list_info">{{chatroom.book_title}}</p>
-          <p class="list_info">{{chatroom.member_count}}/{{chatroom.max_member_count}}</p>
+      </article>
+      <article class="list-div">
+        <h2>진행중인 독서 토론방</h2>
+        <div class="chat" v-for="chatroom in chatrooms">
+          <div class="list-left">
+            <img class="bmk-image" src="../assets/image/bookmark2.png" alt="북마크이미지">
+            <p class="list-title">{{chatroom.title}}</p>
+          </div>
+          <div class="list-right">
+            <p class="list_info">{{chatroom.book_title}}</p>
+            <p class="list_info">{{chatroom.member_count}}/{{chatroom.max_member_count}}</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <h1>최근 도서</h1>
+    <div id="books">
+      <div class="book" v-for="book in books">
+        <img class="book-img" :src="book.img" alt="책 이미지">
+          <p class="book-title">{{book.title}}</p>
+        <div class="book-info">
+          <p class="book-author">{{book.author}} </p>
+          <p class="book-author"> | {{book.publisher}}</p>
         </div>
       </div>
-    </article>
-    <article class="list-div">
-      <div class="chat" v-for="chatroom in chatrooms">
-        <div class="chat-left">
-          <img class="bmk-image" src="../assets/image/bookmark2.png" alt="북마크이미지">
-          <p class="review-title">{{chatroom.title}}</p>
-        </div>
-        <div class="chat-right">
-          <p class="list_info">{{chatroom.book_title}}</p>
-          <p class="list_info">{{chatroom.member_count}}/{{chatroom.max_member_count}}</p>
-        </div>
-      </div>
-    </article>
-  </div>
-
-  <article>
-
-  </article>
-
+    </div>
+  </section>
 
 </template>
 
 <style scoped>
+section{
+  width: 1000px;
+  margin: 0 auto;
+  padding: 0;
+}
 .my-swiper-container {
   width: 1000px;
   height: 200px;
@@ -105,25 +147,24 @@ const chatrooms = ref([
   padding: 0;
 }
 #books-and-chatrooms{
-  padding: 20px 20px;
   display: grid;
-  width: 1000px;
+  width: 900px;
   margin: 50px auto;
   grid-template-columns: 1fr 1fr;
 }
 .chat{
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding: 5px 10px;
+  padding: 5px 5px;
   border-bottom: 1px solid #888888;
   font-weight: bold;
 }
-.chat-left{
+.list-left{
   display: grid;
   grid-template-columns: 50px auto;
   justify-content: start;
 }
-.chat-right{
+.list-right{
   display: grid;
   grid-template-columns: auto 60px;
   justify-content: end; /* 왼쪽 정렬 */
@@ -141,5 +182,53 @@ const chatrooms = ref([
 }
 .list-div{
   padding: 10px;
+}
+.list-title{
+  margin-top: 15px;
+  font-weight: bold;
+  white-space: nowrap;    /* 텍스트를 한 줄로 유지 */
+  overflow: hidden;       /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis; /* 넘칠 경우 '...'으로 표시 */
+  cursor: pointer;
+  font-size: 15px;
+}
+
+#books{
+  padding: 20px 20px;
+  display: grid;
+  width: 1000px;
+  margin: 50px auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.book{
+  padding: 10px;
+}
+.book-img{
+  width: 150px;
+  height: 225px;
+}
+
+.book-info{
+  display: flex;
+}
+.book-title{
+  margin-top: 15px;
+  font-weight: bold;
+  white-space: nowrap;    /* 텍스트를 한 줄로 유지 */
+  overflow: hidden;       /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis; /* 넘칠 경우 '...'으로 표시 */
+  font-size: 10px;
+  width: 150px;
+}
+.book-author{
+  margin-top: 15px;
+  font-weight: bold;
+  white-space: nowrap;    /* 텍스트를 한 줄로 유지 */
+  overflow: hidden;       /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis; /* 넘칠 경우 '...'으로 표시 */
+  font-size: 7px;
+  width: 50px;
+  color: #888888;
 }
 </style>
