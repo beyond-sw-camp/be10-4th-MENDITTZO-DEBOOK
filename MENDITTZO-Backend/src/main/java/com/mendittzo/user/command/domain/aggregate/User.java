@@ -80,6 +80,7 @@ public class User {
                 .status(status)
                 .authProvider(authProvider)
                 .profileImg(profileImg)
+                .loginId(loginId)
                 .build();
     }
 

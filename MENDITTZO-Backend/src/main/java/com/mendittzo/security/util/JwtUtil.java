@@ -50,6 +50,8 @@ public class JwtUtil {
         Claims claims = Jwts.claims().setSubject(user.getNickname());   // String 타입의 식별자가 필요하므로 닉네임으로 구분
         claims.put("socialLoginId", user.getLoginId()); // 소셜 로그인 사용자 고유 id 추가 저장
 
+        log.info("Claims - subject(nickname): {}, socialLoginId: {}", claims.getSubject(), claims.get("socialLoginId"));
+
         // 토큰 발급
         String accessToken = Jwts.builder()
                 .setClaims(claims)  // payload 에 사용자 및 추가 데이터 저장
