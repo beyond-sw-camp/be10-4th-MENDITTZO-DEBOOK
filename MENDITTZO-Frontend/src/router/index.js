@@ -1,11 +1,16 @@
 import {createRouter, createWebHistory} from "vue-router";
 import MyPage from "@/views/MyPage.vue";
+import MainPage from "@/views/MainPage.vue";
 
 const routes = [
 
     {
         path: '/myPage',
         component: MyPage // 검색 결과 페이지
+    },
+    {
+        path: '/',
+        component: MainPage
     }
 
 ];
