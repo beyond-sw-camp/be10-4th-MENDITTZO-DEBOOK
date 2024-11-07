@@ -15,15 +15,17 @@ public class DebookTokenDTO {
     private Long accessTokenExpiresIn;
     private String refreshToken;
     private Long refreshTokenExpiresIn;
+    private Long loginId;
 
-    public DebookTokenDTO(String accessToken, Long accessTokenExpiresIn, String refreshToken, Long refreshTokenExpiresIn) {
+    public DebookTokenDTO(String accessToken, Long accessTokenExpiresIn, String refreshToken, Long refreshTokenExpiresIn, Long loginId) {
         this.accessToken = accessToken;
         this.accessTokenExpiresIn = accessTokenExpiresIn;
         this.refreshToken = refreshToken;
         this.refreshTokenExpiresIn = refreshTokenExpiresIn;
+        this.loginId = loginId;
     }
 
-    public static DebookTokenDTO create(String accessToken, Long accessTokenExpiresIn, String refreshToken, Long refreshTokenExpiresIn) {
-        return new DebookTokenDTO(accessToken, accessTokenExpiresIn, refreshToken, refreshTokenExpiresIn);
+    public static DebookTokenDTO create(String accessToken, Long accessTokenExpiresIn, String refreshToken, Long refreshTokenExpiresIn, Long loginId) {
+        return new DebookTokenDTO(accessToken, accessTokenExpiresIn, refreshToken, refreshTokenExpiresIn, loginId);
     }
 }

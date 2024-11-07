@@ -1,5 +1,6 @@
 package com.mendittzo.review.command.domain.aggregate;
 
+import com.mendittzo.report.command.domain.aggregate.Report;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "review")
@@ -39,6 +41,9 @@ public class Review {
     private int rating;
     @Enumerated(value = EnumType.STRING)
     private ReviewStatus status = ReviewStatus.CREATED;
+
+    @OneToMany(mappedBy = "review")
+    private List<Report> reportList;
 
     private Review(Long bookId, Long userId, String title, String content, int rating) {
         this.bookId = bookId;

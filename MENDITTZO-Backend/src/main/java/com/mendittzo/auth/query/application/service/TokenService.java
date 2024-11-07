@@ -53,5 +53,4 @@ public class TokenService {
         redisTemplate.delete("access_token:" + loginId);
         redisTemplate.delete("refresh_token:" + loginId);
     }
-
 }

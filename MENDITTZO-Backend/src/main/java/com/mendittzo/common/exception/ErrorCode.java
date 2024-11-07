@@ -20,9 +20,16 @@ public enum ErrorCode {
     // 400 에러
     NOT_MATCH_FILE_EXTENSION(HttpStatus.BAD_REQUEST, "허용되지 않은 확장자입니다."),
 
+    // 401 에러
+    AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "인증 실패"),
+
+    // 403 에러
+    AUTHORIZATION_FAILED(HttpStatus.FORBIDDEN, "인가 실패"),
+
     // 404 에러
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "유저정보를 찾을 수 없습니다."),
     NOT_FOUND_REVIEW(HttpStatus.NOT_FOUND, "해당하는 리뷰를 찾을 수 없습니다."),
+    NOT_FOUND_BOOK(HttpStatus.NOT_FOUND, "해당하는 책을 찾을 수 없습니다."),
     ;
 
     private final HttpStatus httpStatus;

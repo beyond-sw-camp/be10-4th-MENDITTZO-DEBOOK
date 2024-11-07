@@ -25,7 +25,7 @@ public class KakaoAuthController {
     private final KakaoAuthService kakaoAuthService;
 
     // 새로운 액세스 토큰 발급하기
-    @PostMapping("token")
+    @PostMapping("/access-tokens")
     public ResponseEntity<AccessTokenResponseDTO> refreshAccessToken(@RequestHeader("Authorization") String authorizationHeader) {
 
         String refreshToken = authorizationHeader.replace("Bearer ", "");
