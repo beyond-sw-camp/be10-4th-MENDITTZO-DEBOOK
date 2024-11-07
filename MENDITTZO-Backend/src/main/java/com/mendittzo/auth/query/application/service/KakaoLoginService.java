@@ -1,9 +1,7 @@
 package com.mendittzo.auth.query.application.service;
 
 import com.mendittzo.auth.query.application.dto.*;
-import com.mendittzo.auth.query.domain.aggregate.Token;
 import com.mendittzo.auth.query.domain.repository.TokenRepository;
-import com.mendittzo.auth.query.mapper.TokenMapper;
 import com.mendittzo.security.util.JwtUtil;
 import com.mendittzo.user.command.application.dto.UserCreateRequestDTO;
 import com.mendittzo.user.command.application.service.UserCommandService;
@@ -23,7 +21,7 @@ import java.time.LocalDateTime;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class KakaoAuthService {
+public class KakaoLoginService {
 
     private static final String KAKAO_LOGIN_URL = "https://kauth.kakao.com/oauth/authorize";
     private static final String KAKAO_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
@@ -33,6 +31,7 @@ public class KakaoAuthService {
     private final UserCommandService userCommandService;
     private final TokenRepository tokenRepository;
     private final JwtUtil jwtUtil;
+    private final TokenService tokenService;
 
     // 필수 쿼리 파라미터
     // (1) client_id : REST API 키
@@ -171,24 +170,12 @@ public class KakaoAuthService {
         // 4. access token, refresh token 생성
         DebookTokenDTO token = jwtUtil.generateToken(user);
 
-        // 5. DB(redis 로 바꾸기 전 임시 mariaDB)에 토큰 저장
-        TokenCreateRequestDTO tokenRequest = new TokenCreateRequestDTO(
-                null,
-                user.getLoginId(),
-                token.getAccessToken(),
-                token.getAccessTokenExpiresIn(),
-                token.getRefreshToken(),
-                token.getRefreshTokenExpiresIn()
-        );
+        // 5. redis 에 토큰 저장
+        tokenService.saveAccessToken(user.getLoginId(), token.getAccessToken(), token.getAccessTokenExpiresIn().intValue());
+        tokenService.saveRefreshToken(user.getLoginId(), token.getRefreshToken(), token.getRefreshTokenExpiresIn().intValue());
 
-        createToken(tokenRequest);
+        log.info("saveAccessToken, saveRefreshToken 실행");
+
         return token;
     }
-
-    public void createToken(TokenCreateRequestDTO tokenRequest) {
-
-        Token newToken = TokenMapper.toEntity(tokenRequest);
-        tokenRepository.save(newToken);
-    }
-
 }

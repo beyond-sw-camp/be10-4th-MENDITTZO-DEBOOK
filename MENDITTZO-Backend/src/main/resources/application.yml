@@ -1,6 +1,7 @@
 springdoc:
   swagger-ui:
     path: /
+
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -11,8 +12,8 @@ spring:
   elasticsearch:
     rest:
       uris: http://localhost:9200
-      username: "elastic" # 아이디 elastic
-      password: "elastic"  #비밀번호 elastic
+      username: "elastic"
+      password: "elastic"
 
   config:
     import: "classpath:API-KEY.yml"
@@ -24,23 +25,10 @@ spring:
         physical-strategy:
           org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
 
-
-  logstash:
-    image: logstash:8.15.3
-    container_name: logstash
-    volumes:
-      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf # 이 부분이 맞는지는 다시 한번 확인 및 검증이 필요함
-      - /usr/local/lib/mariadb-java-client.jar:/usr/share/logstash/mariadb-java-client.jar # 이 부분이 맞는지는 다시 한번 확인 및 검증이 필요함
-    environment:
-      - LS_JAVA_OPTS="-Xmx1g -Xms1g"
-      - JDBC_USER=${db.username}
-      - JDBC_PASSWORD=${db.password}
-    command: logstash -f /usr/share/logstash/pipeline/logstash.conf
-    depends_on:
-      - elasticsearch
-      - mariadb
-    networks:
-      - elastic-net
+  redis:  # Redis 설정을 spring.redis로 변경
+    data:
+      host: ${redis.data.host}
+      port: ${redis.data.port}
 
 kakao:
   client_id:
@@ -55,9 +43,9 @@ token:
 cloud:
   aws:
     s3:
-      bucket: ${s3.bucket} # Amazon S3 버킷 이름
+      bucket: ${s3.bucket}
     stack.auto: false
     region.static: ap-southeast-2
     credentials:
-      accessKey: ${im.access} # IAM 액세스 키
-      secretKey: ${im.secret} # IAM 시크릿 키
+      accessKey: ${im.access}
+      secretKey: ${im.secret}

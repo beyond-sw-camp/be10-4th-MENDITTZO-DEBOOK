@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// todo: 이 파일 + 관련된 거 삭제 (redis 로 교체)
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
