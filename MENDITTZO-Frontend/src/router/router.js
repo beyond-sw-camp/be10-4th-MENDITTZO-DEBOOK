@@ -18,6 +18,11 @@ const router = createRouter({
             path: '/login-success',
             component: () => import('@/views/login/LoginSuccessView.vue')
         },
+        {
+            // 마이페이지 화면
+            path: '/mypage',
+            component: () => import('@/views/MyPage.vue')
+        },
     ]
 });
 

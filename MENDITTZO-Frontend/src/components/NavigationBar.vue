@@ -13,6 +13,12 @@ const handleLogout = () => {
   authStore.logout();
   router.push("/login");
 };
+
+// 마이페이지로 이동 시 사용자 정보 불러오기
+const handleMyPage = async () => {
+
+  await authStore.fetchUserInfo();  // 사용자 정보를 백엔드에서 가져와 업데이트
+};
 </script>
 
 <template>
@@ -28,7 +34,7 @@ const handleLogout = () => {
       </div>
 
       <div>
-        <ul class="login-logout" v-show="!isLogin">
+        <ul class="login-logout" v-if="!isLogin">
           <li>
             <RouterLink to="/login" class="login-logout-button">
               <img src="../assets/image/sign-up.png" alt="회원가입아이콘">회원가입
@@ -41,8 +47,12 @@ const handleLogout = () => {
           </li>
         </ul>
 
-        <ul class="login-logout" v-show="isLogin">
-          <li><img src="../assets/image/profile.png" alt="회원아이콘">홍길동님</li>
+        <ul class="login-logout" v-if="isLogin">
+          <li>
+            <RouterLink to ="/mypage" class ="mypage-button">
+              <img src="../assets/image/profile.png" alt="회원아이콘">{{ authStore.nickname }} 님
+            </RouterLink>
+          </li>
           <li id="logout-button" @click="handleLogout">로그아웃</li>
         </ul>
       </div>
