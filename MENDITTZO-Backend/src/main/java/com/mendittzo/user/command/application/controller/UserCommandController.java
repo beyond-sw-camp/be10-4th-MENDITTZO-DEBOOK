@@ -34,9 +34,6 @@ public class UserCommandController {
                 .profileImage(profileImage)
                 .build();
 
-        System.out.println("업데이트 실행"+profileImage);
-        System.out.println(nickname);
-
         userCommandService.updateUser(userUpdateDTO);
 
         return ResponseEntity.ok(SuccessCode.USER_UPDATE_SUCCESS.getMessage());
