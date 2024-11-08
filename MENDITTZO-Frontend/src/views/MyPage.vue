@@ -1,6 +1,8 @@
 <script setup>
 import {reactive, ref} from "vue";
+import {useAuthStore} from "@/store/auth.js";
 
+const authStore = useAuthStore();
 const user = reactive();
 const reviews = ref([]);
 const chatrooms = ref([]);

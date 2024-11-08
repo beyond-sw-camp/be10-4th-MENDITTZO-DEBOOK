@@ -1,8 +1,24 @@
 <script setup>
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
+import {useAuthStore} from "@/store/auth.js";
+import router from "@/router/router.js";
+
+const authStore = useAuthStore();
 import {RouterLink} from "vue-router";
 
-const isLogin = ref(true);
+// accessToken 이 있으면 로그인 한 상태
+const isLogin = computed(() => !!authStore.accessToken);
+const handleLogout = () => {
+
+  authStore.logout();
+  router.push("/login");
+};
+
+// 마이페이지로 이동 시 사용자 정보 불러오기
+const handleMyPage = async () => {
+
+  await authStore.fetchUserInfo();  // 사용자 정보를 백엔드에서 가져와 업데이트
+};
 </script>
 
 <template>
@@ -20,14 +36,26 @@ const isLogin = ref(true);
       </div>
 
       <div>
-        <ul class="login-logout" v-show="!isLogin">
-          <li><img src="../assets/image/sign-up.png" alt="회원가입아이콘">회원가입</li>
-          <li><img src="../assets/image/profile.png" alt="로그인아이콘">로그인</li>
+        <ul class="login-logout" v-if="!isLogin">
+          <li>
+            <RouterLink to="/login" class="login-logout-button">
+              <img src="../assets/image/sign-up.png" alt="회원가입아이콘">회원가입
+            </RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/login" class="login-logout-button">
+              <img src="../assets/image/profile.png" alt="로그인아이콘">로그인
+            </RouterLink>
+          </li>
         </ul>
 
-        <ul class="login-logout" v-show="isLogin">
-          <li><img src="../assets/image/profile.png" alt="회원아이콘">홍길동님</li>
-          <li id="logout-button">로그아웃</li>
+        <ul class="login-logout" v-if="isLogin">
+          <li>
+            <RouterLink to ="/mypage" class ="mypage-button">
+              <img src="../assets/image/profile.png" alt="회원아이콘">{{ authStore.nickname }} 님
+            </RouterLink>
+          </li>
+          <li id="logout-button" @click="handleLogout">로그아웃</li>
         </ul>
       </div>
     </div>
@@ -140,6 +168,15 @@ header{
   color: white;
   background-color: #78AE6B;
   border-radius: 10px;
+}
+
+/* routerlink 기본 스타일 제거 */
+.login-logout-button{
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit;        /* 텍스트 색상을 상속받아 기본 색으로 설정 */
+  display: flex;
+  align-items: center;   /* 아이콘과 텍스트 수직 정렬 */
+  font-weight: bold;     /* 스타일 통일을 위해 굵게 설정 */
 }
 
 /* 네비게이션 하단 버튼 텍스트 */
