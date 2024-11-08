@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE user SET status = 'DELETED', withdraw_datetime = NOW(), WHERE user_id = ? AND status != 'DELETED'")
+@SQLDelete(sql = "UPDATE user SET status = 'DELETED', withdraw_datetime = NOW() WHERE user_id = ? AND status != 'DELETED'")
 public class User {
 
     @Id
@@ -88,6 +88,11 @@ public class User {
 
         this.nickname = newNickname;
         this.profileImg = newImageUrl;
+    }
+
+    public void deleteUser() {
+        this.status = Status.DELETED;
+        this.withdrawDatetime = LocalDateTime.now();
     }
 
     public void restrictUser(){

@@ -30,6 +30,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz ->
                     // 일단 /api/v1/** 의 모든 요청(GET, POST...) 허락
                     authz.requestMatchers(new AntPathRequestMatcher("/api/v1/**")).permitAll()
+                            .requestMatchers("/**").permitAll()
                             .anyRequest().authenticated()   // 나머지 요청은 인증 필요
             )
             // 세션 로그인 사용 X
