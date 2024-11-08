@@ -7,7 +7,7 @@ const router = createRouter({
             // 메인 화면
             path : '/',
             name : 'Main',
-            component : () => import('@/views/HomeView.vue')
+            component : () => import('@/views/MainPage.vue')
         },
         {
             // 로그인 화면
