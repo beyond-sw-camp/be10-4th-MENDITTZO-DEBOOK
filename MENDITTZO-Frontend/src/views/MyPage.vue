@@ -3,6 +3,9 @@ import {onMounted, reactive, ref} from "vue";
 import {useAuthStore} from "@/store/auth.js";
 import axios from "axios";
 import PagingBar from "@/components/PagingBar.vue";
+import instance from "@/config/axios.js";
+import router from "@/router/router.js";
+import SignOutForm from "@/components/SignOutForm.vue";
 
 const authStore = useAuthStore();
 const state = reactive({
@@ -18,17 +21,15 @@ const userNick = ref();
 const userImgUrl = ref();
 const chatrooms = ref([]);
 const isReadonly = ref(true);
+const showSignOutForm = ref(false);
 
 const fetchReviews = async (page = 1) => {
   try {
-    const response = await axios.get(`/reviews/user`, {
+    const response = await instance.get(`/reviews/user`, {
       params: {
         page,
         size: 10
       },
-      headers: {
-        Authorization: `Bearer ${authStore.accessToken}`
-      }
     });
     state.reviews = response.data.reviewList;
     state.currentPage = response.data.currentPage;
@@ -89,9 +90,8 @@ const modifyUser = async () => {
       formData.append("profileImage", userImg.value); // 이미지 파일 추가
       formData.append("nickname", userNick.value); // 닉네임 추가
 
-      await axios.put("/users", formData, {
+      await instance.put("/users", formData, {
         headers: {
-          Authorization: `Bearer ${authStore.accessToken}`,
           'Content-Type': 'multipart/form-data'
         }
 
@@ -106,8 +106,29 @@ const modifyUser = async () => {
   }
 }
 
+const handleSignOut = async () => {
+  try {
+    await instance.delete("/users");
+
+    // Pinia 스토어, 로컬 스토리지에서 토큰 삭제
+    authStore.logout();
+    router.push("/login");
+  } catch (error) {
+    console.error("탈퇴 실패: ", error);
+  } finally {
+    showSignOutForm.value = false;
+  }
+};
+
 onMounted(
+
     () => {
+
+      // 로그인 하지 않은 경우 로그인 페이지로 이동
+      if (!authStore.accessToken) {
+        router.push("/login");
+      }
+
       fetchReviews();
       userNick.value = authStore.nickname;
       userImgUrl.value = authStore.profileImg;
@@ -187,7 +208,12 @@ onMounted(
     </article>
     <p class="menu">회원관리</p>
     <hr class="cross">
-    <button class="myButton" id="delete-button">탈퇴하기</button>
+
+    <div v-if="showSignOutForm" class="modal-overlay">
+      <SignOutForm @confirm="handleSignOut" @cancel="showSignOutForm = false"/>
+    </div>
+    <button class="myButton" id="delete-button" @click="showSignOutForm = true">탈퇴하기</button>
+
   </section>
 </template>
 
@@ -223,6 +249,29 @@ section {
 }
 .list-div{
   padding: 50px
+}
+
+.modal-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검정색 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* 다른 요소보다 위에 표시 */
+}
+
+.signout-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
 }
 
 #nick-icon{

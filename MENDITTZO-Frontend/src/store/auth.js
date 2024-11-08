@@ -84,11 +84,22 @@ export const useAuthStore = defineStore('auth', () => {
         fetchUserInfo();
     };
 
+    // 액세스 토큰 저장
+    const setAccessToken = (newAccessToken) => {
+        accessToken.value = newAccessToken;
+
+        console.log("액세스 토큰 저장: newAccessToken", accessToken);
+
+        localStorage.setItem("accessToken", newAccessToken);
+
+        fetchUserInfo();
+    };
+
     // 로그인 id 저장
     const setLoginId = (newLoginId) => {
         loginId.value = newLoginId;
         localStorage.setItem("loginId", newLoginId);
     };
 
-    return {accessToken, refreshToken, loginId, nickname, status, profileImg, logout, setTokens, setLoginId, fetchUserInfo};
+    return {accessToken, refreshToken, loginId, nickname, status, profileImg, logout, setTokens, setLoginId, fetchUserInfo, setAccessToken};
 });
