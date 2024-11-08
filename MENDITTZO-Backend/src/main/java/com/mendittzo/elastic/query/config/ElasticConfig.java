@@ -1,2 +1,4 @@
-package com.mendittzo.elastic.query.config;public class ElasticConfig {
+package com.mendittzo.elastic.query.config;
+
+public class ElasticConfig {
 }
