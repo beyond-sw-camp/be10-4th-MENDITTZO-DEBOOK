@@ -25,7 +25,9 @@ const handleMyPage = async () => {
   <header>
     <div id="top-nav">
       <div>
+        <RouterLink to="/" active-class="active" replace>
         <img id="logo" src="../assets/image/logo.png" alt="로고이미지">
+        </RouterLink>
       </div>
 
       <div id="search-bar">
@@ -74,7 +76,9 @@ const handleMyPage = async () => {
 </template>
 
 <style scoped>
-
+a{
+  text-decoration: none;
+}
 /* header */
 header{
   width: 1440px;
