@@ -1,7 +1,9 @@
 import {createRouter, createWebHistory} from "vue-router";
 import MyPage from "@/views/MyPage.vue";
-import MainPage from "@/views/MainPage.vue";
 import BookListView from "@/views/BookListView.vue";
+import MainPage from "@/views/MainPage.vue";
+import BookDetailView from "@/views/BookDetailView.vue";
+import BookReviewCreateView from "@/views/BookReviewCreateView.vue";
 
 const routes = [
 
@@ -14,11 +16,20 @@ const routes = [
         component: BookListView
     },
     {
-        path: '/booklists/:id'
-    },
-    {
         path: '/',
         component: MainPage
+    },
+    {
+        path: '/booklists/:id',
+        component: BookDetailView
+    },
+    {
+        path: '/booklists/:id/create',
+        component: BookReviewCreateView
+    },
+    {
+        path: '/booklists/:id/edit',
+        component: BookReviewCreateView
     }
 
 ];
