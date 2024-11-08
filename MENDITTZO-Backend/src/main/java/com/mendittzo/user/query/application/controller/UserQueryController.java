@@ -1,6 +1,8 @@
 package com.mendittzo.user.query.application.controller;
 
+import com.mendittzo.common.exception.ErrorCode;
 import com.mendittzo.security.util.JwtUtil;
+import com.mendittzo.security.util.UserUtil;
 import com.mendittzo.user.query.application.dto.UserQueryResponseDTO;
 import com.mendittzo.user.query.application.service.UserQueryService;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +18,14 @@ public class UserQueryController {
     private final JwtUtil jwtUtil;
 
     @GetMapping("/info")
-    public ResponseEntity<UserQueryResponseDTO> findUserInfo(@RequestHeader("Authorization") String accessToken) {
+    public ResponseEntity<UserQueryResponseDTO> findUserInfo() {
 
-        // 액세스 토큰에서 userId 추출
-        Long loginId = jwtUtil.getLoginId(accessToken);
+        // 인증 객체에서 loginId 꺼내기
+        Long loginId = UserUtil.getCurrentUserLoginId();
+
+        if (loginId == null) {
+            return ResponseEntity.status(401).build();
+        }
 
         UserQueryResponseDTO findUserInfo = userQueryService.findUserInfoByLoginId(loginId);
 
