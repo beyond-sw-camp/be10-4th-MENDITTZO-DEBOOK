@@ -1,12 +1,43 @@
 <script setup>
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {useAuthStore} from "@/store/auth.js";
+import axios from "axios";
 
 const authStore = useAuthStore();
-const user = reactive();
-const reviews = ref([]);
+const state = reactive({
+  reviews: [],
+  currentPage: 1,
+  totalPages: 1,
+  totalItems: 0,
+  pageSize: 10
+});
 const chatrooms = ref([]);
+const fetchReviews = async (page = 1) => {
+  try {
+    const response = await axios.get(`/reviews/user`, {
+      params: {
+        page,
+        size: 10
+      },
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+    state.reviews = response.data.reviewList;
+    state.currentPage = response.data.currentPage;
+    state.totalPages = response.data.totalPages;
+    state.totalItems = response.data.totalItems;
+    state.pageSize = response.data.pageSize;
+  } catch (error) {
+    console.error('도서 목록을 불러오는 중 에러가 발생했습니다: ', error);
+  }
+};
 
+onMounted(
+    () => {
+      fetchReviews();
+    }
+)
 </script>
 
 <template>
@@ -17,7 +48,7 @@ const chatrooms = ref([]);
       <div>
         <p class="middle-text">닉네임</p>
         <div id="nick-bar">
-          <input id="nick-input" type="text" placeholder="홍길동">
+          <input id="nick-input" type="text" :placeholder=authStore.nickname>
           <img id="nick-icon" src="https://img.icons8.com/?size=100&id=4299&format=png&color=000000" alt="검색아이콘">
         </div>
         <button class="myButton">수정하기</button>
@@ -26,7 +57,7 @@ const chatrooms = ref([]);
       <div id="profile-right">
         <p class="middle-text">프로필사진</p>
         <div class="profile-image-container">
-          <img id="profile-img" :src="user.img" alt="프로필 사진">
+          <img id="profile-img" :src="authStore.profileImg" alt="프로필 사진">
         </div>
       </div>
     </article>
@@ -34,7 +65,7 @@ const chatrooms = ref([]);
     <p class="menu">나의 리뷰</p>
     <hr class="cross">
     <article class="list-div">
-      <div class="review" v-for="review in reviews">
+      <div class="review" v-for="review in state.reviews">
         <div class="review-left">
           <img src="../assets/image/bookmark.png" alt="북마크이미지">
           <p class="review-title">{{review.title}}</p>
