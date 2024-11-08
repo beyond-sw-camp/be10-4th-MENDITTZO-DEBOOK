@@ -160,6 +160,8 @@ public class KakaoLoginService {
         // 2. 액세스 토큰으로 카카오 고유 사용자 id 요청
         KakaoUserInfoResponseDTO kakaoUserInfo = getKakaoUserInfo(accessToken);
 
+        Long loginId = kakaoUserInfo.getLoginId();
+
         log.info("카카오 고유 사용자 id kakaoUserInfo: " + kakaoUserInfo);
         log.info("kakaoUserInfo.getLoginId() : " + kakaoUserInfo.getLoginId());
         // todo: 확인용

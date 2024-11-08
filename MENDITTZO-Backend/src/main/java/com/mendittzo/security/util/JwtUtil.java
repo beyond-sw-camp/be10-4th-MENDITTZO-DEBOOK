@@ -4,12 +4,16 @@ import com.mendittzo.auth.command.application.dto.AccessTokenResponseDTO;
 import com.mendittzo.auth.query.application.dto.DebookTokenDTO;
 import com.mendittzo.common.exception.CustomException;
 import com.mendittzo.common.exception.ErrorCode;
+import com.mendittzo.security.service.userService;
 import com.mendittzo.user.command.domain.aggregate.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -20,10 +24,12 @@ import java.util.Date;
 public class JwtUtil {
 
     private final Key secretKey;
+    private final com.mendittzo.security.service.userService userService;
 
-    public JwtUtil(@Value("${token.secret}") String secretKey) {
+    public JwtUtil(@Value("${token.secret}") String secretKey, userService userService) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+        this.userService = userService;
     }
 
     @Value(("${token.access_token_expiration_time}"))
@@ -43,6 +49,8 @@ public class JwtUtil {
         // JWT payload
         Claims claims = Jwts.claims().setSubject(user.getNickname());   // String 타입의 식별자가 필요하므로 닉네임으로 구분
         claims.put("socialLoginId", user.getLoginId()); // 소셜 로그인 사용자 고유 id 추가 저장
+
+        log.info("Claims - subject(nickname): {}, socialLoginId: {}", claims.getSubject(), claims.get("socialLoginId"));
 
         // 토큰 발급
         String accessToken = Jwts.builder()
@@ -67,7 +75,8 @@ public class JwtUtil {
                 accessToken,
                 System.currentTimeMillis() + accessTokenExpirationTime,
                 refreshToken,
-                System.currentTimeMillis() + refreshTokenExpirationTime
+                System.currentTimeMillis() + refreshTokenExpirationTime,
+                user.getLoginId()
         );
     }
 
@@ -131,5 +140,13 @@ public class JwtUtil {
     public Long getLoginId(String token) {
 
         return parseClaims(token).get("socialLoginId", Long.class);
+    }
+
+    // API 요청 헤더에 담긴 액세스 토큰으로 인증 객체(Authentication) 추출
+    public Authentication getAuthentication(String token) {
+
+        UserDetails userDetails = userService.loadUserByLoginId(this.getLoginId(token));
+
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }

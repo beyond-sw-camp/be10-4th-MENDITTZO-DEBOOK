@@ -17,4 +17,5 @@ public class UserQueryResponseDTO {
     private Status status;  // 회원가입 시 추가 정보(닉네임) 입력해야 ACTIVE 로 변경
     private String authProvider;    // 소셜 로그인 제공자(카카오, 구글, 네이버)
     private String profileImg;  // 프로필 이미지 url
+    private Long loginId;   // 소셜 로그인 고유 사용자 id
 }

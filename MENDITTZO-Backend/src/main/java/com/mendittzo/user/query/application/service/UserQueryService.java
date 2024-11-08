@@ -14,9 +14,16 @@ public class UserQueryService {
 
     private final UserQueryRepository userQueryRepository;
 
-    public UserQueryResponseDTO findUserInfo(Long userId) {
+//    public UserQueryResponseDTO findUserInfo(Long userId) {
+//
+//        User user = userQueryRepository.findById(userId)
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+//
+//        return user.createQueryResponseDTO();
+//    }
 
-        User user = userQueryRepository.findById(userId)
+    public UserQueryResponseDTO findUserInfoByLoginId(Long loginId) {
+        User user = userQueryRepository.findUserInfoByLoginId(loginId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
         return user.createQueryResponseDTO();
