@@ -29,6 +29,7 @@ public class BookListQueryService {
 
         List<BookListResponseDTO> bookLists = page.getContent().stream()
                 .map(book -> BookListResponseDTO.builder()
+                        .bookId(book.getBookId())
                         .title(book.getTitle())
                         .author(book.getAuthor())
                         .publisher(book.getPublisher())

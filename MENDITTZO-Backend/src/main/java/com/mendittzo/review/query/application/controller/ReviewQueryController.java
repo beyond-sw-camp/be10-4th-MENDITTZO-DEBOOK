@@ -2,6 +2,7 @@ package com.mendittzo.review.query.application.controller;
 
 import com.mendittzo.review.query.application.dto.ReviewListResponseDTO;
 import com.mendittzo.review.query.application.service.ReviewQueryService;
+import com.mendittzo.security.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,23 +21,24 @@ public class ReviewQueryController {
     public ResponseEntity<ReviewListResponseDTO> getReviews(
             @PathVariable(name = "bookId") Long bookId,
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size,
-            @RequestParam(value = "sort", defaultValue = "createDatetime,desc") String sort) {
+            @RequestParam(value = "size", defaultValue = "5") int size) {
 
-        // 기본값으로 최신순 정렬
-        Sort sortOrder = Sort.by(Sort.Order.desc("createDatetime"));
-
-        String[] sortParams = sort.split(",");
-        if (sortParams.length == 2 && "rating".equalsIgnoreCase(sortParams[0])) {
-            String direction = sortParams[1];
-            sortOrder = "desc".equalsIgnoreCase(direction)
-                    ? Sort.by(Sort.Order.desc("rating"))
-                    : Sort.by(Sort.Order.asc("rating"));
-        }
-
-        Pageable pageable = PageRequest.of(page - 1, size, sortOrder);
+        Pageable pageable = PageRequest.of(page - 1, size);
 
         ReviewListResponseDTO response = reviewQueryService.getReviews(bookId, pageable);
+
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/user")
+    public ResponseEntity<ReviewListResponseDTO> getMyReviews(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size) {
+
+        Long loginId = UserUtil.getCurrentUserLoginId();
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        ReviewListResponseDTO response = reviewQueryService.getMyReviews(loginId, pageable);
 
         return ResponseEntity.ok(response);
     }

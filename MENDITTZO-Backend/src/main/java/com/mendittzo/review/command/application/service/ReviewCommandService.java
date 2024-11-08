@@ -18,9 +18,9 @@ public class ReviewCommandService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public void createReview(ReviewCreateRequestDTO reviewCreateRequestDTO) {
+    public void createReview(ReviewCreateRequestDTO reviewCreateRequestDTO, Long loginId) {
 
-        Review newReview = ReviewMapper.toEntity(reviewCreateRequestDTO);
+        Review newReview = ReviewMapper.toEntity(reviewCreateRequestDTO, loginId);
 
         reviewRepository.save(newReview);
     }

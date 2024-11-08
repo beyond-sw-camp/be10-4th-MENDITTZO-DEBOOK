@@ -4,10 +4,10 @@ import com.mendittzo.review.command.application.dto.ReviewCreateRequestDTO;
 import com.mendittzo.review.command.domain.aggregate.Review;
 
 public class ReviewMapper {
-    public static Review toEntity(ReviewCreateRequestDTO reviewCreateRequestDTO) {
+    public static Review toEntity(ReviewCreateRequestDTO reviewCreateRequestDTO, Long loginId) {
         return Review.create(
                 reviewCreateRequestDTO.getBookId(),
-                reviewCreateRequestDTO.getUserId(),
+                loginId,
                 reviewCreateRequestDTO.getTitle(),
                 reviewCreateRequestDTO.getContent(),
                 reviewCreateRequestDTO.getRating()
