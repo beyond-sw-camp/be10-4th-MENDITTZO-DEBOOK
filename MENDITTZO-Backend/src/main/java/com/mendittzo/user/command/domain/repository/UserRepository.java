@@ -10,4 +10,6 @@ public interface UserRepository {
     User save(User newUser);
 
     User findByLoginId(Long userId);
+
+    void delete(User user);
 }

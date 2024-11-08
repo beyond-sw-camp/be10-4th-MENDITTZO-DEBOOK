@@ -68,6 +68,16 @@ public class UserCommandService {
 
         // 유저 DB 업데이트
         userRepository.save(updateUser);
+    }
+
+    // 유저 정보 삭제
+    public void deleteUser(Long loginId) {
+
+        // 삭제 할 유저 조회
+        User deleteUser = userRepository.findByLoginId(loginId);
+
+        // 유저 DB 업데이트
+        userRepository.delete(deleteUser);
 
     }
 }
