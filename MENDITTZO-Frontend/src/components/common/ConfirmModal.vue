@@ -67,7 +67,7 @@ const cancel = () => {
 .modal-content {
   background-color: white;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
@@ -78,27 +78,30 @@ const cancel = () => {
 }
 
 .modal-icon {
-  margin-right: 10px;
-  width: 12px; /* 아이콘 크기 지정 */
-  height: 12px; /* 아이콘 크기 지정 */
+  width: 10px; /* 아이콘 크기 지정 */
+  height: 10px; /* 아이콘 크기 지정 */
 }
 
 .modal-actions button {
-  margin: 0 10px;
+  margin: 5px 60px;
   padding: 10px 20px;
-  border: none;
   border-radius: 10px;
   cursor: pointer;
 }
 
 .confirm-button {
   background-color: #78AE6B;
+  border: none;
   color: white;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .cancel-button {
   background-color: white;
   color: #888888;
   border: 1px solid #78AE6B;
+  font-weight: bold;
+  font-size: 16px;
 }
 </style>
