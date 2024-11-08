@@ -5,13 +5,26 @@ import router from "@/router/router.js";
 
 const authStore = useAuthStore();
 import {RouterLink} from "vue-router";
+import instance from "@/config/axios.js";
 
 // accessToken 이 있으면 로그인 한 상태
 const isLogin = computed(() => !!authStore.accessToken);
-const handleLogout = () => {
 
-  authStore.logout();
-  router.push("/login");
+// 로그아웃
+const handleLogout = async () => {
+
+  try {
+    await instance.delete("/logout", {
+      headers: {Authorization: `Bearer ${authStore.accessToken}`},
+    });
+
+    // Pinia 스토어, 로컬 스토리지에서 토큰 삭제
+    authStore.logout();
+    router.push("/login");
+  } catch (error) {
+    console.error("로그아웃 실패: ", error);
+  }
+
 };
 
 // 마이페이지로 이동 시 사용자 정보 불러오기
@@ -172,6 +185,14 @@ header{
 
 /* routerlink 기본 스타일 제거 */
 .login-logout-button{
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit;        /* 텍스트 색상을 상속받아 기본 색으로 설정 */
+  display: flex;
+  align-items: center;   /* 아이콘과 텍스트 수직 정렬 */
+  font-weight: bold;     /* 스타일 통일을 위해 굵게 설정 */
+}
+/* routerlink 기본 스타일 제거 */
+.mypage-button{
   text-decoration: none; /* 밑줄 제거 */
   color: inherit;        /* 텍스트 색상을 상속받아 기본 색으로 설정 */
   display: flex;
