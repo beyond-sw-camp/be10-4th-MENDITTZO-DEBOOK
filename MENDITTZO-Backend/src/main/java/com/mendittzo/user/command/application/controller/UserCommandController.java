@@ -1,6 +1,7 @@
 package com.mendittzo.user.command.application.controller;
 
 import com.mendittzo.common.exception.SuccessCode;
+import com.mendittzo.security.util.UserUtil;
 import com.mendittzo.user.command.application.dto.UserUpdateDTO;
 import com.mendittzo.user.command.application.service.UserCommandService;
 import lombok.RequiredArgsConstructor;
@@ -22,17 +23,19 @@ public class UserCommandController {
 
     @PutMapping
     public ResponseEntity<String> updateUser(
-            @RequestParam("userId") Long userId, // 추후 Security 개발 시 제거 예정
-            @RequestParam("profileImage") MultipartFile profileImage,
-            @RequestParam("nickname") String nickname) throws IOException {
+            @RequestParam(value = "profileImage" , required = false) MultipartFile profileImage,
+            @RequestParam(value = "nickname") String nickname) throws IOException {
 
-        /* 나중에는 요청 헤더에서 로그인중인 userId 추출하는 방식으로 바꾸겠습니다. */
+        Long loginId = UserUtil.getCurrentUserLoginId();
 
         UserUpdateDTO userUpdateDTO = UserUpdateDTO.builder()
-                .userId(userId)
+                .userId(loginId)
                 .nickname(nickname)
                 .profileImage(profileImage)
                 .build();
+
+        System.out.println("업데이트 실행"+profileImage);
+        System.out.println(nickname);
 
         userCommandService.updateUser(userUpdateDTO);
 

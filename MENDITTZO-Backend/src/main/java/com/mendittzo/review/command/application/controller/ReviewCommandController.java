@@ -4,6 +4,7 @@ import com.mendittzo.common.exception.SuccessCode;
 import com.mendittzo.review.command.application.dto.ReviewCreateRequestDTO;
 import com.mendittzo.review.command.application.dto.ReviewUpdateRequestDTO;
 import com.mendittzo.review.command.application.service.ReviewCommandService;
+import com.mendittzo.security.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,9 @@ public class ReviewCommandController {
             @RequestBody ReviewCreateRequestDTO reviewCreateRequestDTO
     ) {
 
-        reviewCommandService.createReview(reviewCreateRequestDTO);
+        Long loginId = UserUtil.getCurrentUserLoginId();
+
+        reviewCommandService.createReview(reviewCreateRequestDTO, loginId);
 
         return ResponseEntity.ok(SuccessCode.REVIEW_CREATE_SUCCESS.getMessage());
     }
