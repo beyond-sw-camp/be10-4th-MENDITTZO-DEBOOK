@@ -4,7 +4,7 @@ import 'swiper/swiper-bundle.css'; // Swiper 스타일
 import {Navigation, Pagination} from "swiper/modules";
 import {onMounted, reactive, ref} from "vue";
 import axios from "axios";
-import PagingBar from "@/components/PagingBar.vue";
+import PagingBar from "@/components/common/PagingBar.vue";
 
 const images = [
   "/src/assets/image/ad1.png",
