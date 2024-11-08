@@ -49,11 +49,8 @@ public class BookListQueryService {
     @Transactional(readOnly = true)
     public BookDetailResponseDTO getBook(Long bookId) {
 
-        BookResponseDTO book = bookListRepository.findBookByBookId(bookId);
-
-        if(book == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_BOOK);
-        }
+        BookResponseDTO book = bookListRepository.findBookByBookId(bookId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOOK));
 
         return new BookDetailResponseDTO(book);
     }
