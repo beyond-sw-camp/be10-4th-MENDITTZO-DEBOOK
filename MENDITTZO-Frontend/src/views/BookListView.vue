@@ -14,7 +14,7 @@ const state = reactive({
 
 const fetchBooks = async (page = 1) => {
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/booklists`, {
+    const response = await axios.get(`/booklists`, {
       params: {
         page
       }

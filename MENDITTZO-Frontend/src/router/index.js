@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import MyPage from "@/views/MyPage.vue";
+import MainPage from "@/views/MainPage.vue";
 import BookListView from "@/views/BookListView.vue";
 
 const routes = [
@@ -14,6 +15,10 @@ const routes = [
     },
     {
         path: '/booklists/:id'
+    },
+    {
+        path: '/',
+        component: MainPage
     }
 
 ];
