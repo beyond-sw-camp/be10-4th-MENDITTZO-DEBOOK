@@ -36,7 +36,7 @@ public class ReviewQueryService {
                         review.getRating(),
                         review.getNickname(),
                         review.getCreateDatetime(),
-                        review.getUserId().equals(currentUser.getUserId()), // 작성자 여부 확인
+                        currentUser != null && review.getUserId().equals(currentUser.getUserId()), // 작성자 여부 확인
                         review.getUserId()  // 사용자 ID도 추가
                 ))
                 .collect(Collectors.toList());
