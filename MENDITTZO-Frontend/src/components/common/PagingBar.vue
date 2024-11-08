@@ -46,12 +46,12 @@ const visiblePages = computed(() => {
   <div class="paging-bar">
     <!-- 첫 페이지로 이동 -->
     <button :disabled="currentPage === 1" @click="changePage(1)">
-      <img src="../assets/image/first-page.png" alt="first page">
+      <img src="../../assets/image/first-page.png" alt="first page">
     </button>
 
     <!-- 이전 페이지로 이동 -->
     <button :disabled="currentPage === 1" @click="changePage(currentPage - 1)">
-      <img src="../assets/image/previous-page.png" alt="previous">
+      <img src="../../assets/image/previous-page.png" alt="previous">
     </button>
 
     <!-- 페이지 번호 -->
@@ -65,12 +65,12 @@ const visiblePages = computed(() => {
 
     <!-- 다음 페이지로 이동 -->
     <button :disabled="currentPage === totalPages" @click="changePage(currentPage + 1)">
-      <img src="../assets/image/next-page.png" alt="next">
+      <img src="../../assets/image/next-page.png" alt="next">
     </button>
 
     <!-- 마지막 페이지로 이동 -->
     <button :disabled="currentPage === totalPages" @click="changePage(totalPages)">
-      <img src="../assets/image/last-page.png" alt="last page">
+      <img src="../../assets/image/last-page.png" alt="last page">
     </button>
   </div>
 </template>

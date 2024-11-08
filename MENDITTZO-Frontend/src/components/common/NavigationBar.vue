@@ -26,25 +26,25 @@ const handleMyPage = async () => {
     <div id="top-nav">
       <div>
         <RouterLink to="/" active-class="active" replace>
-        <img id="logo" src="../assets/image/logo.png" alt="로고이미지">
+        <img id="logo" src="../../assets/image/logo.png" alt="로고이미지">
         </RouterLink>
       </div>
 
       <div id="search-bar">
         <input id="search-input" type="text" placeholder="도서명 또는 저자를 입력하세요.">
-        <img id="search-icon" src="../assets/image/search-icon.png" alt="검색아이콘">
+        <img id="search-icon" src="../../assets/image/search-icon.png" alt="검색아이콘">
       </div>
 
       <div>
         <ul class="login-logout" v-if="!isLogin">
           <li>
             <RouterLink to="/login" class="login-logout-button">
-              <img src="../assets/image/sign-up.png" alt="회원가입아이콘">회원가입
+              <img src="../../assets/image/sign-up.png" alt="회원가입아이콘">회원가입
             </RouterLink>
           </li>
           <li>
             <RouterLink to="/login" class="login-logout-button">
-              <img src="../assets/image/profile.png" alt="로그인아이콘">로그인
+              <img src="../../assets/image/profile.png" alt="로그인아이콘">로그인
             </RouterLink>
           </li>
         </ul>
@@ -52,7 +52,7 @@ const handleMyPage = async () => {
         <ul class="login-logout" v-if="isLogin">
           <li>
             <RouterLink to ="/mypage" class ="mypage-button">
-              <img src="../assets/image/profile.png" alt="회원아이콘">{{ authStore.nickname }} 님
+              <img src="../../assets/image/profile.png" alt="회원아이콘">{{ authStore.nickname }} 님
             </RouterLink>
           </li>
           <li id="logout-button" @click="handleLogout">로그아웃</li>
