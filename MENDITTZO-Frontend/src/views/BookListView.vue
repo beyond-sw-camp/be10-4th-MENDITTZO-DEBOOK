@@ -2,7 +2,7 @@
 import { reactive, onMounted } from "vue";
 import axios from "axios";
 import BookListComponents from "@/components/BookListComponents.vue";
-import PagingBar from "@/components/PagingBar.vue";
+import PagingBar from "@/components/common/PagingBar.vue";
 
 const state = reactive({
   bookLists: [],
