@@ -1,4 +1,3 @@
-<!-- ConfirmModal.vue -->
 <script setup>
 import { defineProps, defineEmits } from 'vue';
 
@@ -11,6 +10,14 @@ const props = defineProps({
   visible: {
     type: Boolean,
     default: false
+  },
+  confirmButtonText: {
+    type: String,
+    default: '확인'
+  },
+  cancelButtonText: {
+    type: String,
+    default: '취소'
   }
 });
 
@@ -37,8 +44,8 @@ const cancel = () => {
         <h3>{{ message }}</h3>
       </div>
       <div class="modal-actions">
-        <button @click="confirm" class="confirm-button">삭제</button>
-        <button @click="cancel" class="cancel-button">취소</button>
+        <button @click="confirm" class="confirm-button">{{ confirmButtonText }}</button>
+        <button @click="cancel" class="cancel-button">{{ cancelButtonText }}</button>
       </div>
     </div>
   </div>
@@ -58,7 +65,7 @@ const cancel = () => {
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -68,6 +75,12 @@ const cancel = () => {
 .modal-header {
   font-size: 18px;
   margin-bottom: 20px;
+}
+
+.modal-icon {
+  margin-right: 10px;
+  width: 12px; /* 아이콘 크기 지정 */
+  height: 12px; /* 아이콘 크기 지정 */
 }
 
 .modal-actions button {
@@ -89,4 +102,3 @@ const cancel = () => {
   border: 1px solid #78AE6B;
 }
 </style>
-
