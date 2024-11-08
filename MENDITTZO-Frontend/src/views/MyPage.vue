@@ -1,12 +1,118 @@
 <script setup>
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {useAuthStore} from "@/store/auth.js";
+import axios from "axios";
+import PagingBar from "@/components/PagingBar.vue";
 
 const authStore = useAuthStore();
-const user = reactive();
-const reviews = ref([]);
-const chatrooms = ref([]);
+const state = reactive({
+  reviews: [],
+  currentPage: 1,
+  totalPages: 1,
+  totalItems: 0,
+  pageSize: 10
+});
 
+const userImg = ref();
+const userNick = ref();
+const userImgUrl = ref();
+const chatrooms = ref([]);
+const isReadonly = ref(true);
+
+const fetchReviews = async (page = 1) => {
+  try {
+    const response = await axios.get(`/reviews/user`, {
+      params: {
+        page,
+        size: 10
+      },
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+    state.reviews = response.data.reviewList;
+    state.currentPage = response.data.currentPage;
+    state.totalPages = response.data.totalPages;
+    state.totalItems = response.data.totalItems;
+    state.pageSize = response.data.pageSize;
+  } catch (error) {
+    console.error('도서 목록을 불러오는 중 에러가 발생했습니다: ', error);
+  }
+};
+
+// 이미지 미리보기 기능
+const previewImage = (event) => {
+
+  const file = event.target.files[0];
+  userImg.value = file;
+
+  if (file && file.type.startsWith('image/')) {
+    const reader = new FileReader();
+
+    // 파일이 로드되면 미리보기 데이터 URL을 저장
+    reader.onload = (e) => {
+      userImgUrl.value = e.target.result;
+    };
+
+    reader.readAsDataURL(file); // 이미지 파일을 데이터 URL로 변환
+  } else {
+    alert("이미지 파일을 선택해 주세요.");
+  }
+}
+
+const triggerFileInput = () => {
+  const confirmed = window.confirm('프로필 사진을 수정하시겠습니까?');
+  if (confirmed) {
+    document.getElementById('img-input').click();
+  }
+
+}
+
+const enableEdit = () => {
+
+  if(isReadonly.value){
+    const confirmed = window.confirm('닉네임을 수정하시겠습니까?');
+    if (confirmed) {
+      isReadonly.value = !isReadonly.value;
+    }
+  }else{
+    isReadonly.value = !isReadonly.value;
+  }
+}
+const modifyUser = async () => {
+  const confirmed = window.confirm('수정된 프로필을 저장하시겠습니까?');
+  if (confirmed) {
+
+    try {
+      // FormData 생성 및 데이터 추가
+      const formData = new FormData();
+      formData.append("profileImage", userImg.value); // 이미지 파일 추가
+      formData.append("nickname", userNick.value); // 닉네임 추가
+
+      await axios.put("/users", formData, {
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+          'Content-Type': 'multipart/form-data'
+        }
+
+      });
+      await authStore.fetchUserInfo();
+
+      alert("수정에 성공했습니다.");
+    }catch (error){
+      alert("유저 정보 수정중 오류가 발생했습니다.");
+    }
+
+  }
+}
+
+onMounted(
+    () => {
+      fetchReviews();
+      userNick.value = authStore.nickname;
+      userImgUrl.value = authStore.profileImg;
+    }
+)
 </script>
 
 <template>
@@ -17,24 +123,26 @@ const chatrooms = ref([]);
       <div>
         <p class="middle-text">닉네임</p>
         <div id="nick-bar">
-          <input id="nick-input" type="text" placeholder="홍길동">
-          <img id="nick-icon" src="https://img.icons8.com/?size=100&id=4299&format=png&color=000000" alt="검색아이콘">
+          <input id="nick-input" v-model="userNick" type="text" :placeholder=authStore.nickname :readonly="isReadonly">
+          <img id="nick-icon" @click="enableEdit" src="https://img.icons8.com/?size=100&id=4299&format=png&color=000000" alt="수정아이콘">
         </div>
-        <button class="myButton">수정하기</button>
+        <button class="myButton" @click="modifyUser">저장하기</button>
       </div>
 
       <div id="profile-right">
         <p class="middle-text">프로필사진</p>
         <div class="profile-image-container">
-          <img id="profile-img" :src="user.img" alt="프로필 사진">
+          <img id="profile-img" :src="userImgUrl" alt="프로필 사진" @click="triggerFileInput">
         </div>
+        <!-- 숨겨진 파일 입력 필드 -->
+        <input type="file" @change="previewImage" id="img-input" style="display: none;" />
       </div>
     </article>
 
     <p class="menu">나의 리뷰</p>
     <hr class="cross">
     <article class="list-div">
-      <div class="review" v-for="review in reviews">
+      <div class="review" v-for="review in state.reviews">
         <div class="review-left">
           <img src="../assets/image/bookmark.png" alt="북마크이미지">
           <p class="review-title">{{review.title}}</p>
@@ -54,6 +162,13 @@ const chatrooms = ref([]);
       </div>
       <button class="myButton">전체보기</button>
     </article>
+    <PagingBar
+        :currentPage="state.currentPage"
+        :totalPages="state.totalPages"
+        :totalItems="state.totalItems"
+        :pageSize="state.totalPages"
+        @page-changed="fetchReviews"
+    />
 
     <p class="menu">참가중인 독서 토론방</p>
     <hr class="cross">
@@ -121,6 +236,7 @@ section {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  cursor: pointer;
 }
 #nick-bar{
   display: flex;
@@ -223,5 +339,13 @@ section {
   display: grid;
   grid-template-columns: auto 60px;
   justify-content: end; /* 왼쪽 정렬 */
+}
+#image-icon{
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: 360px;
+  bottom: 5px;
+  cursor: pointer;
 }
 </style>

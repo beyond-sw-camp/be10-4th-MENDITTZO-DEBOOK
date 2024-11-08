@@ -74,7 +74,7 @@ const handleKakaoLogin = async () => {
 .login-container{
   width: 1031px;
   height: 552px;
-  margin: 0 0 49px;
+  margin: 50px auto;
   padding: 45px 82px 47px 58px;
   border-radius: 10px;
   box-shadow: 0 8px 24px 0 rgba(149, 157, 165, 0.2);
@@ -95,6 +95,7 @@ const handleKakaoLogin = async () => {
   display: flex;
   align-items: center;
   gap: 5px;
+  cursor: pointer;
 }
 
 /* 로그인 버튼 간 세로 간격 */
