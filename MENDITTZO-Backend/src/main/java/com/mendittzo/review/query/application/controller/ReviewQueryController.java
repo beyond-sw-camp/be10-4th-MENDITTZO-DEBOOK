@@ -1,12 +1,15 @@
 package com.mendittzo.review.query.application.controller;
 
+import com.mendittzo.common.exception.CustomException;
+import com.mendittzo.common.exception.ErrorCode;
 import com.mendittzo.review.query.application.dto.ReviewListResponseDTO;
 import com.mendittzo.review.query.application.service.ReviewQueryService;
 import com.mendittzo.security.util.UserUtil;
+import com.mendittzo.user.command.domain.aggregate.User;
+import com.mendittzo.user.query.domain.repository.UserQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewQueryController {
 
     private final ReviewQueryService reviewQueryService;
+    private final UserQueryRepository userQueryRepository;
 
     @GetMapping("/{bookId}")
     public ResponseEntity<ReviewListResponseDTO> getReviews(
@@ -25,7 +29,12 @@ public class ReviewQueryController {
 
         Pageable pageable = PageRequest.of(page - 1, size);
 
-        ReviewListResponseDTO response = reviewQueryService.getReviews(bookId, pageable);
+        Long loginId = UserUtil.getCurrentUserLoginId();
+
+        User currentUser = userQueryRepository.findUserInfoByLoginId(loginId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        ReviewListResponseDTO response = reviewQueryService.getReviews(bookId, currentUser, pageable);
 
         return ResponseEntity.ok(response);
     }

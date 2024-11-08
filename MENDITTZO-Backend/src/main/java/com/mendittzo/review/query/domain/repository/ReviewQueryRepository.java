@@ -9,11 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ReviewQueryRepository extends JpaRepository<Review, Long> {
 
-    @Query("SELECT new com.mendittzo.review.query.application.dto.ReviewResponseDTO(r.title, r.content, r.rating, u.nickname, r.createDatetime) " +
+    @Query("SELECT new com.mendittzo.review.query.application.dto.ReviewResponseDTO(r.title, r.content, r.rating, u.nickname, r.createDatetime, r.userId) " +
             "FROM Review r JOIN User u ON r.userId = u.userId  WHERE r.bookId = :bookId AND NOT r.status = 'DELETED'")
     Page<ReviewResponseDTO> findReviewsByBookId(Long bookId, Pageable pageable);
 
-    @Query("SELECT new com.mendittzo.review.query.application.dto.ReviewResponseDTO(r.title, r.content, r.rating, u.nickname, r.createDatetime) " +
+    @Query("SELECT new com.mendittzo.review.query.application.dto.ReviewResponseDTO(r.title, r.content, r.rating, u.nickname, r.createDatetime, r.userId) " +
             "FROM Review r JOIN User u ON r.userId = u.userId  WHERE r.userId = :userId AND NOT r.status = 'DELETED'")
     Page<ReviewResponseDTO> findReviewsByUserId(Long userId, Pageable pageable);
 }
