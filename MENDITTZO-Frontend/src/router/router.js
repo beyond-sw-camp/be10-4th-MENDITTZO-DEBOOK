@@ -4,9 +4,10 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
-            // 홈 화면
-            path: '/',
-            component: () => import('@/views/HomeView.vue')
+            // 메인 화면
+            path : '/',
+            name : 'Main',
+            component : () => import('@/views/HomeView.vue')
         },
         {
             // 로그인 화면
