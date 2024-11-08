@@ -1,5 +1,6 @@
 package com.mendittzo.user.command.application.service;
 
+import com.mendittzo.auth.query.application.service.TokenService;
 import com.mendittzo.image.command.service.ImageService;
 import com.mendittzo.user.command.application.dto.UserCreateRequestDTO;
 import com.mendittzo.user.command.application.dto.UserUpdateDTO;
@@ -7,17 +8,20 @@ import com.mendittzo.user.command.domain.aggregate.User;
 import com.mendittzo.user.command.domain.repository.UserRepository;
 import com.mendittzo.user.command.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserCommandService {
 
     private final UserRepository userRepository;
     private final ImageService imageService;
+    private final TokenService tokenService;
 
     private static final String[] adj = {
             "책 먹는", "열정적인", "교양 있는", "다독하는", "문학",
@@ -75,6 +79,10 @@ public class UserCommandService {
 
         // 삭제 할 유저 조회
         User deleteUser = userRepository.findByLoginId(loginId);
+
+        // redis 에서 액세스, 리프레시 토큰 삭제
+        tokenService.deleteTokens(loginId);
+        log.info("로그아웃 요청한 loginId: {} 의 액세스, 리프레시 토큰 삭제 완료", loginId);
 
         // 유저 DB 업데이트
         userRepository.delete(deleteUser);
