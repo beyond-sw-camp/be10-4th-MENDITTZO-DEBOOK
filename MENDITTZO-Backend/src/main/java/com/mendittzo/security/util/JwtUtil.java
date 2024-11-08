@@ -106,6 +106,8 @@ public class JwtUtil {
 
     // 토큰 검증하는 메소드
     public boolean validateToken(String token) {
+
+        log.info("validateToken이 받는 토큰:{}", token);
         try {
             // 토큰 생성 시 사용한 키로 검증
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
@@ -132,12 +134,14 @@ public class JwtUtil {
 
     // 토큰에서 Claims 추출하는 메소드
     public Claims parseClaims(String token) {
+        log.info("parseClaims가 받는 토큰:{}", token);
 
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
     }
 
     // 토큰에서 사용자의 소셜 로그인 고유 id 추출
     public Long getLoginId(String token) {
+        log.info("getLoginId가 받는 token:{}", token);
 
         return parseClaims(token).get("socialLoginId", Long.class);
     }
@@ -145,8 +149,10 @@ public class JwtUtil {
     // API 요청 헤더에 담긴 액세스 토큰으로 인증 객체(Authentication) 추출
     public Authentication getAuthentication(String token) {
 
+        log.info("getAuthentication이 받는 토큰:{}", token);
+
         UserDetails userDetails = userService.loadUserByLoginId(this.getLoginId(token));
 
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }

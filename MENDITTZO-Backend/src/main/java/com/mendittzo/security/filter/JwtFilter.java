@@ -29,12 +29,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // 요청 헤더에 담긴 토큰의 유효성 판별 및 인증 객체 저장
         String authorizationHeader = request.getHeader("Authorization");
-        log.info("Authorization header : {}", authorizationHeader);
+        log.info("Authorization 헤더:{}", authorizationHeader);
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
             String token = authorizationHeader.substring(7);
-            log.info("토큰: {}", token);
+            log.info("토큰:{}", token);
 
             try {
                 // 유효한 토큰이면
