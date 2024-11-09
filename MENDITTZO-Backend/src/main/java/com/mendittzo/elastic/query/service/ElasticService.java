@@ -11,7 +11,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
-
 import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
