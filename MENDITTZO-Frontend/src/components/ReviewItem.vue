@@ -84,11 +84,11 @@ const openEditPage = () => {
     <div class="review-header">
       <h1 class="review-title">{{ review.title }}</h1>
       <div class="meta">
-        <span class="user-info">{{ review.nickname }} | {{ review.createDatetime }} | </span>
+        <span class="user-info">{{ review.nickname }} | {{ review.createDatetime }} |</span>
         <div class="actions">
           <!-- 리뷰 작성자일 때만 수정, 삭제 버튼 표시 -->
           <template v-if="isAuthor">
-            <button @click="openEditPage">수정</button> <!-- 수정 버튼 -->
+            <button @click="openEditPage">수정 |</button> <!-- 수정 버튼 -->
             <button @click="openDeleteModal">삭제</button> <!-- 삭제 버튼 -->
             <!-- 삭제 모달 -->
             <ConfirmModal
@@ -169,17 +169,17 @@ const openEditPage = () => {
 
 .user-info {
   font-size: 0.9rem;
-  color: #888;
+  color: #444444;
 }
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 5px;
 }
 
 .actions button {
   margin-right: 8px;
-  padding: 5px 10px;
+  padding: 5px;
   background-color: transparent;
   border: none;
   cursor: pointer;
