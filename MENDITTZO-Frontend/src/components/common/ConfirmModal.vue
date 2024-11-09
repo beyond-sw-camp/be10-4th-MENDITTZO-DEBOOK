@@ -62,6 +62,7 @@ const cancel = () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
@@ -70,6 +71,7 @@ const cancel = () => {
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
+  z-index: 1001;
 }
 
 .modal-header {
