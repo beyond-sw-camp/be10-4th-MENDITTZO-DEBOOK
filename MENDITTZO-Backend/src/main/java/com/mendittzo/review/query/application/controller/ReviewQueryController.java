@@ -31,13 +31,17 @@ public class ReviewQueryController {
 
         Long loginId = UserUtil.getCurrentUserLoginId();
 
-        User currentUser = userQueryRepository.findUserInfoByLoginId(loginId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        User currentUser = null;
+        if (loginId != null) {
+            currentUser = userQueryRepository.findUserInfoByLoginId(loginId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        }
 
         ReviewListResponseDTO response = reviewQueryService.getReviews(bookId, currentUser, pageable);
 
         return ResponseEntity.ok(response);
     }
+
     @GetMapping("/user")
     public ResponseEntity<ReviewListResponseDTO> getMyReviews(
             @RequestParam(value = "page", defaultValue = "1") int page,
