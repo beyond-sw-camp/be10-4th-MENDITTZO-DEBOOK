@@ -53,7 +53,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch' // 엘라스틱 서치
+    // Spring Data Elasticsearch (Elasticsearch 8.x와 호환되는 버전)
+    implementation 'org.springframework.data:spring-data-elasticsearch:5.1.2'
+    // Elasticsearch Java api Client (Elasticsearch 8.15.3와 호환되는 버전)
+    implementation 'co.elastic.clients:elasticsearch-java:8.15.3'
+    // 아파치 common csv (CSV 파일 읽기)
+    implementation 'org.apache.commons:commons-csv:1.8'
 }
 
 tasks.named('test') {
