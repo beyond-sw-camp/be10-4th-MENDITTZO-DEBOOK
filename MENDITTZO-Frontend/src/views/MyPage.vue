@@ -170,7 +170,7 @@ onMounted(
         </div>
         <div class="review-right">
           <div class="rating">
-            <img src="../assets/image/star.png" alt="별" v-for="n in review.rating">
+            <img src="../assets/image/filled-star.png" alt="별" v-for="n in review.rating">
             <img src="../assets/image/empty-star.png" alt="빈별" v-for="n in 5-review.rating">
           </div>
           <p class="list_info">{{review.book_title}}</p>

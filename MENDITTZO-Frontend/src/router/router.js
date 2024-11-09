@@ -1,4 +1,7 @@
 import {createRouter, createWebHistory} from "vue-router";
+import BookListView from "@/views/BookListView.vue";
+import BookDetailView from "@/views/BookDetailView.vue";
+import BookReviewCreateView from "@/views/BookReviewCreateView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -24,6 +27,22 @@ const router = createRouter({
             path: '/mypage',
             component: () => import('@/views/MyPage.vue')
         },
+        {
+            path: '/booklists',
+            component: () => import('@/views/BookListView.vue')
+        },
+        {
+            path: '/booklists/:id',
+            component: () => import('@/views/BookDetailView.vue')
+        },
+        {
+            path: '/booklists/:id/review/create',
+            component: () => import('@/views/BookReviewCreateView.vue')
+        },
+        {
+            path: '/booklists/:id/review/edit',
+            component: () => import('@/views/BookReviewCreateView.vue')
+        }
     ]
 });
 

@@ -6,7 +6,7 @@
   <hr id="footer-top-hr">
   <footer>
     <div id="footer-top">
-      <img id="footer-logo" src="../assets/image/logo_gray.png" alt="흑백로고이미지">
+      <img id="footer-logo" src="../../assets/image/logo_gray.png" alt="흑백로고이미지">
       <p class="footer-text">(07060) 서울특별시 동작구 보라매로 87(신대방동 344-4) 팀 맨뒷조</p>
     </div>
 
@@ -16,7 +16,7 @@
     
     <div class="footer-div">
       <p class="footer-text">COPYRIGHT © 2024 MENDITTZO. ALL RIGHTS RESERVED. </p>
-      <img id="github-logo" src="../assets/image/github-mark.png" alt="깃허브마크">
+      <img id="github-logo" src="../../assets/image/github-mark.png" alt="깃허브마크">
     </div>
   </footer>
 </template>
