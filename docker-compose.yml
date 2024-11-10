@@ -16,21 +16,21 @@ services:
     networks:
       - elastic-net
 
-  # MariaDB 서비스 설정 이 부분은 어차피 나중에 도커로 담을거긴 한데 일단 이게 맞는지 모르겠지만 넣어햐 하니까 넣긴 함
-  mariadb:
-    image: mariadb:latest  # 최신 MariaDB 이미지 사용
-    container_name: mariadb
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}  # MariaDB root 비밀번호 설정 mysql이어도 상관 없다고 함
-      - MYSQL_DATABASE=debook_db     # 기본 데이터베이스 이름 설정
-      - MYSQL_USER=${MARIADB_USER}      # 사용자 이름 (env 파일에서 불러옴)
-      - MYSQL_PASSWORD=${MARIADB_PASSWORD}  # 비밀번호 (env 파일에서 불러옴)
-    ports:
-      - "3306:3306"  # 3306 포트 사용
-    env_file:
-      - .env  # .env 파일에서 환경 변수 불러오기
-    networks:
-      - elastic-net
+#  # MariaDB 서비스 설정 이 부분은 어차피 나중에 도커로 담을거긴 한데 일단 이게 맞는지 모르겠지만 넣어햐 하니까 넣긴 함
+#  mariadb:
+#    image: mariadb:latest  # 최신 MariaDB 이미지 사용
+#    container_name: mariadb
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}  # MariaDB root 비밀번호 설정 mysql이어도 상관 없다고 함
+#      - MYSQL_DATABASE=debook_db     # 기본 데이터베이스 이름 설정
+#      - MYSQL_USER=${MARIADB_USER}      # 사용자 이름 (env 파일에서 불러옴)
+#      - MYSQL_PASSWORD=${MARIADB_PASSWORD}  # 비밀번호 (env 파일에서 불러옴)
+#    ports:
+#      - "3306:3306"  # 3306 포트 사용
+#    env_file:
+#      - .env  # .env 파일에서 환경 변수 불러오기
+#    networks:
+#      - elastic-net
 
 # Logstash 서비스 설정
 #  logstash:
