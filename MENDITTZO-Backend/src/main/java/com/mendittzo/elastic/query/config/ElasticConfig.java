@@ -12,13 +12,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ElasticConfig {
 
-    @Value("${spring.elasticsearch.rest.uris}")
-    private String host;
+/*    @Value("${spring.elasticsearch.rest.uris}")
+    private String host;*/
 
     @Bean
     public ElasticsearchClient elasticsearchClient() {
         RestClient restClient = RestClient.builder(
-                new HttpHost(host, 9200, "http")
+                new HttpHost("localhost", 9200, "http")
         ).build();
 
         RestClientTransport transport = new RestClientTransport(
