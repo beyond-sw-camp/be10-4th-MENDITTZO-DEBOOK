@@ -4,7 +4,6 @@ import com.mendittzo.common.exception.CustomException;
 import com.mendittzo.common.exception.ErrorCode;
 import com.mendittzo.review.query.application.dto.ReviewDetailResponseDTO;
 import com.mendittzo.review.query.application.dto.ReviewListResponseDTO;
-import com.mendittzo.review.query.application.dto.ReviewResponseDTO;
 import com.mendittzo.review.query.application.service.ReviewQueryService;
 import com.mendittzo.security.util.UserUtil;
 import com.mendittzo.user.command.domain.aggregate.User;
@@ -44,7 +43,7 @@ public class ReviewQueryController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{reviewId}")
+    @GetMapping("/detail/{reviewId}")
     public ResponseEntity<ReviewDetailResponseDTO> getReview(@PathVariable(name = "reviewId") Long reviewId) {
 
         ReviewDetailResponseDTO response = reviewQueryService.getReview(reviewId);
