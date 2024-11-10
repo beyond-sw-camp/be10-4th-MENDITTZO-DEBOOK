@@ -56,13 +56,16 @@ public class ElasticService {
                 dto.setTitle(record.get("title"));  // title 값을 설정
                 dto.setAuthor(record.get("author"));  // author 값을 설정
                 dto.setPublisher(record.get("publisher"));  // publisher 값을 설정
-                dto.setPubdate(record.get("pubdate").isEmpty() ? null : record.get("pubdate")); // pubdate 값을 설정
+                // pubdate가 비어 있으면 null로 설정하고, 그렇지 않으면 그대로 설정 string으로 처리
+                String pubdate = record.get("pubdate");
+                dto.setPubdate(pubdate.isEmpty() ? null : pubdate);
                 dto.setInfo(record.get("info").isEmpty() ? null : record.get("info"));           // 빈 값 처리
                 dto.setImg(record.get("img").isEmpty() ? null : record.get("img"));
 
                 // Elasticsearch에 인덱싱 요청 생성
                 IndexRequest<ElasticDTO> indexRequest = IndexRequest.of(i -> i
                         .index("books")  // "books"라는 인덱스에 저장
+                        .id(String.valueOf(dto.getBookId()))  // 고유한 book_id로 문서 ID 설정 중복 제거
                         .document(dto)   // 인덱싱할 문서 데이터로 ElasticDTO 객체를 설정
                 );
 
@@ -87,6 +90,7 @@ public class ElasticService {
             SearchRequest searchRequest = new SearchRequest.Builder()
                     .index("books")  // 검색할 인덱스 이름 설정
                     .query(matchQuery._toQuery())  // 생성한 Match 쿼리를 설정
+                    //.collapse(c -> c.field("book_id"))  // book_id 기준으로 중복 제거하고 싶은데 이걸 추가하면 에러가 남
                     .build();
 
             // Elasticsearch 클라이언트를 사용하여 검색 실행
