@@ -51,7 +51,7 @@ const fetchReview = async (page = 1) => {
 };
 
 const goToReviewCreatPage = () => {
-  router.push(`/reviews/review/${bookId}/create`);
+  router.push(`/booklists/${bookId}/review/create`);
 }
 
 function handleSelect(option) {
