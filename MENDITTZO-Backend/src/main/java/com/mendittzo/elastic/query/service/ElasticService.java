@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.mendittzo.elastic.query.dto.ElasticDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -23,11 +24,18 @@ public class ElasticService {
     // Elasticsearch와 상호작용하는 클라이언트
     private final ElasticsearchClient elasticsearchClient;
 
+    @PostConstruct
+    public void init() {
+        //createBooksIndex();
+        startIndexing(); // 인덱스를 생성한 후 데이터를 인덱싱
+    }
+
+
     // CSV 파일을 불러와서 Elasticsearch에 인덱싱을 시작하는 메서드
     public void startIndexing() {
         try {
             // ClassPath에서 CSV 파일 경로를 찾음
-            File file = new ClassPathResource("data/books.csv").getFile();
+            File file = new ClassPathResource("data/book.csv").getFile();
             // 인덱싱 메서드를 호출하여 CSV 파일의 데이터를 Elasticsearch에 저장
             indexCsvData(file.getAbsolutePath());
         } catch (IOException e) {
@@ -48,9 +56,9 @@ public class ElasticService {
                 dto.setTitle(record.get("title"));  // title 값을 설정
                 dto.setAuthor(record.get("author"));  // author 값을 설정
                 dto.setPublisher(record.get("publisher"));  // publisher 값을 설정
-                dto.setPubdate(record.get("pubdate"));  // pubdate 값을 설정
-                dto.setInfo(record.get("info"));  // info 값을 설정
-                dto.setImg(record.get("img"));  // img 값을 설정
+                dto.setPubdate(record.get("pubdate").isEmpty() ? null : record.get("pubdate")); // pubdate 값을 설정
+                dto.setInfo(record.get("info").isEmpty() ? null : record.get("info"));           // 빈 값 처리
+                dto.setImg(record.get("img").isEmpty() ? null : record.get("img"));
 
                 // Elasticsearch에 인덱싱 요청 생성
                 IndexRequest<ElasticDTO> indexRequest = IndexRequest.of(i -> i
