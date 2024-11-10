@@ -17,10 +17,13 @@ public class ElasticConfig {
 
     @Bean
     public ElasticsearchClient elasticsearchClient() {
+
+        // 자격 증명을 제거한 RestClient 생성
         RestClient restClient = RestClient.builder(
                 new HttpHost("localhost", 9200, "http")
-        ).build();
 
+        ).build();
+        // ElasticsearchClient 설정
         RestClientTransport transport = new RestClientTransport(
                 restClient, new JacksonJsonpMapper()
         );
