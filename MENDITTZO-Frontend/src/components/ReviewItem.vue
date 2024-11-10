@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import {computed, ref} from 'vue';
 import ConfirmModal from "@/components/common/ConfirmModal.vue";
 import axios from 'axios';
 import { useRouter } from 'vue-router';
@@ -127,9 +127,9 @@ const openEditPage = () => {
     </div>
     <div class="review-content">
       <p class="content">
-        {{ isExpanded ? review.content : review.content.slice(0, 40) + '...' }}
+        {{ isExpanded ? review.content : (review.content.length > 100 ? review.content.slice(0, 100) + '...' : review.content) }}
       </p>
-      <button @click="toggleContent" class="toggle-btn">
+      <button v-if="review.content.length > 100" @click="toggleContent" class="toggle-btn">
         {{ isExpanded ? '접기' : '펼치기' }}
         <img :src="isExpanded ? closeIcon : openIcon" alt="펼치기/접기 아이콘" class="toggle-icon" />
       </button>
@@ -159,6 +159,18 @@ const openEditPage = () => {
   font-size: 1.5rem;
   margin: 0;
   flex-grow: 1;
+}
+
+.review-content .content {
+  white-space: nowrap; /* 한 줄로 표시 */
+  overflow: hidden; /* 넘치는 내용 숨기기 */
+  text-overflow: ellipsis; /* 넘칠 경우 '...' 표시 */
+  max-height: 60px; /* 기본 최대 높이 설정 */
+}
+
+.review-content.expanded .content {
+  white-space: normal; /* 펼쳤을 때 텍스트가 여러 줄로 표시되도록 설정 */
+  max-height: none; /* 펼쳤을 때 높이 제한 없애기 */
 }
 
 .meta {
