@@ -12,16 +12,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ElasticConfig {
 
-    @Value("${elasticsearch.rest.uris}")
+    @Value("${spring.elasticsearch.rest.uris}")
     private String host;
 
     @Bean
     public ElasticsearchClient elasticsearchClient() {
+
         // 자격 증명을 제거한 RestClient 생성
         RestClient restClient = RestClient.builder(
                 new HttpHost(host, 9200, "http")  // HTTP 사용
         ).build();
-
         // ElasticsearchClient 설정
         RestClientTransport transport = new RestClientTransport(
                 restClient, new JacksonJsonpMapper()
