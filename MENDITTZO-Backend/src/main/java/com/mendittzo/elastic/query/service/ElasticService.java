@@ -118,7 +118,7 @@ public class ElasticService {
     public List<ElasticDTO> searchByTitle(String keyword) {
         try {
             // Prefix 쿼리를 생성하여 title 필드에서 keyword로 시작하는 항목을 검색
-            PrefixQuery prefixQuery = PrefixQuery.of(m -> m
+            PrefixQuery prefixQuery = PrefixQuery.of(m -> m // 이 쿼리를 써야 초반 한 단어를 입력해도 가능하게 됨
                     .field("title")
                     .value(keyword)
             );
