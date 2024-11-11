@@ -2,13 +2,12 @@
 import {onMounted, reactive, ref} from "vue";
 import {useAuthStore} from "@/store/auth.js";
 import PagingBar from "@/components/common/PagingBar.vue";
-import axios from "axios";
-import PagingBar from "@/components/common/PagingBar.vue";
 import instance from "@/config/axios.js";
 import router from "@/router/router.js";
 import SignOutForm from "@/components/SignOutForm.vue";
 
 const authStore = useAuthStore();
+
 const state = reactive({
   reviews: [],
   currentPage: 1,
