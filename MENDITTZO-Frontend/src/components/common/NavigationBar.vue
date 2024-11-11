@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from "@/store/auth.js";
 import router from "@/router/router.js";
 import instance from "@/config/axios.js";
@@ -9,6 +9,7 @@ const authStore = useAuthStore();
 const isLogin = computed(() => !!authStore.accessToken);
 const searchQuery = ref(""); // 검색어 상태
 const searchResults = ref([]); // 검색 결과 상태
+const isAutocompleteOpen = ref(false); // 자동완성 목록 표시 여부
 
 // 로그아웃
 const handleLogout = async () => {
@@ -25,21 +26,23 @@ const handleLogout = async () => {
 
 // 마이페이지로 이동 시 사용자 정보 불러오기
 const handleMyPage = async () => {
-  await authStore.fetchUserInfo(); // 사용자 정보를 백엔드에서 가져와 업데이트
+  await authStore.fetchUserInfo();
 };
 
 // 자동완성 검색 함수
 const handleSearch = async () => {
   if (searchQuery.value.trim() === "") {
     searchResults.value = []; // 검색어가 없으면 결과를 비웁니다
+    isAutocompleteOpen.value = false;
     return;
   }
 
   try {
     const response = await instance.get("/public/elastic/autocomplete", {
-      params: {query: searchQuery.value},
+      params: { query: searchQuery.value },
     });
     searchResults.value = response.data; // 검색 결과 업데이트
+    isAutocompleteOpen.value = true;
   } catch (error) {
     console.error("자동완성 결과를 가져오는 중 오류가 발생했습니다:", error);
   }
@@ -49,6 +52,22 @@ const handleSearch = async () => {
 const goToBookDetail = (bookId) => {
   router.push(`/booklists/${bookId}`);
 };
+
+// 외부 클릭 감지 함수
+const handleClickOutside = (event) => {
+  const searchBar = document.getElementById("search-bar");
+  if (searchBar && !searchBar.contains(event.target)) {
+    isAutocompleteOpen.value = false; // 검색창 외부 클릭 시 목록 닫기
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
 
 <template>
@@ -71,7 +90,7 @@ const goToBookDetail = (bookId) => {
         <img id="search-icon" src="../../assets/image/search-icon.png" alt="검색아이콘">
 
         <!-- 자동완성 결과 -->
-        <ul v-if="searchResults.length" class="autocomplete-results">
+        <ul v-if="isAutocompleteOpen && searchResults.length" class="autocomplete-results">
           <li
               v-for="result in searchResults"
               :key="result.id"
@@ -124,20 +143,16 @@ const goToBookDetail = (bookId) => {
 a {
   text-decoration: none;
 }
-
 header {
   width: 1440px;
   padding: 0;
   margin: 0 auto;
 }
-
-
 #bottom-hr {
   border: none;
   height: 1px;
   background-color: #78AE6B;
 }
-
 #top-nav {
 
   display: grid;
@@ -146,7 +161,6 @@ header {
   place-items: center;
   margin: 30px 0 15px 0;
 }
-
 #bottom-nav {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -154,20 +168,17 @@ header {
   place-items: center;
 
 }
-
 #logo {
   width: 150px;
   height: 30px;
   cursor: pointer;
 }
-
 #search-icon {
   width: 30px;
   height: 30px;
   margin-top: 12px;
   cursor: pointer;
 }
-
 #search-bar {
   display: flex;
   justify-content: center;
@@ -176,19 +187,16 @@ header {
   padding: 0 10px;
   position: relative;
 }
-
 #search-input {
   width: 400px;
   height: 50px;
   border: none;
   margin: 0 10px;
 }
-
 #search-input:focus {
   box-shadow: none;
   outline: none;
 }
-
 .login-logout {
   list-style: none;
   display: flex;
@@ -197,7 +205,6 @@ header {
   padding: 0;
   text-align: center;
 }
-
 .login-logout > li {
   display: flex;
   margin: 0 10px;
@@ -207,7 +214,6 @@ header {
   align-items: center;
   cursor: pointer;
 }
-
 #logout-button {
   margin-left: 10px;
   width: 80px;
@@ -216,7 +222,6 @@ header {
   background-color: #78AE6B;
   border-radius: 10px;
 }
-
 .login-logout-button {
   text-decoration: none;
   color: inherit;
@@ -224,7 +229,6 @@ header {
   align-items: center;
   font-weight: bold;
 }
-
 .mypage-button {
   text-decoration: none;
   color: inherit;
@@ -232,8 +236,6 @@ header {
   align-items: center;
   font-weight: bold;
 }
-
-
 .nav-bottom-text {
   white-space: nowrap;
   color: #444444;
@@ -242,11 +244,9 @@ header {
   align-items: center;
   cursor: pointer;
 }
-
 .active .nav-bottom-text {
   color: #78AE6B;
 }
-
 /* 자동완성 드롭다운 스타일 */
 .autocomplete-results {
   position: absolute;
@@ -263,12 +263,10 @@ header {
   overflow-y: auto;
   z-index: 10;
 }
-
 .autocomplete-item {
   padding: 10px;
   cursor: pointer;
 }
-
 .autocomplete-item:hover {
   background-color: #f0f0f0;
 }
