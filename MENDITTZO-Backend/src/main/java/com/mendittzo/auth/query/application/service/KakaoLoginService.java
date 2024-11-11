@@ -47,17 +47,8 @@ public class KakaoLoginService {
     // 1-1. 카카오 인증 서버에 카카오 로그인 url 요청하는 메소드
     public KakaoLoginUrlResponseDTO getKakaoLoginUrl() {
 
-        // todo: 확인용. 나중에 삭제
-        System.out.println("yml: clientId: " + clientId);
-        System.out.println("yml: redirectUri: " + redirectUri);
-
         // yml 에 저장한 client_id, redirect_uri 값을  DTO 로 전달
-        // todo: 이러면 DTO 쓰는 의미가 있나?
         KakaoLoginUrlRequestDTO loginUrlRequest = new KakaoLoginUrlRequestDTO(clientId, redirectUri);
-
-        // todo: 확인용. 나중에 삭제
-        System.out.println("DTO: clientId: " + loginUrlRequest.getClientId());
-        System.out.println("DTO: redirectUri: " + loginUrlRequest.getRedirectUri());
 
         String loginUrl = KAKAO_LOGIN_URL
                 + "?client_id=" + loginUrlRequest.getClientId()
@@ -71,11 +62,6 @@ public class KakaoLoginService {
 
         // WebClient : 서버에서 외부 API 로 요청 보낼 때 사용
         WebClient webClient = WebClient.create();
-
-        // todo: 확인용. 나중에 삭제
-        System.out.println("-------- request access token ---------");
-        System.out.println("yml: clientId: " + clientId);
-        System.out.println("yml: redirectUri: " + redirectUri);
 
         // 액세스 토큰 요청
         KakaoTokenResponseDTO tokenResponse = webClient.post()
@@ -99,8 +85,6 @@ public class KakaoLoginService {
 
     // 3-1. 카카오 인증 서버에서 로그인 한 카카오 사용자 정보 요청하는 메소드
     public KakaoUserInfoResponseDTO getKakaoUserInfo(String accessToken) {
-
-        log.info("getKakaoUserInfo 메소드 실행");
 
         // WebClient : 서버에서 외부 API 로 요청 보낼 때 사용
         WebClient webClient = WebClient.create();
@@ -140,9 +124,6 @@ public class KakaoLoginService {
 
             User newUser = UserMapper.toEntity(userRequestDTO);
 
-            log.info("생성된 닉네임: {}", userCommandService.generateUserNickname());
-            log.info("생성된 User 엔터티: {}", newUser);
-
             return userRepository.save(newUser);
         }
         return existsUser;
@@ -154,17 +135,10 @@ public class KakaoLoginService {
         // 1. 인증 코드로 액세스 토큰 요청
         String accessToken = requestAccessToken(code);
 
-        // todo: 확인용
-        System.out.println("액세스 토큰 : " + accessToken);
-
         // 2. 액세스 토큰으로 카카오 고유 사용자 id 요청
         KakaoUserInfoResponseDTO kakaoUserInfo = getKakaoUserInfo(accessToken);
 
         Long loginId = kakaoUserInfo.getLoginId();
-
-        log.info("카카오 고유 사용자 id kakaoUserInfo: " + kakaoUserInfo);
-        log.info("kakaoUserInfo.getLoginId() : " + kakaoUserInfo.getLoginId());
-        // todo: 확인용
 
         // 3. 카카오 고유 사용자 id 로 DB 에서 서비스 사용자 조회 및 저장
         User user = findOrCreateUser(kakaoUserInfo);
@@ -175,8 +149,6 @@ public class KakaoLoginService {
         // 5. redis 에 토큰 저장
         tokenService.saveAccessToken(user.getLoginId(), token.getAccessToken(), token.getAccessTokenExpiresIn().intValue());
         tokenService.saveRefreshToken(user.getLoginId(), token.getRefreshToken(), token.getRefreshTokenExpiresIn().intValue());
-
-        log.info("saveAccessToken, saveRefreshToken 실행");
 
         return token;
     }

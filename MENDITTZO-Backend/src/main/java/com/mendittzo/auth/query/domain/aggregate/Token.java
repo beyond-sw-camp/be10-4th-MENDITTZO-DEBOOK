@@ -1,6 +1,6 @@
 package com.mendittzo.auth.query.domain.aggregate;
 
-// todo: redis 사용 전 임시로 maraiaDB 에 저장용
+// redis 사용 전 임시로 maraiaDB 에 저장용
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
