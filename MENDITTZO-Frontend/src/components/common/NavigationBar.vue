@@ -44,7 +44,7 @@ const handleMyPage = async () => {
       </div>
 
       <div id="search-bar">
-        <input id="search-input" type="text" placeholder="도서명 또는 저자를 입력하세요.">
+        <input id="search-input" type="text" placeholder="검색할 도서명을 입력하세요.">
         <img id="search-icon" src="../../assets/image/search-icon.png" alt="검색아이콘">
       </div>
 

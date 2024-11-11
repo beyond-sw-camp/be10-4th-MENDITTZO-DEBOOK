@@ -40,7 +40,7 @@ const router = createRouter({
             component: () => import('@/views/BookReviewCreateView.vue')
         },
         {
-            path: '/booklists/:id/review/edit',
+            path: '/booklists/:bookId/review/:reviewId/edit',
             component: () => import('@/views/BookReviewEditView.vue')
         }
     ]

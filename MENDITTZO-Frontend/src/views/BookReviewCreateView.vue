@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
+import axios from "@/config/axios.js";
 import ReviewForm from "@/components/ReviewForm.vue";
 import { ref, onMounted } from "vue";
 

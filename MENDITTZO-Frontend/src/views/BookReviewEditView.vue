@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
+import axios from "@/config/axios.js";
 import ReviewForm from "@/components/ReviewForm.vue";
 import { onMounted, ref } from "vue";
 
@@ -9,7 +9,11 @@ const router = useRouter();
 const route = useRoute();
 const bookResponse = ref(null);
 
-const bookId = route.params.id;
+const bookId = route.params.bookId;
+const reviewId = route.params.reviewId;
+
+console.log("Book ID: ", bookId);
+console.log("Review ID: ", reviewId);
 
 // 도서 상세 정보를 가져오는 함수
 const fetchBookDetail = async () => {
@@ -22,9 +26,9 @@ const fetchBookDetail = async () => {
 };
 
 const fetchReviewData = async (reviewId) => {
-
+  console.log("Fetching review data for ID:", reviewId);
   try {
-    const response = await axios.get(`/reviews/${reviewId}`);
+    const response = await axios.get(`/reviews/detail/${reviewId}`);
     reviewData.value = response.data.review;
   } catch (error) {
     console.error("리뷰 정보를 가져오는 중 오류 발생 : ", error);
@@ -33,16 +37,15 @@ const fetchReviewData = async (reviewId) => {
 
 const handleReviewEdit = async (formData) => {
   try {
-    await axios.put(`/${bookId}/reviews/${reviewId}`, formData)
+    await axios.put(`/${bookId}/reviews/${reviewId}`, formData);
 
-    router.push(`/booklists/${bookId}`)
+    router.push(`/booklists/${bookId}`);
   } catch (error) {
     console.error("리뷰 수정 중 오류 발생 : ", error);
   }
 };
 
 onMounted(() => {
-  const reviewId = router.currentRoute.value.params.id;
   fetchReviewData(reviewId);
   fetchBookDetail();
 });

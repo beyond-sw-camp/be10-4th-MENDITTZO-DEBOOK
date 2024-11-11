@@ -51,14 +51,6 @@ const handleKakaoLogin = async () => {
           <img src="@/assets/image/kakao-logo.png" alt="카카오 로그인">
           카카오 로그인
         </ButtonLong>
-        <ButtonLong class="google">
-          <img src="@/assets/image/google-logo.png" alt="구글 로그인">
-          구글 로그인
-        </ButtonLong>
-        <ButtonLong class="naver">
-          <img src="@/assets/image/naver-logo.png" alt="네이버 로그인">
-          네이버 로그인
-        </ButtonLong>
 
       </div>
       <!-- 설명 -->
@@ -91,7 +83,7 @@ const handleKakaoLogin = async () => {
 }
 
 /* 버튼 이미지, 텍스트 중간 정렬 */
-.kakao, .google, .naver{
+.kakao {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -108,14 +100,6 @@ const handleKakaoLogin = async () => {
 /* 각 버튼 속성 */
 .kakao{
   background-color: #FEE500;
-}
-.google{
-  background-color: white;
-  border: 0.3mm solid #888888;
-}
-.naver{
-  background-color: #03C75A;
-  color: white;
 }
 
 /* 텍스트, 아이콘 중간 정렬 */

@@ -2,16 +2,18 @@
 import BookDetailComponent from "@/components/BookDetailComponent.vue";
 import { onMounted, reactive, ref} from "vue";
 import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
+import axios from "@/config/axios.js";
 import ReviewListComponent from "@/components/ReviewListComponent.vue";
 import PagingBar from "@/components/common/PagingBar.vue";
 import SmallButton from "@/components/common/SmallButton.vue";
 import DropDownMenu from "@/components/common/DropDownMenu.vue";
+import { useAuthStore } from "@/store/auth";
 
-const bookResponse = ref();
+const bookResponse = ref(null);
 const route = useRoute();
 const router = useRouter();
 const selectedOption = ref("최신순");
+const authStore = useAuthStore();
 
 const bookId = route.params.id;
 
@@ -25,10 +27,8 @@ const state = reactive({
 
 const fetchBookDetail = async () => {
   try {
-    console.log(bookId);
     const response = await axios.get(`/booklists/${bookId}`);
     bookResponse.value = response.data.bookResponse;
-    console.log(bookResponse.value);
   } catch (error) {
     console.error('도서 상세 정보를 불러오는 중 에러가 발생했습니다. : ', error);
   }
@@ -53,8 +53,15 @@ const fetchReview = async (page = 1) => {
 };
 
 const goToReviewCreatPage = () => {
-  router.push(`/booklists/${bookId}/review/create`);
-}
+  // accessToken이 존재하는지로 로그인 여부 확인
+  if (!authStore.accessToken) {
+    // 로그인되지 않았다면 로그인 페이지로 이동
+    router.push("/login");
+  } else {
+    // 로그인 상태라면 리뷰 작성 페이지로 이동
+    router.push(`/booklists/${bookId}/review/create`);
+  }
+};
 
 function handleSelect(option) {
   selectedOption.value = option;
@@ -74,7 +81,7 @@ onMounted(() => {
 <template>
   <div class="container">
     <div class="book-detail">
-      <BookDetailComponent :bookResponse="bookResponse" />
+      <BookDetailComponent v-if="bookResponse" :bookResponse="bookResponse" />
     </div>
     <div class="review-list">
       <div class="review">
