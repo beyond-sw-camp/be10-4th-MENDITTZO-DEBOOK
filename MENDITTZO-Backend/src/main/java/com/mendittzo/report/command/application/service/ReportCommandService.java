@@ -1,5 +1,9 @@
 package com.mendittzo.report.command.application.service;
 
+import com.mendittzo.chat.command.domain.aggregate.Chat;
+import com.mendittzo.chat.command.domain.aggregate.Chatroom;
+import com.mendittzo.chat.command.domain.repository.ChatRepository;
+import com.mendittzo.chat.command.domain.repository.ChatroomRepository;
 import com.mendittzo.common.exception.CustomException;
 import com.mendittzo.common.exception.ErrorCode;
 import com.mendittzo.report.command.mapper.ReportMapper;
@@ -28,6 +32,8 @@ public class ReportCommandService {
 
     private final ReportCommandRepository reportCommandRepository;
     private final ReviewRepository reviewRepository;
+    private final ChatRepository chatRepository;
+    private final ChatroomRepository chatroomRepository;
     private final UserRepository userRepository;
 
     private final RestrictionHistoryRepository restrictionHistoryRepository;
@@ -44,11 +50,15 @@ public class ReportCommandService {
             case REVIEW:
                 reportReview(reportRequestDTO, reporterUser, reportedUser);
                 break;
+            case CHATROOM:
+                reportChatroom(reportRequestDTO, reporterUser, reportedUser);
+                break;
+            case CHAT:
+                reportChat(reportRequestDTO, reporterUser, reportedUser);
         }
 
         // 피신고자 정지 유무 확인 및 처리
         checkAndRestrict(reportedUser);
-
     }
 
     private void reportReview(ReportRequestDTO reportRequestDTO, User reporterUser, User reportedUser) {
@@ -57,14 +67,46 @@ public class ReportCommandService {
                 () -> new CustomException(ErrorCode.NOT_FOUND_REVIEW)
         );
 
-        System.out.println(reportedReview.getReportList().size());
-
         Report newReport = ReportMapper.reviewToEntity(reporterUser, reportedUser, reportedReview);
 
         reportCommandRepository.save(newReport);
 
-        if (reportedReview.getReportList().size() + 1 == 5) {
+        if (reportedReview.getReportList().size() + 1 == 5) { // review의 reportList.size가 최신화 안됌.
             reviewRepository.deleteById(reportRequestDTO.getReviewId());
+        }
+    }
+
+    private void reportChatroom(ReportRequestDTO reportRequestDTO, User reporterUser, User reportedUser) {
+
+        Chatroom reportChatroom = chatroomRepository.findById(reportRequestDTO.getChatroomId()).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FOUND_CHATROOM)
+        );
+
+        Report newReport = ReportMapper.chatroomToEntity(reporterUser, reportedUser, reportChatroom);
+
+        reportCommandRepository.save(newReport);
+
+        List<Report> reportList = reportCommandRepository.findAllByChatroomId(reportChatroom.getChatroomId());
+
+        if(reportList.size() == 10){
+            chatroomRepository.deleteById(reportRequestDTO.getChatroomId());
+        }
+    }
+
+    private void reportChat(ReportRequestDTO reportRequestDTO, User reporterUser, User reportedUser) {
+
+        Chat reportChat = chatRepository.findById(reportRequestDTO.getChatId()).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FOUND_CHAT)
+        );
+
+        Report newReport = ReportMapper.chatToEntity(reporterUser, reportedUser, reportChat);
+
+        reportCommandRepository.save(newReport);
+
+        List<Report> reportList = reportCommandRepository.findAllByChatId(reportChat.getChatId());
+
+        if(reportList.size() == 5){
+            chatroomRepository.deleteById(reportRequestDTO.getChatroomId());
         }
     }
 

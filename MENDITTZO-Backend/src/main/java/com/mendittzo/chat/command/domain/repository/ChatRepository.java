@@ -7,4 +7,6 @@ import java.util.List;
 public interface ChatRepository extends CrudRepository<Chat, String> {
 
     List<Chat> findByChatroomId(Long chatroomId);
+
+    Chat findByBookId(Long chatId);
 }

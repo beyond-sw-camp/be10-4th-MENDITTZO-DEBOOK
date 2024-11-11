@@ -3,6 +3,7 @@ package com.mendittzo.report.command.application.controller;
 import com.mendittzo.common.exception.SuccessCode;
 import com.mendittzo.report.command.application.dto.ReportRequestDTO;
 import com.mendittzo.report.command.application.service.ReportCommandService;
+import com.mendittzo.security.util.UserUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ public class ReportCommandController {
 
     @PostMapping
     public ResponseEntity<String> requestReport(@RequestBody ReportRequestDTO reportRequestDTO) {
+
+        reportRequestDTO.setReporterUserId(UserUtil.getCurrentUserLoginId());
 
         reportCommandService.requestReport(reportRequestDTO);
 

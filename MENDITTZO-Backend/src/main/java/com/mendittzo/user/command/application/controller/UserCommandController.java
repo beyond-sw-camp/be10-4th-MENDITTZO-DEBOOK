@@ -24,13 +24,19 @@ public class UserCommandController {
             @RequestParam(value = "nickname") String nickname) throws IOException {
 
         Long loginId = UserUtil.getCurrentUserLoginId();
-
-        UserUpdateDTO userUpdateDTO = UserUpdateDTO.builder()
-                .userId(loginId)
-                .nickname(nickname)
-                .profileImage(profileImage)
-                .build();
-
+        UserUpdateDTO userUpdateDTO;
+        if(profileImage != null) {
+            userUpdateDTO = UserUpdateDTO.builder()
+                    .userId(loginId)
+                    .nickname(nickname)
+                    .profileImage(profileImage)
+                    .build();
+        }else{
+            userUpdateDTO = UserUpdateDTO.builder()
+                    .userId(loginId)
+                    .nickname(nickname)
+                    .build();
+        }
         userCommandService.updateUser(userUpdateDTO);
 
         return ResponseEntity.ok(SuccessCode.USER_UPDATE_SUCCESS.getMessage());

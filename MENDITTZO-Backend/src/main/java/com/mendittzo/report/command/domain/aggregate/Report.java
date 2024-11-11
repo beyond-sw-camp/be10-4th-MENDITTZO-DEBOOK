@@ -41,13 +41,13 @@ public class Report {
     private Review review;
 
     @Column(nullable = true)
-    private Long chatId;
+    private String chatId;
 
     @CreatedDate
     private LocalDateTime createDatetime;
 
     @Builder
-    public Report(Long chatroomId, Review review, User reporterUser, User reportedUser, Long chatId) {
+    public Report(Long chatroomId, Review review, User reporterUser, User reportedUser, String chatId) {
         this.chatroomId = chatroomId;
         this.review = review;
         this.reporterUser = reporterUser;
