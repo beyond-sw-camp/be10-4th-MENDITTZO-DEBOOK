@@ -24,30 +24,32 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
 
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity http, JwtUtil jwtUtil) throws  Exception {
+    protected SecurityFilterChain configure(HttpSecurity http) throws  Exception {
 
         http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(authz ->
-                    // 일단 /api/v1/** 의 모든 요청(GET, POST...) 허락
-                    authz.requestMatchers(new AntPathRequestMatcher("/api/v1/**")).permitAll()
-                            .anyRequest().authenticated()   // 나머지 요청은 인증 필요
-            )
-            // 세션 로그인 사용 X
-            .sessionManagement(
-                    session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            // JWT 토큰 확인 필터 설정
-            .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-            // 인증, 인가 실패 핸들러 설정
-            .exceptionHandling(
-                    exceptionHandling -> {
-                        exceptionHandling.accessDeniedHandler(new JwtAccessDeniedHandler());
-                        exceptionHandling.authenticationEntryPoint(new JwtAuthenticationEntryPoint());
-                    }
-            )
-            // CORS 설정
-            .cors(cors -> cors
-                    .configurationSource(corsConfigurationSource()));
+                .authorizeHttpRequests(authz ->
+                        // 일단 /api/v1/** 및 WebSocket 엔드포인트 모든 요청(GET, POST...) 허락
+                        authz.requestMatchers(new AntPathRequestMatcher("/api/v1/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/ws-stomp/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
+                                .anyRequest().authenticated()   // 나머지 요청은 인증 필요
+                )
+                // 세션 로그인 사용 X
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                // JWT 토큰 확인 필터 설정
+                .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                // 인증, 인가 실패 핸들러 설정
+                .exceptionHandling(
+                        exceptionHandling -> {
+                            exceptionHandling.accessDeniedHandler(new JwtAccessDeniedHandler());
+                            exceptionHandling.authenticationEntryPoint(new JwtAuthenticationEntryPoint());
+                        }
+                )
+                // CORS 설정
+                .cors(cors -> cors
+                        .configurationSource(corsConfigurationSource()));
 
         return http.build();
     }
