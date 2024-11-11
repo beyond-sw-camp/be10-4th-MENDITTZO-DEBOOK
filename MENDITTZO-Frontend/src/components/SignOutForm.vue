@@ -36,24 +36,30 @@ const confirmSignOut = () => {
 .confirm-message {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  margin-top: 10px
 }
 
 .button-group {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 100px;
 }
 .confirm-button,
 .cancel-button {
   margin-left: 10px;
   width: 80px;
   height: 40px;
-  color: white;
-  background-color: #78AE6B;
-  border: none;
+  color: #78AE6B;
+  background-color: white;
+  border: 2px solid #78AE6B;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.signout-form img {
+  width: 50px;
+  height: auto;
 }
 
 .cancel-button {
