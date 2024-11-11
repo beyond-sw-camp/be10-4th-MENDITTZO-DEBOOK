@@ -4,53 +4,27 @@ services:
   # Elasticsearch 서비스 설정
   elasticsearch:
     image: elasticsearch:8.15.3  # Elasticsearch 버전 8.15.3
+    build:
+      context: ./MENDITTZO-Backend/src/main/java/com/mendittzo/elastic  # Dockerfile의 위치 지정
+      dockerfile: Dockerfile  # Dockerfile 이름이 기본 이름일 경우 생략 가능
     container_name: elasticsearch
     environment:
       - discovery.type=single-node  # 클러스터 설정 (단일 노드 모드)
       - ELASTIC_PASSWORD=elastic  # Elasticsearch 기본 비밀번호 설정
       - xpack.security.enabled=false         # 인증 비활성화
       - xpack.security.transport.ssl.enabled=false  # SSL 비활성화
+      - http.cors.enabled=true
+      - http.cors.allow-origin=http://localhost:5173
+      - http.cors.allow-methods=OPTIONS, HEAD, GET, POST, PUT, DELETE
+      - http.cors.allow-headers=X-Requested-With, Content-Type, Authorization
+      - http.cors.allow-credentials=true
     ports:
       - "9200:9200"  # HTTP 포트
       - "9300:9300"  # TCP 포트
     networks:
       - elastic-net
 
-#  # MariaDB 서비스 설정 이 부분은 어차피 나중에 도커로 담을거긴 한데 일단 이게 맞는지 모르겠지만 넣어햐 하니까 넣긴 함
-#  mariadb:
-#    image: mariadb:latest  # 최신 MariaDB 이미지 사용
-#    container_name: mariadb
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}  # MariaDB root 비밀번호 설정 mysql이어도 상관 없다고 함
-#      - MYSQL_DATABASE=debook_db     # 기본 데이터베이스 이름 설정
-#      - MYSQL_USER=${MARIADB_USER}      # 사용자 이름 (env 파일에서 불러옴)
-#      - MYSQL_PASSWORD=${MARIADB_PASSWORD}  # 비밀번호 (env 파일에서 불러옴)
-#    ports:
-#      - "3306:3306"  # 3306 포트 사용
-#    env_file:
-#      - .env  # .env 파일에서 환경 변수 불러오기
-#    networks:
-#      - elastic-net
 
-# Logstash 서비스 설정
-#  logstash:
-#    image: logstash:8.15.3  # Logstash 버전 8.15.3
-#   container_name: logstash
-#   volumes:
-#     - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf  # Logstash 설정 파일 마운트 이 부분이 맞는지 확인 필요
-#    - /path/to/mariadb-java-client.jar:/usr/share/logstash/mariadb-java-client.jar  # MariaDB JDBC 드라이버 마운트 이 부분이 맞는지 확인 필요
-#   environment:
-#     - LS_JAVA_OPTS="-Xmx1g -Xms1g"  # Logstash 메모리 설정
-#    - JDBC_USER=${MARIADB_USER}  # 사용자 이름 (env 파일에서 불러옴)
-#   - JDBC_PASSWORD=${MARIADB_PASSWORD}  # 비밀번호 (env 파일에서 불러옴)
-#  command: logstash -f /usr/share/logstash/pipeline/logstash.conf  # Logstash 명령어 # 이것도 정확한지 확인 필요함 뭔가 애매해 있는거 그대로 쓰긴 햇는데
-#    depends_on:
-#      - elasticsearch  # Logstash는 Elasticsearch 시작 후에 실행
-#      - mariadb        # Logstash는 MariaDB 시작 후에 실행
-#    env_file:
-#      - .env  # .env 파일에서 환경 변수 불러오기
-#    networks:
-#      - elastic-net
 
   redis:
     image: redis:latest # 최신 redis 이미지 사용
