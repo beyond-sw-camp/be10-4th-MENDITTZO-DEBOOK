@@ -39,6 +39,10 @@ const router = createRouter({
         {
             path: '/booklists/:bookId/review/:reviewId/edit',
             component: () => import('@/views/BookReviewEditView.vue')
+        },
+        {
+            path: '/bookrecommend/:id',
+            component: () => import('@/views/BookRecommendView.vue')
         }
     ],
     scrollBehavior(to, from, savedPosition) {
