@@ -325,10 +325,12 @@ section {
   cursor: pointer;
   font-size: 15px;
   float: right;
+  font-weight: bold
 }
 #delete-button{
   background-color: #F24822;
   margin-right: 60px;
+  font-weight: bold
 }
 
 .review{

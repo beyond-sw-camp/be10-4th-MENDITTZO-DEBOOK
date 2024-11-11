@@ -51,7 +51,7 @@ const props = defineProps({
 .img-review {
   display: flex;
   gap: 50px;
-  margin-top: 30px;
+  margin-top: 40px;
   margin-left: 50px;
   margin-bottom: 30px
 }

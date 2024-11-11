@@ -41,7 +41,7 @@ const handleKakaoLogin = async () => {
         <h1>SNS 간편 로그인</h1>
         <div class="text-sub">
           <img src="@/assets/image/info-icon.png" alt="경고 이미지">
-          <a>간편 로그인은 등록한 후에 로그인 할 수 있습니다.</a>
+          <a>SNS 간편 로그인을 통해 회원가입 할 수 있습니다!</a>
         </div>
       </div>
 
@@ -64,30 +64,37 @@ const handleKakaoLogin = async () => {
 
 <style scoped>
 .login-container{
-  width: 1031px;
-  height: 552px;
+  display: flex;
+  align-items: center; /* 수직 중앙 정렬 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  width: 950px;
+  height: 400px;
   margin: 50px auto;
-  padding: 45px 82px 47px 58px;
+  padding: 20px 40px;
   border-radius: 10px;
   box-shadow: 0 8px 24px 0 rgba(149, 157, 165, 0.2);
   background-color: #fff;
 }
 /* login-container 안에서 login-form을 중앙 정렬 */
 .login-form {
+  padding: 0 10px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 90%;                /* login-container 내의 여백 설정 */
-  height: 90%;
+  width: 100%;                /* login-container 내의 여백 설정 */
+  height: auto;
+  padding: 10px;
+  text-align: center;
 }
 
 /* 버튼 이미지, 텍스트 중간 정렬 */
-.kakao {
+.kakao{
   display: flex;
   align-items: center;
   gap: 5px;
   cursor: pointer;
+  margin-bottom: 50px;
 }
 
 /* 로그인 버튼 간 세로 간격 */
@@ -114,7 +121,7 @@ const handleKakaoLogin = async () => {
   margin-bottom: 50px;
 }
 .text{
-  margin-top: 50px;
+  margin-top: 0px;
 }
 
 /* 텍스트 속성 */
@@ -126,5 +133,8 @@ const handleKakaoLogin = async () => {
 h1{
   font-size: 40px;
   font-weight: bold;
+  margin-top: 0;
 }
+
+
 </style>
