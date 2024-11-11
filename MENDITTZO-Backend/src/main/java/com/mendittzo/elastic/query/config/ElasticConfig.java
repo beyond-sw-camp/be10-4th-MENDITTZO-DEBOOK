@@ -12,9 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ElasticConfig {
 
-/*    @Value("${spring.elasticsearch.rest.uris}")
-    private String host;*/
-
     @Bean
     public ElasticsearchClient elasticsearchClient() {
 
