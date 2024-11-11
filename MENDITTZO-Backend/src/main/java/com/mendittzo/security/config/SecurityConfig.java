@@ -24,12 +24,13 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
 
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity http, JwtUtil jwtUtil) throws  Exception {
+    protected SecurityFilterChain configure(HttpSecurity http) throws  Exception {
 
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authz ->
                     // 일단 /api/v1/** 의 모든 요청(GET, POST...) 허락
                     authz.requestMatchers(new AntPathRequestMatcher("/api/v1/**")).permitAll()
+                            .requestMatchers(new AntPathRequestMatcher("/ws-stomp/**")).permitAll()
                             .requestMatchers("/**").permitAll()
                             .anyRequest().authenticated()   // 나머지 요청은 인증 필요
             )
