@@ -5,7 +5,9 @@ import {Navigation, Pagination} from "swiper/modules";
 import {onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import PagingBar from "@/components/common/PagingBar.vue";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
 
 const images = [
   "/src/assets/image/ad1.png",
@@ -55,8 +57,6 @@ const state = reactive({
 });
 
 const bestBooks = ref([]);
-
-const router = useRouter();
 
 const goToBookDetail = (id) => {
   router.push(`/booklists/${id}`);
@@ -119,7 +119,7 @@ onMounted(() => {
         <div class="chat" v-for="book in bestBooks">
           <div class="list-left">
             <img class="bmk-image" src="../assets/image/bookmark.png" alt="북마크이미지">
-            <p class="list-title">{{book.title}}</p>
+            <p class="list-title" @click="goToBookDetail(book.bookId)">{{book.title}}</p>
           </div>
           <div class="list-right">
             <p class="list_info">{{book.author}}</p>

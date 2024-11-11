@@ -14,6 +14,7 @@ const isAutocompleteOpen = ref(false); // 자동완성 목록 표시 여부
 // 로그아웃
 const handleLogout = async () => {
   try {
+    // Pinia 스토어, 로컬 스토리지에서 토큰 삭제
     await instance.delete("/logout", {
       headers: { Authorization: `Bearer ${authStore.accessToken}` },
     });

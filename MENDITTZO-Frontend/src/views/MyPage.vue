@@ -7,6 +7,7 @@ import router from "@/router/router.js";
 import SignOutForm from "@/components/SignOutForm.vue";
 
 const authStore = useAuthStore();
+
 const state = reactive({
   reviews: [],
   currentPage: 1,

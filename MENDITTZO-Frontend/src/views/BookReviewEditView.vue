@@ -36,12 +36,8 @@ const fetchReviewData = async (reviewId) => {
 };
 
 const handleReviewEdit = async (formData) => {
-
-  console.log("bookId : ", bookId, "reviewId : ", reviewId);
-
   try {
     await axios.put(`/${bookId}/reviews/${reviewId}`, formData);
-
 
     router.push(`/booklists/${bookId}`);
   } catch (error) {

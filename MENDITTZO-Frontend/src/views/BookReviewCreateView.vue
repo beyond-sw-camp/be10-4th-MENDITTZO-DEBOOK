@@ -27,7 +27,7 @@ onMounted(() => {
 
 const handleReviewCreate = async (formData) => {
   try {
-    await axios.post(`http://localhost:8080/api/v1/${bookId}/reviews`, formData)
+    await axios.post(`/${bookId}/reviews`, formData)
 
     router.push(`/booklists/${bookId}`)
   } catch (error) {
