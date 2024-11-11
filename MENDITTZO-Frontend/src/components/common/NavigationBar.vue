@@ -13,17 +13,10 @@ const searchResults = ref([]); // 검색 결과 상태
 // 로그아웃
 const handleLogout = async () => {
   try {
-<<<<<<< HEAD
-    // await instance.delete("/logout", {
-    //   headers: {Authorization: `Bearer ${authStore.accessToken}`},
-    // });
-
     // Pinia 스토어, 로컬 스토리지에서 토큰 삭제
-=======
     await instance.delete("/logout", {
       headers: { Authorization: `Bearer ${authStore.accessToken}` },
     });
->>>>>>> fdd2f688eb30a70c4b7a29b2398187e67131760f
     authStore.logout();
     router.push("/login");
   } catch (error) {
