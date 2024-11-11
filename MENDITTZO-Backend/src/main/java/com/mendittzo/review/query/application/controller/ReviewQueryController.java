@@ -1,11 +1,16 @@
 package com.mendittzo.review.query.application.controller;
 
+import com.mendittzo.common.exception.CustomException;
+import com.mendittzo.common.exception.ErrorCode;
+import com.mendittzo.review.query.application.dto.ReviewDetailResponseDTO;
 import com.mendittzo.review.query.application.dto.ReviewListResponseDTO;
 import com.mendittzo.review.query.application.service.ReviewQueryService;
+import com.mendittzo.security.util.UserUtil;
+import com.mendittzo.user.command.domain.aggregate.User;
+import com.mendittzo.user.query.domain.repository.UserQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,28 +20,47 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewQueryController {
 
     private final ReviewQueryService reviewQueryService;
+    private final UserQueryRepository userQueryRepository;
 
     @GetMapping("/{bookId}")
     public ResponseEntity<ReviewListResponseDTO> getReviews(
             @PathVariable(name = "bookId") Long bookId,
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size,
-            @RequestParam(value = "sort", defaultValue = "createDatetime,desc") String sort) {
+            @RequestParam(value = "size", defaultValue = "5") int size) {
 
-        // 기본값으로 최신순 정렬
-        Sort sortOrder = Sort.by(Sort.Order.desc("createDatetime"));
+        Pageable pageable = PageRequest.of(page - 1, size);
 
-        String[] sortParams = sort.split(",");
-        if (sortParams.length == 2 && "rating".equalsIgnoreCase(sortParams[0])) {
-            String direction = sortParams[1];
-            sortOrder = "desc".equalsIgnoreCase(direction)
-                    ? Sort.by(Sort.Order.desc("rating"))
-                    : Sort.by(Sort.Order.asc("rating"));
+        Long loginId = UserUtil.getCurrentUserLoginId();
+
+        User currentUser = null;
+        if (loginId != null) {
+            currentUser = userQueryRepository.findUserInfoByLoginId(loginId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         }
 
-        Pageable pageable = PageRequest.of(page - 1, size, sortOrder);
+        ReviewListResponseDTO response = reviewQueryService.getReviews(bookId, currentUser, pageable);
 
-        ReviewListResponseDTO response = reviewQueryService.getReviews(bookId, pageable);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/detail/{reviewId}")
+    public ResponseEntity<ReviewDetailResponseDTO> getReview(@PathVariable(name = "reviewId") Long reviewId) {
+
+        ReviewDetailResponseDTO response = reviewQueryService.getReview(reviewId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<ReviewListResponseDTO> getMyReviews(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size) {
+
+        Long loginId = UserUtil.getCurrentUserLoginId();
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        ReviewListResponseDTO response = reviewQueryService.getMyReviews(loginId, pageable);
 
         return ResponseEntity.ok(response);
     }

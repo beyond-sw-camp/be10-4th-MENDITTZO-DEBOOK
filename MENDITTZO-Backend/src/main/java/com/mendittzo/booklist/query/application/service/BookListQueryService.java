@@ -29,6 +29,7 @@ public class BookListQueryService {
 
         List<BookListResponseDTO> bookLists = page.getContent().stream()
                 .map(book -> BookListResponseDTO.builder()
+                        .bookId(book.getBookId())
                         .title(book.getTitle())
                         .author(book.getAuthor())
                         .publisher(book.getPublisher())
@@ -48,11 +49,8 @@ public class BookListQueryService {
     @Transactional(readOnly = true)
     public BookDetailResponseDTO getBook(Long bookId) {
 
-        BookResponseDTO book = bookListRepository.findBookByBookId(bookId);
-
-        if(book == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_BOOK);
-        }
+        BookResponseDTO book = bookListRepository.findBookByBookId(bookId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOOK));
 
         return new BookDetailResponseDTO(book);
     }

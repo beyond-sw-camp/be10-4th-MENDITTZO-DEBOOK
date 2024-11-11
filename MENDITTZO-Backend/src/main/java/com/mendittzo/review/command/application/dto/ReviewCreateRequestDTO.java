@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReviewCreateRequestDTO {
 
-    private final Long bookId;
-    private final Long userId;
     private final String title;
     private final String content;
     private final int rating;

@@ -30,6 +30,20 @@ spring:
       host: ${redis.data.host}
       port: ${redis.data.port}
 
+  devtools:
+    restart:
+      enabled: false
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/debook
+
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+
+
 kakao:
   client_id:
     rest_api_key: ${kakao.client_id.rest_api_key}
@@ -49,3 +63,10 @@ cloud:
     credentials:
       accessKey: ${im.access}
       secretKey: ${im.secret}
+
+
+
+gemini:
+  api:
+    key: ${gemini.api.key}
+    url: ${gemini.api.url}
