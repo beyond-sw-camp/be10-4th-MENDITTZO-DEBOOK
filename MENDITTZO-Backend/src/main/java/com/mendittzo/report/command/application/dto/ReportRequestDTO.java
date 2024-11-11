@@ -13,7 +13,7 @@ public class ReportRequestDTO {
     private Long reviewId;
 
     @Nullable
-    private Long chatId;
+    private String chatId;
 
     @Nullable
     private Long reporterUserId; // 신고자 유저 아이디

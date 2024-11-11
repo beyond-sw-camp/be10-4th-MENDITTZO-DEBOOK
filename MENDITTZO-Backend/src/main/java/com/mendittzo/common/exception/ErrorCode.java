@@ -30,7 +30,8 @@ public enum ErrorCode {
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "유저정보를 찾을 수 없습니다."),
     NOT_FOUND_REVIEW(HttpStatus.NOT_FOUND, "해당하는 리뷰를 찾을 수 없습니다."),
     NOT_FOUND_BOOK(HttpStatus.NOT_FOUND, "해당하는 책을 찾을 수 없습니다."),
-    ;
+    NOT_FOUND_CHATROOM(HttpStatus.NOT_FOUND, "채팅방 정보를 찾을 수 없습니다." ),
+    NOT_FOUND_CHAT(HttpStatus.NOT_FOUND, "채팅 정보를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
