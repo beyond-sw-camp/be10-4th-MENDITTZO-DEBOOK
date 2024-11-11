@@ -3,10 +3,12 @@ package com.mendittzo.booklist.query.application.dto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
+@ToString
 public class BookResponseDTO {
 
     private final Long bookId;

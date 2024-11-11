@@ -15,7 +15,7 @@ public interface BookListRepository extends JpaRepository<Book, Long> {
             "ROUND(COALESCE(AVG(r.rating), 0), 1), " +  // 평균 별점 (double)
             "SUM(CASE WHEN r.status != 'DELETED' THEN 1 ELSE 0 END), " + // 상태가 DELETED가 아닌 리뷰의 총 수
             "b.info) " +
-            "FROM Book b JOIN Review r ON b.bookId = r.bookId " +
+            "FROM Book b LEFT JOIN Review r ON b.bookId = r.bookId " +
             "WHERE b.bookId = :bookId")
     Optional<BookResponseDTO> findBookByBookId(Long bookId);
 
