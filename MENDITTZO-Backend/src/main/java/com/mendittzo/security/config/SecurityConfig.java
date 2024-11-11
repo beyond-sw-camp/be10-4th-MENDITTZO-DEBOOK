@@ -30,7 +30,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz ->
                     // 일단 /api/v1/** 의 모든 요청(GET, POST...) 허락
                     authz.requestMatchers(new AntPathRequestMatcher("/api/v1/**")).permitAll()
+                            .requestMatchers("/elasticsearch/**").permitAll()
                             .requestMatchers(new AntPathRequestMatcher("/ws-stomp/**")).permitAll()
+
                             .requestMatchers("/**").permitAll()
                             .anyRequest().authenticated()   // 나머지 요청은 인증 필요
             )

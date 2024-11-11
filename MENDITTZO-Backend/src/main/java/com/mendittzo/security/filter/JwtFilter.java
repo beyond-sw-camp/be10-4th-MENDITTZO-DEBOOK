@@ -15,7 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-// oncePerRequestFilter 를 상속 받아 doFilterInternal 을 오버라이딩 한다.
+// oncePerRequestFilter를 상속 받아 doFilterInternal을 오버라이딩 한다.
 // 반드시 한 번만 실행되는 필터
 
 @Slf4j
@@ -26,6 +26,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        String requestURI = request.getRequestURI();
+
+        // 특정 경로 예외 처리 - 인증이 필요 없는 경로 설정
+        if (requestURI.startsWith("/api/v1/elasticsearch")) {
+            log.info("인증 예외 경로 접근: {}", requestURI);
+            filterChain.doFilter(request, response); // 필터 체인 통과
+            return;
+        }
 
         // 요청 헤더에 담긴 토큰의 유효성 판별 및 인증 객체 저장
         String authorizationHeader = request.getHeader("Authorization");
@@ -48,9 +57,7 @@ public class JwtFilter extends OncePerRequestFilter {
             } catch (CustomException e) {
 
                 if (e.getErrorCode() == ErrorCode.EXPIRED_JWT) {
-
-                    log.info("유효한 토큰이 아님: {}, {}", e.getErrorCode(), e.getErrorCode());
-
+                    log.info("유효하지 않은 토큰: {}, {}", e.getErrorCode(), e.getErrorCode());
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     log.info("response에 401 설정");
                 }
@@ -59,7 +66,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // 위의 if문에 걸리지 않아 Authentication 객체가 설정되지 않으면, 다음 필터(인증 필터) 실행
+        // 위의 조건에 걸리지 않아 Authentication 객체가 설정되지 않으면, 다음 필터(인증 필터) 실행
         filterChain.doFilter(request, response);
         log.info("Authentication 객체 설정 안 됨. 인증 필터 실행");
     }
