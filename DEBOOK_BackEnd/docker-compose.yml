@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  # Elasticsearch 서비스 설정
+  elasticsearch:
+    image: elasticsearch:8.15.3  # Elasticsearch 버전 8.15.3
+    build:
+      context: ./MENDITTZO-Backend/src/main/java/com/mendittzo/elastic  # Dockerfile의 위치 지정
+      dockerfile: Dockerfile  # Dockerfile 이름이 기본 이름일 경우 생략 가능
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node  # 클러스터 설정 (단일 노드 모드)
+      - ELASTIC_PASSWORD=elastic  # Elasticsearch 기본 비밀번호 설정
+      - xpack.security.enabled=false         # 인증 비활성화
+      - xpack.security.transport.ssl.enabled=false  # SSL 비활성화
+      - http.cors.enabled=true
+      - http.cors.allow-origin=http://localhost:5173
+      - http.cors.allow-methods=OPTIONS, HEAD, GET, POST, PUT, DELETE
+      - http.cors.allow-headers=X-Requested-With, Content-Type, Authorization
+      - http.cors.allow-credentials=true
+    ports:
+      - "9200:9200"  # HTTP 포트
+      - "9300:9300"  # TCP 포트
+    networks:
+      - elastic-net
+
+
+
+  redis:
+    image: redis:latest # 최신 redis 이미지 사용
+    container_name: redis_container
+    ports:
+      - "6379:6379" # 6379 포트 사용
+    networks:
+      - elastic-net
+
+# 네트워크 설정
+networks:
+  elastic-net:
+    driver: bridge  # 브리지 네트워크 사용
