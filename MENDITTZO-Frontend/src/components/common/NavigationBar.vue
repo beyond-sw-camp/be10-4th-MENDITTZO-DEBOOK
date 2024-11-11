@@ -200,6 +200,10 @@ header{
   font-weight: bold;     /* 스타일 통일을 위해 굵게 설정 */
 }
 
+.mypage-button img {
+  margin-right: 8px; /* 아이콘과 닉네임 사이에 8px 간격 추가 */
+}
+
 /* 네비게이션 하단 버튼 텍스트 */
 .nav-bottom-text{
   white-space: nowrap;
