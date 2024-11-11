@@ -29,6 +29,18 @@ spring:
     data:
       host: ${redis.data.host}
       port: ${redis.data.port}
+  devtools:
+    restart:
+      enabled: false
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/debook
+
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 
 kakao:
   client_id:
