@@ -84,8 +84,6 @@ const handleMyPage = async () => {
     </div>
 
   </header>
-
-  <hr id="bottom-hr">
 </template>
 
 <style scoped>
@@ -97,13 +95,6 @@ header{
   width: 1440px;
   padding: 0;
   margin: 0 auto; /* 좌우 여백 자동으로 설정하여 가운데 정렬 */
-}
-
-/* 네비게이션 하단 선 */
-#bottom-hr{
-  border: none;
-  height: 1px;
-  background-color: #78AE6B;
 }
 
 /* 네비바 상단 */
@@ -118,9 +109,11 @@ header{
 /* 네비바 하단 */
 #bottom-nav{
   display: grid;
+  height: 60px;
   grid-template-columns: repeat(3, 1fr); /* 예: 3열 그리드 */
   gap: 10px;
   place-items: center; /* 모든 셀의 콘텐츠를 가운데 정렬 */
+  border-bottom: 1px solid #78AE6B;
 }
 
 /*이미지 파일*/

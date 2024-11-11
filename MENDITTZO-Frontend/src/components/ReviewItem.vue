@@ -166,7 +166,7 @@ const openEditPage = () => {
 .review-item {
   padding: 20px;
   margin-left: 20px;
-  margin-right: 20px;
+  margin-right: 60px;
   border-bottom: 1px solid #BDBDBD;
   color: #444444;
 }
