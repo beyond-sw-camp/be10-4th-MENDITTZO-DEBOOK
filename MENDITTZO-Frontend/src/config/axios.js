@@ -4,7 +4,8 @@ import router from "@/router/router.js";
 
 // axios 인스턴스 생성
 const instance = axios.create({
-    baseURL: 'http://localhost:8080/api/v1', // baseURL 설정
+    // baseURL: 'http://localhost:8080/api/v1', // baseURL 설정
+    baseURL: '/boot/api/v1' // ingress 설정으로 인한 변경
 });
 
 // 요청 인터셉터 : 모든 요청에 액세스 토큰을 포함
