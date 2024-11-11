@@ -232,6 +232,7 @@ header {
   font-weight: bold;
 }
 
+
 .nav-bottom-text {
   white-space: nowrap;
   color: #444444;

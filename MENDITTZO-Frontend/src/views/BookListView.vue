@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, onMounted } from "vue";
-import axios from "axios";
+import axios from "@/config/axios.js";
 import BookListComponents from "@/components/BookListComponents.vue";
 import PagingBar from "@/components/common/PagingBar.vue";
 
