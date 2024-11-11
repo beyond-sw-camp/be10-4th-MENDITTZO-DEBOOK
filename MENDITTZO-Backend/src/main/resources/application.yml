@@ -49,3 +49,8 @@ cloud:
     credentials:
       accessKey: ${im.access}
       secretKey: ${im.secret}
+
+gemini:
+  api:
+    key: ${gemini.api.key}
+    url: ${gemini.api.url}
