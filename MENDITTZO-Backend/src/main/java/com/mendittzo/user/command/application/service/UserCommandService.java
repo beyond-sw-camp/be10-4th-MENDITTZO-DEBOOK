@@ -65,11 +65,13 @@ public class UserCommandService {
         // S3에서 이미지 삭제를 위해 기존 프로필 이미지 URL 반환
         String oldImageUrl = updateUser.getProfileImg();
 
-        // 새 이미지 업로드 및 예전 이미지 삭제
-        String newImageUrl = imageService.updateImage(userUpdateDTO.getProfileImage(), oldImageUrl);
-
-        updateUser.updateUser(userUpdateDTO.getNickname(), newImageUrl);
-
+        if(!userUpdateDTO.getProfileImage().isEmpty()) {
+            // 새 이미지 업로드 및 예전 이미지 삭제
+            String newImageUrl = imageService.updateImage(userUpdateDTO.getProfileImage(), oldImageUrl);
+            updateUser.updateUser(userUpdateDTO.getNickname(), newImageUrl);
+        }else{
+            updateUser.updateUser(userUpdateDTO.getNickname(), "null");
+        }
         // 유저 DB 업데이트
         userRepository.save(updateUser);
     }

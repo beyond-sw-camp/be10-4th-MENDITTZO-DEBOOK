@@ -51,7 +51,7 @@ public class BookListQueryService {
 
         BookResponseDTO book = bookListRepository.findBookByBookId(bookId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOOK));
-
+        System.out.println(book.toString());
         return new BookDetailResponseDTO(book);
     }
 }
