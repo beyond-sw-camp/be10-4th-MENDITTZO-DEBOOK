@@ -40,17 +40,13 @@ public class JwtUtil {
 
     // 액세스, 리프레시 토큰 생성하는 메소드
     public DebookTokenDTO generateToken(User user) {
-        log.info("generateToken 함수 실행 - userId={}, nickname={}", user.getLoginId(), user.getNickname());
 
-        log.info("secret Key: {}", secretKey);
         Long accessTokenExpirationTime = Long.parseLong(accessExpirationTime) * 1000L;
         Long refreshTokenExpirationTime = Long.parseLong(refreshExpirationTime) * 1000L;
 
         // JWT payload
         Claims claims = Jwts.claims().setSubject(user.getNickname());   // String 타입의 식별자가 필요하므로 닉네임으로 구분
         claims.put("socialLoginId", user.getLoginId()); // 소셜 로그인 사용자 고유 id 추가 저장
-
-        log.info("Claims - subject(nickname): {}, socialLoginId: {}", claims.getSubject(), claims.get("socialLoginId"));
 
         // 토큰 발급
         String accessToken = Jwts.builder()
