@@ -1,5 +1,5 @@
-import {defineStore} from "pinia";
-import {onMounted, ref} from "vue";
+import { defineStore } from "pinia";
+import { onMounted, ref } from "vue";
 import axios from "axios";
 
 // 어디서든 사용할 수 있는 userAuthStore
@@ -14,7 +14,6 @@ export const useAuthStore = defineStore('auth', () => {
 
     // 페이지가 로드될 때마다 localStorage 에서 토큰을 읽어와 상태를 초기화한다.
     onMounted(() => {
-
         const access = localStorage.getItem('accessToken');
         const refresh = localStorage.getItem('refreshToken');
 
@@ -22,8 +21,6 @@ export const useAuthStore = defineStore('auth', () => {
             accessToken.value = access;
             try {
                 // JWT 토큰의 페이로드 추출
-                // const payload = JSON.parse(atob(access.split('.')[1]));
-
                 const base64url = access.split('.')[1];
                 const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
                 const payload = JSON.parse(atob(base64));
@@ -45,12 +42,10 @@ export const useAuthStore = defineStore('auth', () => {
 
     // 사용자 정보 요청
     const fetchUserInfo = async () => {
-
         try {
             const response = await axios.get("http://localhost:8080/api/v1/user/query/info", {
                 headers: { Authorization: `Bearer ${accessToken.value}` },
-            })
-
+            });
             const data = response.data;
             nickname.value = data.nickName;
             profileImg.value = data.profileImg;
@@ -58,38 +53,46 @@ export const useAuthStore = defineStore('auth', () => {
 
         } catch (error) {
             console.error("사용자 정보 가져오기 실패: ", error);
+            if (error.response && error.response.status === 401) {
+                // 토큰이 만료되었거나 인증이 실패한 경우 로그아웃 요청
+                console.warn("인증 실패: 로그아웃 수행");
+                logout();
+            }
         }
-
     };
 
-    // 로그아웃(클라이언트 상태 초기화 용도. 실제 로그아웃을 통한 토큰 무효화는 서버에서 처리)
-    const logout = () => {
-
-        accessToken.value = null;
-        refreshToken.value = null;
-        loginId.value = null;
-        nickname.value = null;
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+    // 로그아웃(클라이언트 상태 초기화 + 서버 로그아웃 처리)
+    const logout = async () => {
+        try {
+            await axios.delete("http://localhost:8080/api/v1/logout", {
+                headers: { Authorization: `Bearer ${accessToken.value}` },
+            });
+        } catch (error) {
+            console.error("로그아웃 요청 실패: ", error);
+        } finally {
+            accessToken.value = null;
+            refreshToken.value = null;
+            loginId.value = null;
+            nickname.value = null;
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+        }
     };
+
 
     // 토큰 저장
-    const setTokens = (newAccessToken, newRefreshToke) => {
+    const setTokens = (newAccessToken, newRefreshToken) => {
         accessToken.value = newAccessToken;
-        refreshToken.value = newRefreshToke;
+        refreshToken.value = newRefreshToken;
         localStorage.setItem("accessToken", newAccessToken);
-        localStorage.setItem("refreshToken", newRefreshToke);
+        localStorage.setItem("refreshToken", newRefreshToken);
 
-        // 새 토큰으로 사용자 정보 업데이트
         fetchUserInfo();
     };
 
     // 액세스 토큰 저장
     const setAccessToken = (newAccessToken) => {
         accessToken.value = newAccessToken;
-
-        console.log("액세스 토큰 저장: newAccessToken", accessToken);
-
         localStorage.setItem("accessToken", newAccessToken);
 
         fetchUserInfo();
@@ -101,5 +104,17 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem("loginId", newLoginId);
     };
 
-    return {accessToken, refreshToken, loginId, nickname, status, profileImg, logout, setTokens, setLoginId, fetchUserInfo, setAccessToken};
+    return {
+        accessToken,
+        refreshToken,
+        loginId,
+        nickname,
+        status,
+        profileImg,
+        logout,
+        setTokens,
+        setLoginId,
+        fetchUserInfo,
+        setAccessToken
+    };
 });
