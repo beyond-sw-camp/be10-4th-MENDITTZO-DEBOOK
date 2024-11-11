@@ -39,8 +39,11 @@ public class ReviewQueryService {
                         review.getRating(),
                         review.getNickname(),
                         review.getCreateDatetime(),
+                        review.getUpdateDatetime(),
                         currentUser != null && review.getUserId().equals(currentUser.getUserId()), // 작성자 여부 확인
-                        review.getUserId()  // 사용자 ID도 추가
+                        review.getUserId(),  // 사용자 ID도 추가
+                        review.getReviewId(),
+                        review.getBookId()
                 ))
                 .collect(Collectors.toList());
 
@@ -68,8 +71,11 @@ public class ReviewQueryService {
                         review.getRating(),
                         review.getNickname(),
                         review.getCreateDatetime(),
+                        review.getUpdateDatetime(),
                         review.getUserId().equals(loginUser.getUserId()), // 사용자 여부 확인
-                        review.getUserId()  // 사용자 ID도 추가
+                        review.getUserId(),  // 사용자 ID도 추가
+                        review.getReviewId(),
+                        review.getBookId()
                 ))
                 .collect(Collectors.toList());
 
