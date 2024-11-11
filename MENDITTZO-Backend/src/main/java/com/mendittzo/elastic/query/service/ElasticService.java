@@ -2,8 +2,9 @@ package com.mendittzo.elastic.query.service;
 
 import co.elastic.clients.elasticsearch._types.analysis.Analyzer;
 import co.elastic.clients.elasticsearch._types.analysis.CustomAnalyzer;
-import co.elastic.clients.elasticsearch._types.analysis.NoriTokenizer;
 import co.elastic.clients.elasticsearch._types.mapping.Property;
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.MatchPhraseQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.PrefixQuery;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
@@ -16,12 +17,12 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import java.io.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,7 +77,7 @@ public class ElasticService {
         }
     }
 
-
+    @Async
     public void startIndexing() {
         try {
             File file = new ClassPathResource("data/book.csv").getFile();
@@ -116,16 +117,36 @@ public class ElasticService {
 
     public List<ElasticDTO> searchByTitle(String keyword) {
         try {
-            // Prefix 쿼리를 생성하여 title 필드에서 keyword로 시작하는 항목을 검색
-            PrefixQuery prefixQuery = PrefixQuery.of(m -> m // 이 쿼리를 써야 초반 한 단어를 입력해도 가능하게 됨
+            // 완전 일치 조건 (MatchPhrase)
+            MatchPhraseQuery matchPhraseQuery = MatchPhraseQuery.of(m -> m
+                    .field("title")
+                    .query(keyword)
+            );
+
+            // 접두사 조건 (Prefix)
+            PrefixQuery prefixQuery = PrefixQuery.of(m -> m
                     .field("title")
                     .value(keyword)
             );
 
-            // SearchRequest 객체 생성하여 검색 요청을 설정
+            // 키워드 포함 조건 (Match)
+            MatchQuery matchQuery = MatchQuery.of(m -> m
+                    .field("title")
+                    .query(keyword)
+            );
+
+            // BoolQuery: 완전 일치 시 해당 결과만 반환, 그렇지 않으면 부분 일치
+            BoolQuery boolQuery = BoolQuery.of(b -> b
+                    .must(matchPhraseQuery._toQuery())           // 완전 일치 조건 (우선순위)
+                    .should(prefixQuery._toQuery())              // 접두사 일치 조건
+                    .should(matchQuery._toQuery())               // 키워드 포함 조건
+                    .minimumShouldMatch("1")                     // 최소 일치 조건
+            );
+
+            // 검색 요청 설정
             SearchRequest searchRequest = new SearchRequest.Builder()
                     .index("books")
-                    .query(prefixQuery._toQuery())
+                    .query(boolQuery._toQuery())
                     .build();
 
             // Elasticsearch 클라이언트를 사용하여 검색 실행
@@ -135,10 +156,12 @@ public class ElasticService {
             return response.hits().hits().stream()
                     .map(hit -> hit.source())
                     .collect(Collectors.toList());
+
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
         }
     }
+
 
 }
