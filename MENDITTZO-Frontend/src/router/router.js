@@ -1,7 +1,4 @@
 import {createRouter, createWebHistory} from "vue-router";
-import BookListView from "@/views/BookListView.vue";
-import BookDetailView from "@/views/BookDetailView.vue";
-import BookReviewCreateView from "@/views/BookReviewCreateView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -43,7 +40,12 @@ const router = createRouter({
             path: '/booklists/:bookId/review/:reviewId/edit',
             component: () => import('@/views/BookReviewEditView.vue')
         }
-    ]
+    ],
+    scrollBehavior(to, from, savedPosition) {
+        // 스크롤을 항상 맨 위로 이동
+        return { top: 0 };
+    }
+
 });
 
 export default router;
