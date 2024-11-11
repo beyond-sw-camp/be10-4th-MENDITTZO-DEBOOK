@@ -21,7 +21,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
+import co.elastic.clients.elasticsearch.core.BulkRequest;
+import co.elastic.clients.elasticsearch.core.BulkResponse;
+import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
+
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,21 +35,20 @@ import java.util.stream.Collectors;
 public class ElasticService {
 
     private final ElasticsearchClient elasticsearchClient;
+    private static final int BATCH_SIZE = 500; // 배치 단위 크기 설정
 
     @PostConstruct
     public void init() {
         createBooksIndex();
-        startIndexing();
+        initializeIndexing(); // 비동기 호출 없이 인덱싱 초기화
     }
 
     // Nori 분석기를 적용하여 books 인덱스를 생성하는 메서드
     public void createBooksIndex() {
         try {
-            // 인덱스가 이미 존재하는지 확인
             boolean indexExists = elasticsearchClient.indices().exists(e -> e.index("books")).value();
 
             if (!indexExists) {
-                // 인덱스가 존재하지 않을 경우에만 생성
                 CreateIndexRequest request = new CreateIndexRequest.Builder()
                         .index("books")
                         .settings(s -> s
@@ -77,6 +81,11 @@ public class ElasticService {
         }
     }
 
+    // startIndexing 메서드를 비동기 호출로 실행
+    public void initializeIndexing() {
+        startIndexing();
+    }
+
     @Async
     public void startIndexing() {
         try {
@@ -87,9 +96,11 @@ public class ElasticService {
         }
     }
 
+    // CSV 데이터를 배치 단위로 인덱싱
     public void indexCsvData(String filePath) {
         try (Reader reader = new InputStreamReader(new FileInputStream(filePath), "EUC-KR")) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
+            List<IndexRequest<ElasticDTO>> batchRequests = new ArrayList<>();
 
             for (CSVRecord record : records) {
                 ElasticDTO dto = new ElasticDTO();
@@ -108,51 +119,77 @@ public class ElasticService {
                         .document(dto)
                 );
 
-                elasticsearchClient.index(indexRequest);
+                batchRequests.add(indexRequest);
+
+                // BATCH_SIZE 만큼 수집된 경우 Elasticsearch에 전송
+                if (batchRequests.size() >= BATCH_SIZE) {
+                    sendBatchRequests(batchRequests);
+                    batchRequests.clear(); // 전송 후 리스트 비우기
+                }
+            }
+
+            // 남아있는 레코드 전송
+            if (!batchRequests.isEmpty()) {
+                sendBatchRequests(batchRequests);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    // 배치 단위로 Elasticsearch에 전송
+    private void sendBatchRequests(List<IndexRequest<ElasticDTO>> requests) {
+        try {
+            BulkRequest.Builder bulkBuilder = new BulkRequest.Builder();
+
+            // Convert each IndexRequest to a BulkOperation and add to the BulkRequest
+            List<BulkOperation> bulkOperations = requests.stream()
+                    .map(request -> BulkOperation.of(b -> b
+                            .index(i -> i
+                                    .index(request.index())
+                                    .id(request.id())
+                                    .document(request.document())
+                            )
+                    ))
+                    .collect(Collectors.toList());
+
+            // Add all BulkOperations to the bulk request
+            bulkBuilder.operations(bulkOperations);
+
+            // Execute the bulk request
+            BulkResponse bulkResponse = elasticsearchClient.bulk(bulkBuilder.build());
+
+            if (bulkResponse.errors()) {
+                System.out.println("Some errors occurred during batch indexing.");
+            } else {
+                System.out.println("Batch indexed successfully.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public List<ElasticDTO> searchByTitle(String keyword) {
         try {
-            // 완전 일치 조건 (MatchPhrase)
-            MatchPhraseQuery matchPhraseQuery = MatchPhraseQuery.of(m -> m
-                    .field("title")
-                    .query(keyword)
-            );
+            MatchPhraseQuery matchPhraseQuery = MatchPhraseQuery.of(m -> m.field("title").query(keyword));
+            PrefixQuery prefixQuery = PrefixQuery.of(m -> m.field("title").value(keyword));
+            MatchQuery matchQuery = MatchQuery.of(m -> m.field("title").query(keyword));
 
-            // 접두사 조건 (Prefix)
-            PrefixQuery prefixQuery = PrefixQuery.of(m -> m
-                    .field("title")
-                    .value(keyword)
-            );
-
-            // 키워드 포함 조건 (Match)
-            MatchQuery matchQuery = MatchQuery.of(m -> m
-                    .field("title")
-                    .query(keyword)
-            );
-
-            // BoolQuery: 완전 일치 시 해당 결과만 반환, 그렇지 않으면 부분 일치
             BoolQuery boolQuery = BoolQuery.of(b -> b
-                    .must(matchPhraseQuery._toQuery())           // 완전 일치 조건 (우선순위)
-                    .should(prefixQuery._toQuery())              // 접두사 일치 조건
-                    .should(matchQuery._toQuery())               // 키워드 포함 조건
-                    .minimumShouldMatch("1")                     // 최소 일치 조건
+                    .should(matchPhraseQuery._toQuery())
+                    .should(prefixQuery._toQuery())
+                    .should(matchQuery._toQuery())
+                    .minimumShouldMatch("1")
             );
 
-            // 검색 요청 설정
             SearchRequest searchRequest = new SearchRequest.Builder()
                     .index("books")
                     .query(boolQuery._toQuery())
                     .build();
 
-            // Elasticsearch 클라이언트를 사용하여 검색 실행
             SearchResponse<ElasticDTO> response = elasticsearchClient.search(searchRequest, ElasticDTO.class);
 
-            // 검색 결과를 리스트로 변환하여 반환
             return response.hits().hits().stream()
                     .map(hit -> hit.source())
                     .collect(Collectors.toList());
@@ -162,6 +199,4 @@ public class ElasticService {
             return List.of();
         }
     }
-
-
 }
