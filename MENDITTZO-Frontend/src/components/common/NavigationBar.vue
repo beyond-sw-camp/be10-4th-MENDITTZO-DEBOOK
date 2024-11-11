@@ -137,8 +137,6 @@ onUnmounted(() => {
       <div><p class="nav-bottom-text">독서토론방</p></div>
     </div>
   </header>
-
-  <hr id="bottom-hr">
 </template>
 
 <style scoped>
@@ -156,6 +154,7 @@ header {
   background-color: #78AE6B;
 }
 #top-nav {
+
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
@@ -167,6 +166,7 @@ header {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   place-items: center;
+
 }
 #logo {
   width: 150px;

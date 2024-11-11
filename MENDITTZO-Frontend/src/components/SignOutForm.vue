@@ -17,6 +17,7 @@ const confirmSignOut = () => {
 
 <template>
   <div class="signout-form">
+    <img src="@/assets/image/emergency.png">
     <p class="confirm-message">정말 탈퇴하시겠습니까?</p>
     <div class="button-group">
       <button class="confirm-button" @click="confirmSignOut">탈퇴</button>
@@ -37,12 +38,13 @@ const confirmSignOut = () => {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
+  margin-top: 10px;
 }
 
 .button-group {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 100px;
 }
 .confirm-button,
 .cancel-button {
@@ -54,9 +56,18 @@ const confirmSignOut = () => {
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  font-weight: bold
 }
 
 .cancel-button {
-  background-color: #D9534F;
+  background-color: white;
+  color: #78AE6B;
+  border: 2px solid #78AE6B;
 }
+
+.signout-form img {
+  width: 50px;
+  height: auto; /* 비율 유지 */
+}
+
 </style>

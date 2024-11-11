@@ -19,5 +19,7 @@ const props = defineProps({
 .container {
   display: flex;
   flex-direction: column;
+  padding-right: 20px;
+  padding-left: 20px;
 }
 </style>
