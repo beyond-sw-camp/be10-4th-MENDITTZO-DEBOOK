@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ReviewResponseDTO {
 
+    private final Long reviewId;
     private final String title;
     private final String content;
     private final int rating;
