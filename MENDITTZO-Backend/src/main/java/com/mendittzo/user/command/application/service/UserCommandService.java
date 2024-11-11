@@ -36,14 +36,6 @@ public class UserCommandService {
             "평론가", "매니아", "고양이", "양철나무꾼", "거위"
     };
 
-    // 새로운 사용자 생성
-    // todo: 안 쓰면 지우기
-    public User registerNewUser(UserCreateRequestDTO userRequest) {
-
-        User newUser = UserMapper.toEntity(userRequest);
-        return userRepository.save(newUser);
-    }
-
     // 사용자의 닉네임을 생성하는 메소드
     public String generateUserNickname() {
 

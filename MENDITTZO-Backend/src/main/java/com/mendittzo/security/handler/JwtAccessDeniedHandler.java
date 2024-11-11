@@ -21,7 +21,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         // 접근 권한이 없은데 접근한 경우
         // 인가 실패로 403 오류 응답
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.setContentType("application/json;charset=UTF-8");  // todo: 에러 코드 json으로 넘겨야 하나?
+        response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(new ObjectMapper().writeValueAsString(new CustomException(ErrorCode.AUTHORIZATION_FAILED)));
     }
 }

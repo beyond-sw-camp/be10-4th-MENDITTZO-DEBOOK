@@ -37,7 +37,6 @@ public class KakaoLoginController {
     public ResponseEntity<KakaoLoginUrlResponseDTO> getKakaoLoginPage() {
 
         KakaoLoginUrlResponseDTO loginUrlResponse = kakaoLoginService.getKakaoLoginUrl();
-        // todo: success code 등등 넘기게 바꾸기
         return new ResponseEntity<>(loginUrlResponse, HttpStatus.OK);
     }
 

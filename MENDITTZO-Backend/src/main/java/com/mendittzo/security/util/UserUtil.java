@@ -26,12 +26,9 @@ public class UserUtil {
             // customUserDetails 에서 loginId 가져오기
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            log.info("userDetails.getLoginId():" + userDetails.getLoginId());
-
             return userDetails.getLoginId();
         }
         // 인증이 안 된 경우
         return null;
     }
-
 }

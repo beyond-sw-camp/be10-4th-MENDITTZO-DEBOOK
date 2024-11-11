@@ -81,6 +81,7 @@ public class User {
                 .authProvider(authProvider)
                 .profileImg(profileImg)
                 .loginId(loginId)
+                .userId(userId)
                 .build();
     }
 
