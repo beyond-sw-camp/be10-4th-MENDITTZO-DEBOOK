@@ -1,6 +1,7 @@
 package com.mendittzo.report.command.domain.repository;
 
 import com.mendittzo.report.command.domain.aggregate.Report;
+import org.reactivestreams.Publisher;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface ReportCommandRepository {
     List<Report> findAllByChatroomId(Long chatroomId);
 
     List<Report> findAllByChatId(String chatId);
+
+    Report findByReporterUser(Long reporterLoginId);
 }
