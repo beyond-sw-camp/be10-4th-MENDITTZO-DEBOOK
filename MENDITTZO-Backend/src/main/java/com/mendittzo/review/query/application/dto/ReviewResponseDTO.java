@@ -15,5 +15,7 @@ public class ReviewResponseDTO {
     private final int rating;
     private final String nickname;
     private final LocalDateTime createDatetime;
+    private final LocalDateTime updateDatetime;
     private final Long userId;
+    private final Long bookId;
 }
