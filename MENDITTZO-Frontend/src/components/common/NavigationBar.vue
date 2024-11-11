@@ -1,36 +1,53 @@
 <script setup>
-import {computed, ref} from 'vue';
-import {useAuthStore} from "@/store/auth.js";
+import { computed, ref } from 'vue';
+import { useAuthStore } from "@/store/auth.js";
 import router from "@/router/router.js";
+import instance from "@/config/axios.js";
+import { RouterLink } from "vue-router";
 
 const authStore = useAuthStore();
-import {RouterLink} from "vue-router";
-import instance from "@/config/axios.js";
-
-// accessToken 이 있으면 로그인 한 상태
 const isLogin = computed(() => !!authStore.accessToken);
+const searchQuery = ref(""); // 검색어 상태
+const searchResults = ref([]); // 검색 결과 상태
 
 // 로그아웃
 const handleLogout = async () => {
-
   try {
     await instance.delete("/logout", {
-      headers: {Authorization: `Bearer ${authStore.accessToken}`},
+      headers: { Authorization: `Bearer ${authStore.accessToken}` },
     });
-
-    // Pinia 스토어, 로컬 스토리지에서 토큰 삭제
     authStore.logout();
     router.push("/login");
   } catch (error) {
     console.error("로그아웃 실패: ", error);
   }
-
 };
 
 // 마이페이지로 이동 시 사용자 정보 불러오기
 const handleMyPage = async () => {
+  await authStore.fetchUserInfo(); // 사용자 정보를 백엔드에서 가져와 업데이트
+};
 
-  await authStore.fetchUserInfo();  // 사용자 정보를 백엔드에서 가져와 업데이트
+// 자동완성 검색 함수
+const handleSearch = async () => {
+  if (searchQuery.value.trim() === "") {
+    searchResults.value = []; // 검색어가 없으면 결과를 비웁니다
+    return;
+  }
+
+  try {
+    const response = await instance.get("/public/elastic/autocomplete", {
+      params: {query: searchQuery.value},
+    });
+    searchResults.value = response.data; // 검색 결과 업데이트
+  } catch (error) {
+    console.error("자동완성 결과를 가져오는 중 오류가 발생했습니다:", error);
+  }
+};
+
+// 도서 선택 시 상세 페이지로 이동
+const goToBookDetail = (bookId) => {
+  router.push(`/booklists/${bookId}`);
 };
 </script>
 
@@ -39,13 +56,31 @@ const handleMyPage = async () => {
     <div id="top-nav">
       <div>
         <RouterLink to="/" active-class="active" replace>
-        <img id="logo" src="../../assets/image/logo.png" alt="로고이미지">
+          <img id="logo" src="../../assets/image/logo.png" alt="로고이미지">
         </RouterLink>
       </div>
 
       <div id="search-bar">
-        <input id="search-input" type="text" placeholder="도서명 또는 저자를 입력하세요.">
+        <input
+            id="search-input"
+            type="text"
+            placeholder="검색할 도서명을 입력하세요."
+            v-model="searchQuery"
+            @input="handleSearch"
+        />
         <img id="search-icon" src="../../assets/image/search-icon.png" alt="검색아이콘">
+
+        <!-- 자동완성 결과 -->
+        <ul v-if="searchResults.length" class="autocomplete-results">
+          <li
+              v-for="result in searchResults"
+              :key="result.id"
+              class="autocomplete-item"
+              @click="goToBookDetail(result.bookId)"
+          >
+            {{ result.title }} - {{ result.author }}
+          </li>
+        </ul>
       </div>
 
       <div>
@@ -64,7 +99,7 @@ const handleMyPage = async () => {
 
         <ul class="login-logout" v-if="isLogin">
           <li>
-            <RouterLink to ="/mypage" class ="mypage-button">
+            <RouterLink to="/mypage" class="mypage-button">
               <img src="../../assets/image/profile.png" alt="회원아이콘">{{ authStore.nickname }} 님
             </RouterLink>
           </li>
@@ -82,32 +117,29 @@ const handleMyPage = async () => {
       <div><p class="nav-bottom-text">도서추천</p></div>
       <div><p class="nav-bottom-text">독서토론방</p></div>
     </div>
-
   </header>
-
-  <hr id="bottom-hr">
 </template>
 
 <style scoped>
-a{
+a {
   text-decoration: none;
 }
-/* header */
-header{
+
+header {
   width: 1440px;
   padding: 0;
-  margin: 0 auto; /* 좌우 여백 자동으로 설정하여 가운데 정렬 */
+  margin: 0 auto;
 }
 
-/* 네비게이션 하단 선 */
-#bottom-hr{
+
+#bottom-hr {
   border: none;
   height: 1px;
   background-color: #78AE6B;
 }
 
-/* 네비바 상단 */
-#top-nav{
+#top-nav {
+
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
@@ -115,66 +147,68 @@ header{
   margin: 30px 0 15px 0;
 }
 
-/* 네비바 하단 */
-#bottom-nav{
+#bottom-nav {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 예: 3열 그리드 */
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  place-items: center; /* 모든 셀의 콘텐츠를 가운데 정렬 */
+  place-items: center;
+
 }
 
-/*이미지 파일*/
-#logo{
+#logo {
   width: 150px;
   height: 30px;
   cursor: pointer;
 }
-#search-icon{
+
+#search-icon {
   width: 30px;
   height: 30px;
   margin-top: 12px;
   cursor: pointer;
 }
 
-/* 검색바 */
-#search-bar{
+#search-bar {
   display: flex;
   justify-content: center;
   border: 2px solid #78AE6B;
   border-radius: 15px;
-  padding: 0 10px 0 10px;
+  padding: 0 10px;
+  position: relative;
 }
-#search-input{
+
+#search-input {
   width: 400px;
   height: 50px;
   border: none;
-  margin: 0 10px 0 10px;
+  margin: 0 10px;
 }
-#search-input:focus{
+
+#search-input:focus {
   box-shadow: none;
   outline: none;
 }
 
-/* 로그인,로그아웃 버튼 영역 */
-.login-logout{
+.login-logout {
   list-style: none;
   display: flex;
-  margin: 10px 10px 0 10px ;
+  margin: 10px 10px 0 10px;
   white-space: nowrap;
   padding: 0;
   text-align: center;
 }
-.login-logout > li{
+
+.login-logout > li {
   display: flex;
-  margin: 0 10px 0 10px ;
-  white-space: nowrap;
+  margin: 0 10px;
   color: #78AE6B;
   font-weight: bold;
-  justify-content: center;  /* 수평 중앙 정렬 */
-  align-items: center;      /* 수직 중앙 정렬 */
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
-#logout-button{
+
+#logout-button {
   margin-left: 10px;
   width: 80px;
   height: 40px;
@@ -183,35 +217,59 @@ header{
   border-radius: 10px;
 }
 
-/* routerlink 기본 스타일 제거 */
-.login-logout-button{
-  text-decoration: none; /* 밑줄 제거 */
-  color: inherit;        /* 텍스트 색상을 상속받아 기본 색으로 설정 */
+.login-logout-button {
+  text-decoration: none;
+  color: inherit;
   display: flex;
-  align-items: center;   /* 아이콘과 텍스트 수직 정렬 */
-  font-weight: bold;     /* 스타일 통일을 위해 굵게 설정 */
-}
-/* routerlink 기본 스타일 제거 */
-.mypage-button{
-  text-decoration: none; /* 밑줄 제거 */
-  color: inherit;        /* 텍스트 색상을 상속받아 기본 색으로 설정 */
-  display: flex;
-  align-items: center;   /* 아이콘과 텍스트 수직 정렬 */
-  font-weight: bold;     /* 스타일 통일을 위해 굵게 설정 */
+  align-items: center;
+  font-weight: bold;
 }
 
-/* 네비게이션 하단 버튼 텍스트 */
-.nav-bottom-text{
+.mypage-button {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+
+.nav-bottom-text {
   white-space: nowrap;
   color: #444444;
   font-weight: bold;
-  justify-content: center;  /* 수평 중앙 정렬 */
-  align-items: center;      /* 수직 중앙 정렬 */
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
 
 .active .nav-bottom-text {
-  color: #78AE6B; /* 활성화 상태일 때 색상 */
+  color: #78AE6B;
 }
 
+/* 자동완성 드롭다운 스타일 */
+.autocomplete-results {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ddd;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.autocomplete-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.autocomplete-item:hover {
+  background-color: #f0f0f0;
+}
 </style>

@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from "@/router/router.js";
 import axios from "axios";
 import {createPinia} from "pinia";
+import './assets/global.css'
 
 axios.defaults.baseURL = 'http://localhost:8080/api/v1';
 const pinia = createPinia();

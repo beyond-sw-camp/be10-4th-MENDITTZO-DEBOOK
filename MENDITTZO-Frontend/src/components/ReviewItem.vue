@@ -1,7 +1,7 @@
 <script setup>
-import {computed, ref} from 'vue';
+import { computed, ref } from 'vue';
 import ConfirmModal from "@/components/common/ConfirmModal.vue";
-import axios from 'axios';
+import axios from "@/config/axios.js";
 import { useRouter } from 'vue-router';
 import openIcon from '@/assets/image/review-open.png';
 import closeIcon from '@/assets/image/review-close.png';
@@ -19,7 +19,27 @@ const showReportModal = ref(false);
 const router = useRouter();
 
 // 리뷰 작성자인지 여부 확인
-const isAuthor = computed(() => props.review.isWriter);
+const isAuthor = computed(() => props.review.writer);
+
+function formatDateTime(dateTime) {
+  if (!dateTime) return '';
+  const date = new Date(dateTime);
+
+  const datePart = date.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).replace(/\./g, '-').replace(/\s/g, '').replace(/-$/, ''); // 날짜 부분만 '-'로 연결
+
+  const timePart = date.toLocaleTimeString('ko-KR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  });
+
+  return `${datePart} ${timePart}`;
+}
 
 const toggleContent = () => {
   isExpanded.value = !isExpanded.value;
@@ -36,9 +56,12 @@ const closeDeleteModal = () => {
 const deleteReview = async () => {
   closeDeleteModal();
   try {
-    await axios.delete(`http://localhost:8080/booklists/${bookId}/reviews/${reviewId}`);
+    const bookId = props.review.bookId;
+    const reviewId = props.review.reviewId;
+
+    await axios.delete(`/${bookId}/reviews/${reviewId}`);
     alert('리뷰가 성공적으로 삭제되었습니다.');
-    // 페이지 새로고침이나 리스트 갱신 로직 추가 필요
+
   } catch (error) {
     console.error('리뷰 삭제 중 오류가 발생했습니다: ', error);
     alert('리뷰 삭제에 실패했습니다.');
@@ -59,13 +82,12 @@ const reportReview = async () => {
     // ReportRequestDTO 생성
     const reportRequestDTO = {
       reviewId: props.review.reviewId,            // 신고 대상 리뷰 ID
-      reporterUserId: currentUser.userId,          // 현재 로그인한 사용자의 ID
       reportedUserId: props.review.userId,   // 리뷰 작성자의 ID
       reportType: 'REVIEW',                        // 신고 타입
     };
 
     // 신고 요청
-    await axios.post('http://localhost:8080/api/v1/report', reportRequestDTO);
+    await axios.post('/report', reportRequestDTO);
     alert('리뷰가 신고되었습니다.');
   } catch (error) {
     console.error('리뷰 신고 중 오류가 발생했습니다: ', error);
@@ -73,9 +95,8 @@ const reportReview = async () => {
   }
 };
 
-
 const openEditPage = () => {
-  router.push(`/booklists/${bookId}/reviews/edit`);
+  router.push(`/booklists/${props.review.bookId}/review/${props.review.reviewId}/edit`);
 };
 </script>
 
@@ -84,7 +105,8 @@ const openEditPage = () => {
     <div class="review-header">
       <h1 class="review-title">{{ review.title }}</h1>
       <div class="meta">
-        <span class="user-info">{{ review.nickname }} | {{ review.createDatetime }} |</span>
+        {{ review.nickname }} |
+        {{ formatDateTime(review.updateDatetime ? review.updateDatetime : review.createDatetime) }} |
         <div class="actions">
           <!-- 리뷰 작성자일 때만 수정, 삭제 버튼 표시 -->
           <template v-if="isAuthor">
@@ -125,8 +147,8 @@ const openEditPage = () => {
         </span>
       </div>
     </div>
-    <div class="review-content">
-      <p class="content">
+    <div class="review-content" :class="{ expanded: isExpanded }">
+    <p class="content">
         {{ isExpanded ? review.content : (review.content.length > 100 ? review.content.slice(0, 100) + '...' : review.content) }}
       </p>
       <button v-if="review.content.length > 100" @click="toggleContent" class="toggle-btn">
@@ -144,7 +166,7 @@ const openEditPage = () => {
 .review-item {
   padding: 20px;
   margin-left: 20px;
-  margin-right: 20px;
+  margin-right: 60px;
   border-bottom: 1px solid #BDBDBD;
   color: #444444;
 }
