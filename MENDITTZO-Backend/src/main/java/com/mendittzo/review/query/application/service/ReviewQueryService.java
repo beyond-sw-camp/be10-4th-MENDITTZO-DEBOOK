@@ -1,6 +1,9 @@
 package com.mendittzo.review.query.application.service;
 
+import com.mendittzo.common.exception.CustomException;
+import com.mendittzo.common.exception.ErrorCode;
 import com.mendittzo.review.query.application.dto.ReviewDTO;
+import com.mendittzo.review.query.application.dto.ReviewDetailResponseDTO;
 import com.mendittzo.review.query.application.dto.ReviewListResponseDTO;
 import com.mendittzo.review.query.application.dto.ReviewResponseDTO;
 import com.mendittzo.review.query.domain.repository.ReviewQueryRepository;
@@ -36,7 +39,7 @@ public class ReviewQueryService {
                         review.getRating(),
                         review.getNickname(),
                         review.getCreateDatetime(),
-                        review.getUserId().equals(currentUser.getUserId()), // 작성자 여부 확인
+                        currentUser != null && review.getUserId().equals(currentUser.getUserId()), // 작성자 여부 확인
                         review.getUserId()  // 사용자 ID도 추가
                 ))
                 .collect(Collectors.toList());
@@ -77,5 +80,14 @@ public class ReviewQueryService {
                 .currentPage(page.getNumber() + 1)  // 현재 페이지 (1-based)
                 .pageSize(page.getSize())  // 한 페이지의 리뷰 수
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewDetailResponseDTO getReview(Long reviewId) {
+
+        ReviewResponseDTO review = reviewQueryRepository.findReviewByReviewId(reviewId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REVIEW));
+
+        return new ReviewDetailResponseDTO(review);
     }
 }

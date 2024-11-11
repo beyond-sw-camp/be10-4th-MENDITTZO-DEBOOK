@@ -43,6 +43,9 @@ dependencies {
     // spring security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
+    // websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.java-websocket:Java-WebSocket:1.5.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -59,6 +62,8 @@ dependencies {
     implementation 'co.elastic.clients:elasticsearch-java:8.15.3'
     // 아파치 common csv (CSV 파일 읽기)
     implementation 'org.apache.commons:commons-csv:1.8'
+    // 몽고 DB 추가
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 }
 
 tasks.named('test') {

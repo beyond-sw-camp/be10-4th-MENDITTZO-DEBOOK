@@ -2,6 +2,7 @@ package com.mendittzo.review.query.application.controller;
 
 import com.mendittzo.common.exception.CustomException;
 import com.mendittzo.common.exception.ErrorCode;
+import com.mendittzo.review.query.application.dto.ReviewDetailResponseDTO;
 import com.mendittzo.review.query.application.dto.ReviewListResponseDTO;
 import com.mendittzo.review.query.application.service.ReviewQueryService;
 import com.mendittzo.security.util.UserUtil;
@@ -31,13 +32,25 @@ public class ReviewQueryController {
 
         Long loginId = UserUtil.getCurrentUserLoginId();
 
-        User currentUser = userQueryRepository.findUserInfoByLoginId(loginId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        User currentUser = null;
+        if (loginId != null) {
+            currentUser = userQueryRepository.findUserInfoByLoginId(loginId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        }
 
         ReviewListResponseDTO response = reviewQueryService.getReviews(bookId, currentUser, pageable);
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/detail/{reviewId}")
+    public ResponseEntity<ReviewDetailResponseDTO> getReview(@PathVariable(name = "reviewId") Long reviewId) {
+
+        ReviewDetailResponseDTO response = reviewQueryService.getReview(reviewId);
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/user")
     public ResponseEntity<ReviewListResponseDTO> getMyReviews(
             @RequestParam(value = "page", defaultValue = "1") int page,
