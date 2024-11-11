@@ -53,6 +53,8 @@ public class ReportCommandService {
             case CHATROOM:
                 reportChatroom(reportRequestDTO, reporterUser, reportedUser);
                 break;
+            case CHAT:
+                reportChat(reportRequestDTO, reporterUser, reportedUser);
         }
 
         // 피신고자 정지 유무 확인 및 처리

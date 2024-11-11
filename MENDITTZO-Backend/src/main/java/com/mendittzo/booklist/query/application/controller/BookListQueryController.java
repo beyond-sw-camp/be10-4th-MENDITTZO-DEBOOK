@@ -33,7 +33,6 @@ public class BookListQueryController {
     @GetMapping("/booklists/{bookId}")
     public ResponseEntity<BookDetailResponseDTO> getBook(@PathVariable Long bookId) {
 
-        System.out.println(bookId);
         BookDetailResponseDTO response = bookListQueryService.getBook(bookId);
 
         return ResponseEntity.ok(response);

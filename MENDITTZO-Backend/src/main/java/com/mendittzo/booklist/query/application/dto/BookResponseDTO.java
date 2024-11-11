@@ -8,7 +8,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@ToString
 public class BookResponseDTO {
 
     private final Long bookId;

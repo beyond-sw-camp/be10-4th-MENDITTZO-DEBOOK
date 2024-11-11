@@ -13,7 +13,6 @@ import lombok.ToString;
 @Table(name = "book")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class Book {
 
     @Id
