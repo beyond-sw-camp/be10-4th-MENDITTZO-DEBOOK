@@ -55,6 +55,8 @@ const fetchReview = async (page = 1) => {
 const goToReviewCreatPage = () => {
   // accessToken이 존재하는지로 로그인 여부 확인
   if (!authStore.accessToken) {
+    // 로그인되지 않았다면, 리뷰 작성 페이지로 가려고 했던 경로를 저장
+    localStorage.setItem('redirectTo', `/booklists/${bookId}/review/create`);
     // 로그인되지 않았다면 로그인 페이지로 이동
     router.push("/login");
   } else {
@@ -107,38 +109,48 @@ onMounted(() => {
 </template>
 
 <style scoped>
-  .book-detail {
-    border-bottom: 1px solid #BDBDBD;
-  }
+.container {
+  width: 1440px;
+  margin: 0 auto; /* 페이지 중앙에 정렬 */
+  padding-left: 20px; /* 헤더와 정렬을 맞추기 위한 패딩 */
+  padding-right: 20px;
+}
 
-  .review-list {
-    border-bottom: 1px solid #BDBDBD;
-  }
-  .review {
-    margin-left: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
+.book-detail {
+  border-bottom: 1px solid #BDBDBD;
+}
 
-  .review h1 {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #444444;
-    margin-left: 30px;
-  }
+.review-list {
+  margin-top: 10px;
+  border-bottom: 2px solid #BDBDBD;
+}
 
-  .review span {
-    font-size: 23px;
-  }
+.review {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 30px;
+}
 
-  .review-else {
-    display: flex;
-    width: 220px;
-    height: 56px;
-    justify-content: space-between;
-    margin-right: 40px;
-    margin-top: 30px;
-  }
+.review h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #444444;
+  margin-left: 30px;
+}
+
+.review span {
+  font-size: 23px;
+}
+
+.review-else {
+  display: flex;
+  width: 220px;
+  height: 56px;
+  justify-content: space-between;
+  margin-right: 40px;
+  margin-top: 30px;
+}
 </style>

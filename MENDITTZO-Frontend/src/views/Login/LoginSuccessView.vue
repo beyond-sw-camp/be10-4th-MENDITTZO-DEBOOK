@@ -9,6 +9,19 @@ const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 
+// 로그인 성공 후 리디렉션 처리
+const onLoginSuccess = () => {
+  const router = useRouter();
+  const redirectTo = localStorage.getItem('redirectTo');
+
+  if (redirectTo) {
+    router.push(redirectTo);
+    localStorage.removeItem('redirectTo');
+  } else {
+    router.push('/');
+  }
+};
+
 onMounted(async () => {
 
   try {
@@ -21,7 +34,7 @@ onMounted(async () => {
       authStore.setTokens(accessToken, refreshToken);
     }
     // 홈 화면으로 이동
-    router.push("/");
+    onLoginSuccess();
   } catch (error) {
     console.error("로그인 요청 실패", error);
   }
