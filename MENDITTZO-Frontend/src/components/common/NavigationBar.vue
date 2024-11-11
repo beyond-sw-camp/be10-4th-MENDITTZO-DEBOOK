@@ -118,8 +118,6 @@ const goToBookDetail = (bookId) => {
       <div><p class="nav-bottom-text">독서토론방</p></div>
     </div>
   </header>
-
-  <hr id="bottom-hr">
 </template>
 
 <style scoped>
@@ -133,6 +131,7 @@ header {
   margin: 0 auto;
 }
 
+
 #bottom-hr {
   border: none;
   height: 1px;
@@ -140,6 +139,7 @@ header {
 }
 
 #top-nav {
+
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
@@ -152,6 +152,7 @@ header {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   place-items: center;
+
 }
 
 #logo {
