@@ -14,9 +14,9 @@ const isLogin = computed(() => !!authStore.accessToken);
 const handleLogout = async () => {
 
   try {
-    await instance.delete("/logout", {
-      headers: {Authorization: `Bearer ${authStore.accessToken}`},
-    });
+    // await instance.delete("/logout", {
+    //   headers: {Authorization: `Bearer ${authStore.accessToken}`},
+    // });
 
     // Pinia 스토어, 로컬 스토리지에서 토큰 삭제
     authStore.logout();

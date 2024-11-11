@@ -8,7 +8,7 @@ import PagingBar from "@/components/common/PagingBar.vue";
 import SmallButton from "@/components/common/SmallButton.vue";
 import DropDownMenu from "@/components/common/DropDownMenu.vue";
 
-const bookResponse = ref(null);
+const bookResponse = ref();
 const route = useRoute();
 const router = useRouter();
 const selectedOption = ref("최신순");
@@ -25,8 +25,10 @@ const state = reactive({
 
 const fetchBookDetail = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/booklists/${bookId}`);
+    console.log(bookId);
+    const response = await axios.get(`/booklists/${bookId}`);
     bookResponse.value = response.data.bookResponse;
+    console.log(bookResponse.value);
   } catch (error) {
     console.error('도서 상세 정보를 불러오는 중 에러가 발생했습니다. : ', error);
   }
@@ -34,7 +36,7 @@ const fetchBookDetail = async () => {
 
 const fetchReview = async (page = 1) => {
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/reviews/${bookId}`, {
+    const response = await axios.get(`/reviews/${bookId}`, {
       params: {
         page
       }

@@ -1,8 +1,7 @@
 <script setup>
 import {onMounted, reactive, ref} from "vue";
 import {useAuthStore} from "@/store/auth.js";
-import axios from "axios";
-import PagingBar from "@/components/PagingBar.vue";
+import PagingBar from "@/components/common/PagingBar.vue";
 import instance from "@/config/axios.js";
 import router from "@/router/router.js";
 import SignOutForm from "@/components/SignOutForm.vue";

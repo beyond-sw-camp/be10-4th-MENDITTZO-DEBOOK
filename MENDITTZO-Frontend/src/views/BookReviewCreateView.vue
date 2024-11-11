@@ -13,7 +13,7 @@ const bookId = route.params.id;
 // 도서 상세 정보를 가져오는 함수
 const fetchBookDetail = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/booklists/${bookId}`);
+    const response = await axios.get(`/booklists/${bookId}`);
     bookResponse.value = response.data.bookResponse;
   } catch (error) {
     console.error('도서 상세 정보를 불러오는 중 에러가 발생했습니다. : ', error);
@@ -27,7 +27,7 @@ onMounted(() => {
 
 const handleReviewCreate = async (formData) => {
   try {
-    await axios.post(`http://localhost:8080/api/v1/${bookId}/reviews`, formData)
+    await axios.post(`/${bookId}/reviews`, formData)
 
     router.push(`/booklists/${bookId}`)
   } catch (error) {
