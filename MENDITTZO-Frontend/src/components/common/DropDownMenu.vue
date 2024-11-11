@@ -46,7 +46,7 @@ function selectOption(option) {
       />
     </div>
     <ul v-if="isMenuOpen" class="options">
-      <li v-for="option in options" :key="option" @click="selectOption(option)">
+      <li v-for="option in options" :key="option" @click.stop="selectOption(option)">
         {{ option }}
       </li>
     </ul>
@@ -63,6 +63,8 @@ function selectOption(option) {
   text-align: center;
   font-size: 16px;
   font-weight: bold;
+  position: relative;
+  z-index: 10;
 }
 .selected-option {
   padding: 8px;

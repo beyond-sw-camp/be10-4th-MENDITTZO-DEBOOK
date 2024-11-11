@@ -51,15 +51,15 @@ const fetchReview = async (page = 1) => {
 };
 
 const goToReviewCreatPage = () => {
-  router.push(`/reviews/review/${bookId}/create`);
+  router.push(`/booklists/${bookId}/review/create`);
 }
 
 function handleSelect(option) {
   selectedOption.value = option;
-  if(option === "최신순") {
-    state.reviewList.value.sort((a, b) => new LocalDateTime(b.createDatetime) - new LocalDateTime(a.createDatetime));
+  if (option === "최신순") {
+    state.reviewList.sort((a, b) => new Date(b.createDatetime) - new Date(a.createDatetime));
   } else if (option === "별점순") {
-    state.reviewList.value.sort((a, b) => b.rating - a.rating);
+    state.reviewList.sort((a, b) => b.rating - a.rating);
   }
 }
 

@@ -41,7 +41,7 @@ const router = createRouter({
         },
         {
             path: '/booklists/:id/review/edit',
-            component: () => import('@/views/BookReviewCreateView.vue')
+            component: () => import('@/views/BookReviewEditView.vue')
         }
     ]
 });
