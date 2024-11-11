@@ -12,12 +12,12 @@ const router = createRouter({
         {
             // 로그인 화면
             path: '/login',
-            component: () => import('@/views/login/LoginForm.vue')
+            component: () => import('@/views/Login/LoginForm.vue')
         },
         {
             // 로그인 성공 화면
             path: '/login-success',
-            component: () => import('@/views/login/LoginSuccessView.vue')
+            component: () => import('@/views/Login/LoginSuccessView.vue')
         },
         {
             // 마이페이지 화면
