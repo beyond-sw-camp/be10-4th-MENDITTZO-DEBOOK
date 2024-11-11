@@ -11,6 +11,7 @@ export const useAuthStore = defineStore('auth', () => {
     const nickname = ref(null);
     const status = ref(null);
     const profileImg = ref(null);
+    const userId = ref(null);
 
     // 페이지가 로드될 때마다 localStorage 에서 토큰을 읽어와 상태를 초기화한다.
     onMounted(() => {
@@ -50,6 +51,7 @@ export const useAuthStore = defineStore('auth', () => {
             nickname.value = data.nickName;
             profileImg.value = data.profileImg;
             status.value = data.status;
+            userId.value = data.userId;
 
         } catch (error) {
             console.error("사용자 정보 가져오기 실패: ", error);
@@ -111,6 +113,7 @@ export const useAuthStore = defineStore('auth', () => {
         nickname,
         status,
         profileImg,
+        userId,
         logout,
         setTokens,
         setLoginId,
