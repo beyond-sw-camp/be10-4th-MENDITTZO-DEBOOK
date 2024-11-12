@@ -12,8 +12,8 @@ spring:
   elasticsearch:
     rest:
       uris: http://elasticsearch.default.svc.cluster.local:9200
-      username: "elastic"
-      password: "elastic"
+      username: elastic
+      password: elastic
 
   jpa:
     hibernate:
