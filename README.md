@@ -106,7 +106,7 @@ public class User{
   
 ## 메인페이지
     
-![메인페이지](https://github.com/user-attachments/assets/a20633ea-cbf0-4994-b0ba-2860bfade6c1)   
+![메인페이지](https://github.com/user-attachments/assets/886826c7-d658-44c8-b651-ef91f94f3a39))   
 
 - 메인 페이지 화면으로 로그인과 도서 검색을 할 수 있고 리뷰 많은 책 순위, 독서 토론방, 도서 목록을 간단하게 볼 수 있으며 네비게이션을 통해 도서 목록, 도서 추천, 독서 토론방으로 이동할 수 있다.
     
