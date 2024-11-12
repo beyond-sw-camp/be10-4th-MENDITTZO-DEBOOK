@@ -102,6 +102,7 @@ public class User{
 # :four: 프로젝트 설계 문서
 ## 1. DDD 설계
 [DDD 설계 보기 - Miro](https://miro.com/app/board/uXjVLNZH4nw=/)
+![image](https://github.com/user-attachments/assets/988976e5-d0d0-40a2-a5be-22a79dd6e4d1)
 
 ## 2. 요구사항 명세서
 [요구사항 명세서](https://docs.google.com/spreadsheets/d/1oddc-l1flUAqUNzAMt8jnrshAidp2dHnd1w2Sz5JxWA/edit?gid=1147247037#gid=1147247037)
