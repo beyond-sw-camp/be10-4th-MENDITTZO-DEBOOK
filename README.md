@@ -1,30 +1,26 @@
-# MENDITTZO-DEBOOK
+# 책론을박 :books:
 ![Group 19](https://github.com/user-attachments/assets/febad6e0-39f8-4d57-84ac-ea8a8d3cd522)
 
-# 프로젝트 개요
+# :one: 프로젝트 개요
 한강 작가의 노벨문학상 소식과 함께 독서의 바람이 불어오고 있습니다. 막 책을 읽기 시작한 호기심 많은 초보 독서가들, 오랜 시간 책 속에 빠져 살아온 독서가들 모두를 위한 플랫폼 '책론을박'을 소개합니다.
 
 
 책론을박은 수많은 도서 목록을 제공하고, 자신이 읽은 책에 대한 소중한 감상을 공유하는 것에서 그치지 않고, 책으로부터 얻은 풍부한 영감을 나눌 수 있는 장소를 제공합니다.
 
 
-### 주요 기능
+### 1. 주요 기능
 1. 카카오 로그인 제공
    - 카카오 로그인을 통해 쉽고 빠르게 책론을박에 가입 가능
    - 토큰을 통한 로그인 상태 관리
 2. 기능
 3. 기능
-### 기술 스택
+### 2. 기술 스택
 
-<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"><img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"><img src="https://img.shields.io/badge/Vue-4FC08D?style=for-the-badge&logo=Vue.js&logoColor=white"><img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=MariaDB&logoColor=white"><img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=MongoDB&logoColor=white"><img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white"><img src="https://img.shields.io/badge/Redis-FF4438?style=for-the-badge&logo=Redis&logoColor=white"><img src="https://img.shields.io/badge/Google Gemini-8E75B2?style=for-the-badge&logo=Google Gemini&logoColor=white">
-
-
-
-<img src="https://img.shields.io/badge/표시할이름-색상?style=for-the-badge&logo=기술스택아이콘&logoColor=white">
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"><img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"><img src="https://img.shields.io/badge/Vue-4FC08D?style=for-the-badge&logo=Vue.js&logoColor=white"><img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=MariaDB&logoColor=white"><img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=MongoDB&logoColor=white"><img src="https://img.shields.io/badge/Redis-FF4438?style=for-the-badge&logo=Redis&logoColor=white"><img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white"><img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"><img src="https://img.shields.io/badge/kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white"><img src="https://img.shields.io/badge/amazon s3-569A31?style=for-the-badge&logo=amazon s3&logoColor=white"><img src="https://img.shields.io/badge/elastic search-005571?style=for-the-badge&logo=elasticsearch&logoColor=white">
 
 ### 프로젝트 아키텍처
 
-# 개발 팀 소개
+# :two: 개발 팀 소개
 ### 한화시스템 BEYOND SW캠프 10기 터치다운 ###
 
 | [![](https://avatars.githubusercontent.com/u/77000498?v=4)](https://github.com/we4sley) | [![](https://avatars.githubusercontent.com/u/103301589?v=4)](https://github.com/kimjm9911) | [![](https://avatars.githubusercontent.com/u/174981455?v=4)](https://github.com/eunseo-76) | [![](https://avatars.githubusercontent.com/u/50124987?v=4)](https://github.com/JungUiJin) | [![](https://avatars.githubusercontent.com/u/58172997?v=4)](https://github.com/enking) | [![](https://avatars.githubusercontent.com/u/132972216?v=4)](https://github.com/HanDJ00)|
@@ -32,7 +28,7 @@
 | 김영기 | 김지민 | 이은서 | 정의진 | 최두혁 | 한동주
 
 
-# 협업 전략
+# :three: 협업 전략
 ### 1. 브랜치 전략
 ![git-flow](https://github.com/user-attachments/assets/2d7e2ef4-df03-4c5f-8c78-316065100dde)
 - **main**: 배포용 branch
@@ -96,7 +92,7 @@ public class User{
 
 
 
-# 프로젝트 설계 문서
+# :four: 프로젝트 설계 문서
 ## 1. DDD 설계
 [DDD 설계 보기 - Miro](https://miro.com/app/board/uXjVLNZH4nw=/)
 
@@ -108,7 +104,7 @@ public class User{
 ## 3. ERD
 ![ERD 이미지](./asset/image/ERD%20캡쳐본.PNG)
 
-# 기능 수행 테스트
+# :five: 기능 수행 테스트
  <details>
    <summary>도서 추천 챗봇</summary>
    <div markdown="1">
@@ -174,7 +170,10 @@ public class User{
 
 ![로그인 & 로그아웃](https://github.com/user-attachments/assets/f3258c13-3b12-4a98-9c6e-1b2968d2c373)
 
-- 설명하고 싶은 내용 쓰기 여기까지 한세트 필요하면 복붙해서 더 쓰기
+- 사용자가 로그인 버튼을 누르면 서버로 로그인 url 요청을 보낸다.
+- 서버는 카카오 인증 서버에게 로그인 url을 요청해 사용자에게 전달하고, 사용자가 로그인하면 카카오 인증 서버가 인가 코드를 서버에 전달한다.
+- 서버는 인가 코드를 이용해 카카오 인증 서버로부터 필요한 정보를 얻고, DB에 사용자를 회원가입 또는 로그인 처리한다. 그리고 서버에서 생성한 서비스 자체 토큰을 함께 보낸다.
+- 로그아웃 시 서버에서 토큰을 삭제한다. 
 
 </div>
 </details>
@@ -406,7 +405,7 @@ pipeline {
 
 ###
 
-# 회고
+# :six: 회고
 |   팀원   | 회고 내용 |
 |:---:|-----------|
 | 김영기 | 이번 데브옵스 프로젝트에서 채팅 기능 개발을 맡게 되어 WebSocket + STOMP + Redis를 모두 다루어보게 되었다. 세 가지 모두 처음이었고 프로젝트 기간이 짧았기 때문에 채팅 기능 개발에서 채팅방 관리나 간결한 코드 작성과 같은 디테일을 챙기지 못해서 아쉬웠다. 물론 좋았던 점도 있었다. 먼저, 기존에 경험했던 HTTP 통신에서 더 나아가 실시간 통신이 어떻게 진행되는지 그 과정을 경험해볼 수 있었다. 네트워크쪽 지식이 부족했던 나에게는 조금 더 의미있는 시간이었다. 또한 STOMP를 이용해 실시간 통신을 더 쉽게 만들어주고 Redis를 이용해 빠른 데이터 처리를 하여 다수의 사용자가 채팅을 할 수 있는 기능을 개발하면서 채팅과 실시간 통신의 전반적이 프로세스를 이해할 수 있었다. 더 나아가 SockJS를 이용한 브라우저에 상관없이 통신이 가능하게 확장을 해보고 싶고 채팅 기능의 디테일을 더 살려 기존의 기능을 더 디벨롭해봐야겠다. 이번 프로젝트에서는 CI/CD 또한 경험해볼 수 있었는데 Docker, Kubernetes, Jenkins를 이용하여 협업 툴인 github의 프로젝트를 자동 빌드 및 배포하는 과정을 경험해볼 수 있었다. CI/CD의 전반적인 과정을 잘 이해하지 못하고 진행한 거 같아서 최종 프로젝트에는 직접 해보면서 과정들을 몸으로 습득해보아야겠다. 새로운 팀원들과 진행했던 프로젝트인데 기간도 짧아서 너무 어수선한 프로젝트가 되었던 거 같은데 최종 프로젝트에서는 협업을 더욱 견고히 하여 더 짜임새 있는 프로젝트를 개발해보아야겠다. |
