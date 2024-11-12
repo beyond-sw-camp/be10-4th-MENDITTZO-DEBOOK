@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: boot001dep
+  namespace: default
+spec:
+
+  selector:
+    matchLabels:
+      app: boot001dep
+  
+  # 3개의 파드를 생성. >> 무중단 배포를 위해 3개
+  replicas: 3
+
+  template:
+    metadata:
+      labels:
+        # 생성될 파드에 'app=boot001kube' 레이블을 부여.
+        app: boot001dep
+
+    spec:
+      containers:
+        - name: boot-container # 컨테이너의 이름을 설정.
+          image: junguijin/debook_boot_project:latest # 사용할 컨테이너 이미지를 지정.
+          imagePullPolicy: Always
+          env:
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: DB_PORT
+            - name: DB_DBNAME
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: DB_DBNAME
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: DB_PASSWORD
+            - name: KAKAO_CLIENT_ID_REST_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: KAKAO_CLIENT_ID_REST_API_KEY
+            - name: KAKAO_REDIRECT_URI
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: KAKAO_REDIRECT_URI
+            - name: TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: TOKEN_SECRET
+            - name: TOKEN_ACCESS_TOKEN_EXPIRATION_TIME
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: TOKEN_ACCESS_TOKEN_EXPIRATION_TIME
+            - name: TOKEN_REFRESH_TOKEN_EXPIRATION_TIME
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: TOKEN_REFRESH_TOKEN_EXPIRATION_TIME
+            - name: REDIS_DATA_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: REDIS_DATA_HOST
+            - name: REDIS_DATA_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: REDIS_DATA_PORT
+            - name: S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: S3_BUCKET
+            - name: IM_ACCESS
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: IM_ACCESS
+            - name: IM_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: IM_SECRET
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: GEMINI_API_KEY
+            - name: GEMINI_API_URL
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: GEMINI_API_URL
+
+          ports:
+            - containerPort: 8080 # 컨테이너가 리스닝할 포트 번호를 지정한다.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1 # 배포 중 사용할 수 없는 최대 Pod 수
+      maxSurge: 1       # 배포 시 추가 생성 가능한 최대 Pod 수
