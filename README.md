@@ -8,17 +8,12 @@
 책론을박은 수많은 도서 목록을 제공하고, 자신이 읽은 책에 대한 소중한 감상을 공유하는 것에서 그치지 않고, 책으로부터 얻은 풍부한 영감을 나눌 수 있는 장소를 제공합니다.
 
 
-### 1. 주요 기능
-1. 카카오 로그인 제공
-   - 카카오 로그인을 통해 쉽고 빠르게 책론을박에 가입 가능
-   - 토큰을 통한 로그인 상태 관리
-2. 기능
-3. 기능
 ### 2. 기술 스택
 
 <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"><img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"><img src="https://img.shields.io/badge/Vue-4FC08D?style=for-the-badge&logo=Vue.js&logoColor=white"><img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=MariaDB&logoColor=white"><img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=MongoDB&logoColor=white"><img src="https://img.shields.io/badge/Redis-FF4438?style=for-the-badge&logo=Redis&logoColor=white"><img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white"><img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"><img src="https://img.shields.io/badge/kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white"><img src="https://img.shields.io/badge/amazon s3-569A31?style=for-the-badge&logo=amazon s3&logoColor=white"><img src="https://img.shields.io/badge/elastic search-005571?style=for-the-badge&logo=elasticsearch&logoColor=white">
 
-### 프로젝트 아키텍처
+### 3. 프로젝트 아키텍처
+![ARCHI](https://github.com/user-attachments/assets/dc17bd74-5d4a-4817-a258-8f86155cb4b8)
 
 # :two: 개발 팀 소개
 ### 한화시스템 BEYOND SW캠프 10기 터치다운 ###
