@@ -127,6 +127,18 @@ public class User{
  
 </div>
 </details>
+<details>
+   <summary>엘라스틱 서치를 활용한 검색</summary>
+   <div markdown="1">
+  
+## 엘라스틱 서치를 통해 미리보기 기능
+    
+![검색 기능]('/Users/choiduhyeok/Documents/일레스틱 서치를 이용한 검색.gif')   
+
+- 설명하고 싶은 내용 쓰기 여기까지 한세트 필요하면 복붙해서 더 쓰기
+    
+</div>
+</details>
 
 
  <details>
