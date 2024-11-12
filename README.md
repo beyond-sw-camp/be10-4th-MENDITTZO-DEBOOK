@@ -142,6 +142,31 @@ public class User{
 </details>
 
  <details>
+   <summary>채팅 기능을 이용한 독서토론방</summary>
+   <div markdown="1">
+  
+## 채팅방 생성
+    
+![1_채팅방 생성](https://github.com/user-attachments/assets/b059ce43-7818-4a20-890c-825c10801e58)
+
+- 채팅방 제목과 도서 ID, 최대 인원을 정해 채팅방을 생성한다.
+
+## 채팅
+    
+![2_채팅](https://github.com/user-attachments/assets/a9912136-f461-44d9-9fbb-9f06da6ef7d2)
+
+- 실시간으로 다수의 유저가 채팅을 진행한다.
+
+## 채팅 내용 및 채팅방 나가기
+    
+![3_채팅 내용 및 채팅방 나가기](https://github.com/user-attachments/assets/5ee2285a-e50a-4de7-81f1-246e2141c37b)   
+
+- 기존 채팅 내용이 저장되어 있고 채팅방을 나가면 현재 채팅방 인원이 줄어든다.
+    
+</div>
+</details>
+
+ <details>
    <summary>예시(여기에 필요한 제목 추가)</summary>
    <div markdown="1">
   
