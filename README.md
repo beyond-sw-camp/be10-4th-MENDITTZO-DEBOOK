@@ -398,6 +398,12 @@ pipeline {
 
 </details>
 
+<details><summary>Nginx를 통한 80port 접속 확인</summary>
+
+![ingress](https://github.com/user-attachments/assets/aa732584-bc72-4070-8248-b58e34954e55)
+
+</details>
+
 ###
 
 # :six: 회고
