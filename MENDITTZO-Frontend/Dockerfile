@@ -5,6 +5,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
+# nginx 이미지 사용
 FROM nginx:stable-alpine AS production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
