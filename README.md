@@ -128,6 +128,18 @@ public class User{
 </div>
 </details>
 
+<details>
+   <summary>엘라스틱 서치를 활용한 검색</summary>
+   <div markdown="1">
+  
+## 엘라스틱 서치를 통해 미리 보기가 지원되는 도서 검색 기능
+    
+![일레스틱 서치를 이용한 검색](https://github.com/user-attachments/assets/49b06ba5-fe2d-4dd4-9ac0-8bb7fa275d73)  
+
+- 사용자가 도서의 제목을 기준으로 검색이 가능하다.
+    
+</div>
+</details>
 
  <details>
    <summary>예시(여기에 필요한 제목 추가)</summary>
