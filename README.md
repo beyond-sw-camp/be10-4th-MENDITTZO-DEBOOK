@@ -101,6 +101,19 @@ public class User{
 
 # :five: 기능 수행 테스트
  <details>
+   <summary>메인 페이지</summary>
+   <div markdown="1">
+  
+## 메인페이지
+    
+![메인페이지](https://github.com/user-attachments/assets/a20633ea-cbf0-4994-b0ba-2860bfade6c1)   
+
+- 메인 페이지 화면으로 로그인과 도서 검색을 할 수 있고 리뷰 많은 책 순위, 독서 토론방, 도서 목록을 간단하게 볼 수 있으며 네비게이션을 통해 도서 목록, 도서 추천, 독서 토론방으로 이동할 수 있다.
+    
+</div>
+</details>
+
+ <details>
    <summary>도서 추천 챗봇</summary>
    <div markdown="1">
   
