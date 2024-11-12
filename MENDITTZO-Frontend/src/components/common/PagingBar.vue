@@ -30,9 +30,18 @@ const changePage = (page) => {
 
 const visiblePages = computed(() => {
   const pages = [];
-  const range = 5; // 현재 페이지 양옆에 표시할 페이지 수
-  const start = Math.max(1, props.currentPage - range);
-  const end = Math.min(props.totalPages, props.currentPage + range);
+  const maxVisiblePages = 5; // 고정할 페이지 개수
+  const half = Math.floor(maxVisiblePages / 2); // 현재 페이지 기준 양 옆 페이지 수
+
+  let start = Math.max(1, props.currentPage - half);
+  let end = Math.min(props.totalPages, props.currentPage + half);
+
+  // 현재 페이지가 처음이나 끝에 가까울 때 페이지 개수를 고정된 숫자로 유지
+  if (props.currentPage <= half) {
+    end = Math.min(props.totalPages, maxVisiblePages);
+  } else if (props.currentPage + half >= props.totalPages) {
+    start = Math.max(1, props.totalPages - maxVisiblePages + 1);
+  }
 
   for (let i = start; i <= end; i++) {
     pages.push(i);
@@ -80,8 +89,29 @@ const visiblePages = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
   margin: 20px;
+}
+
+.paging-bar span button {
+  background-color: transparent;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 16px;
+  color: #444444;
+  gap: 10px;
+}
+
+.paging-bar span button.active {
+  background-color: #78AE6B;
+  color: white;
+  border: none;
+}
+
+/* 이미지 크기 조절 */
+.paging-bar img {
+  width: 48px;
+  height: 48px;
 }
 
 .paging-bar button {
@@ -93,26 +123,5 @@ const visiblePages = computed(() => {
 .paging-bar button:disabled {
   opacity: 0.3;
   cursor: default;
-}
-
-.paging-bar img {
-  width: 48px; /* 버튼 아이콘 크기 조절 */
-  height: 48px;
-}
-
-.paging-bar span button {
-  background-color: transparent;
-  border: 1px solid #ddd;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  font-size: 16px;
-  color: #444444;
-}
-
-.paging-bar span button.active {
-  background-color: #78AE6B;
-  color: white;
-  border: none;
 }
 </style>

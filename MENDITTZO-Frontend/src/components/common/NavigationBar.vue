@@ -137,9 +137,14 @@ onUnmounted(() => {
       <RouterLink :to="`/bookrecommend/${authStore.userId}`" active-class="active" replace>
         <p class="nav-bottom-text">도서목록</p>
       </RouterLink>
-      <div><p class="nav-bottom-text">독서토론방</p></div>
+      <div>
+        <RouterLink to="/chatrooms" active-class="active" replace>
+          <p class="nav-bottom-text">독서토론방</p>
+        </RouterLink>
+      </div>
     </div>
   </header>
+  <hr id="bottom-hr" />
 </template>
 
 <style scoped>
@@ -153,8 +158,9 @@ header {
 }
 #bottom-hr {
   border: none;
-  height: 1px;
+  height: 2px;
   background-color: #78AE6B;
+  width: 1440px;
 }
 #top-nav {
 

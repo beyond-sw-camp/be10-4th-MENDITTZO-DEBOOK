@@ -40,7 +40,7 @@ onUnmounted(() => {
 }
 
 .top-button img {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
 }
 </style>

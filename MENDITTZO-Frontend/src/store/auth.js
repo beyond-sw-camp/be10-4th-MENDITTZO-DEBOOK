@@ -44,7 +44,7 @@ export const useAuthStore = defineStore('auth', () => {
     // 사용자 정보 요청
     const fetchUserInfo = async () => {
         try {
-            const response = await axios.get("/user/query/info", {
+            const response = await axios.get("http://localhost:8080/api/v1/user/query/info", {
                 headers: { Authorization: `Bearer ${accessToken.value}` },
             });
             const data = response.data;
@@ -66,7 +66,7 @@ export const useAuthStore = defineStore('auth', () => {
     // 로그아웃(클라이언트 상태 초기화 + 서버 로그아웃 처리)
     const logout = async () => {
         try {
-            await axios.delete("/logout", {
+            await axios.delete("http://localhost:8080/api/v1/logout", {
                 headers: { Authorization: `Bearer ${accessToken.value}` },
             });
         } catch (error) {

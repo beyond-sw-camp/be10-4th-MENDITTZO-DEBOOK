@@ -7,7 +7,7 @@ const authStore = useAuthStore();
 
 const fetchUserInfo = async () => {
   try {
-    const response = await axios.get('/user/query/info', {
+    const response = await axios.get('/api/v1/user/query/info', {
       headers: { Authorization: `Bearer ${authStore.accessToken}` } // 토큰 추가
     });
     // 사용자 정보 저장 로직 추가
