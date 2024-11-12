@@ -18,7 +18,7 @@
 # :two: 개발 팀 소개
 ### 한화시스템 BEYOND SW캠프 10기 터치다운 ###
 
-| [![](https://avatars.githubusercontent.com/u/77000498?v=4)](https://github.com/we4sley) | [![](https://avatars.githubusercontent.com/u/103301589?v=4)](https://github.com/kimjm9911) | [![53029](https://github.com/user-attachments/assets/f71c46b3-2eb2-4cfa-ae86-69488ef47d68)](https://github.com/eunseo-76) | [![](https://avatars.githubusercontent.com/u/50124987?v=4)](https://github.com/JungUiJin) | [![](https://avatars.githubusercontent.com/u/58172997?v=4)](https://github.com/enking) | [![](https://avatars.githubusercontent.com/u/132972216?v=4)](https://github.com/HanDJ00)|
+| [![](https://avatars.githubusercontent.com/u/77000498?v=4)](https://github.com/we4sley) | [![](https://avatars.githubusercontent.com/u/103301589?v=4)](https://github.com/kimjm9911) | [![](https://avatars.githubusercontent.com/u/174981455?v=4)](https://github.com/eunseo-76) | [![](https://avatars.githubusercontent.com/u/50124987?v=4)](https://github.com/JungUiJin) | [![](https://avatars.githubusercontent.com/u/58172997?v=4)](https://github.com/enking) | [![](https://avatars.githubusercontent.com/u/132972216?v=4)](https://github.com/HanDJ00)|
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | 김영기 | 김지민 | 이은서 | 정의진 | 최두혁 | 한동주
 
