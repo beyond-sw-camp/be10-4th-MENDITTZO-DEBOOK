@@ -153,6 +153,142 @@ public class User{
     
 </div>
 </details>
+# CI/CD
+
+🔗[k8s Menifests Manage Repository ](https://github.com/MENDITTZO/k8s.git)  
+
+<details><summary>Webhook 설정</summary>
+   
+![webhook](https://github.com/user-attachments/assets/0f7af8d0-e8d0-4ff2-9a8d-ec59832f2818)
+
+</details>
+
+
+<details><summary>Jenkins Pipeline</summary>
+
+```
+pipeline {
+    agent any
+
+    tools {
+        gradle 'gradle'   // Jenkins에서 설정된 Gradle 버전
+        jdk 'openJDK17'   // Jenkins에서 설정된 JDK 버전
+    }
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('DOCKERHUB_PASSWORD')
+        GITHUB_URL = 'https://github.com/MENDITTZO/MENDITTZO-DEBOOK.git'  // GitHub URL 입력
+        FRONTEND_IMAGE = 'debook_vue_project'  // 프론트엔드 Docker 이미지 경로
+        BACKEND_IMAGE = 'debook_boot_project'    // 백엔드 Docker 이미지 경로
+        MANIFESTS_GITHUB_URL = 'https://github.com/MENDITTZO/k8s.git' // k8s github 경로로
+        GIT_USERNAME = 'junguijin'
+        GIT_EMAIL = 'yealkki38@gmail.com'
+    }
+
+    stages {
+        stage('Preparation') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'docker --version'
+                    } else {
+                        bat 'docker --version'
+                    }
+                }
+            }
+        }
+        stage('Source Build') {
+            steps {
+                git branch: 'main', url: "${env.GITHUB_URL}"
+                
+                script {
+                    // 프론트엔드 빌드
+                    dir('MENDITTZO-Frontend') {
+                        if (isUnix()) {
+                            sh 'npm install'
+                            sh 'npm run build'
+                        } else {
+                            bat 'npm install'
+                            bat 'npm run build'
+                        }
+                    }
+                    
+                    // 백엔드 빌드
+                    dir('MENDITTZO-Backend') {
+                        if (isUnix()) {
+                            sh "chmod +x ./gradlew"
+                            sh "./gradlew clean build -x test"
+                        } else {
+                            bat "gradlew.bat clean build -x test"
+                        }
+                    }
+                }
+            }
+        }
+        stage('Container Build and Push') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        // 프론트엔드 Docker 이미지 빌드 및 푸시
+                        dir('MENDITTZO-Frontend') {
+                            if (isUnix()) {
+                                sh "docker build --no-cache -t ${DOCKER_USER}/${FRONTEND_IMAGE}:latest ."
+                                sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
+                                sh "docker push ${DOCKER_USER}/${FRONTEND_IMAGE}:latest"
+                            } else {
+                                bat "docker build --no-cache -t ${DOCKER_USER}/${FRONTEND_IMAGE}:latest ."
+                                bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
+                                bat "docker push ${DOCKER_USER}/${FRONTEND_IMAGE}:latest"
+                            }
+                        }
+
+                        // 백엔드 Docker 이미지 빌드 및 푸시
+                        dir('MENDITTZO-Backend') {
+                            if (isUnix()) {
+                                sh "docker build -t ${DOCKER_USER}/${BACKEND_IMAGE}:latest ."
+                                sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
+                                sh "docker push ${DOCKER_USER}/${BACKEND_IMAGE}:latest"
+                            } else {
+                                bat "docker build -t ${DOCKER_USER}/${BACKEND_IMAGE}:latest ."
+                                bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
+                                bat "docker push ${DOCKER_USER}/${BACKEND_IMAGE}:latest"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+
+    post {
+        always {
+            script {
+                if (isUnix()) {
+                    sh 'docker logout'
+                } else {
+                    bat 'docker logout'
+                }
+            }
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
+
+```
+
+</details>
+
+<details><summary>K8s 배포 상태(Argocd)</summary>
+   
+![argocd](https://github.com/user-attachments/assets/87eafd03-09b4-4795-906c-cd95336dbda4)
+
+</details>
 
 ###
 
