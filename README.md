@@ -167,6 +167,94 @@ public class User{
 </details>
 
  <details>
+   <summary>로그인 & 로그아웃</summary>
+   <div markdown="1">
+
+## 로그인 & 로그아웃
+
+![로그인 & 로그아웃](https://github.com/user-attachments/assets/f3258c13-3b12-4a98-9c6e-1b2968d2c373)
+
+- 설명하고 싶은 내용 쓰기 여기까지 한세트 필요하면 복붙해서 더 쓰기
+
+</div>
+</details>
+
+ <details>
+   <summary>도서 목록</summary>
+   <div markdown="1">
+
+## 도서 목록 보기
+
+![도서 목록 보기](https://github.com/user-attachments/assets/a973b471-9d87-49f8-97dd-863e5a8af69c)
+
+- 메인 페이지 화면에서 도서 목록으로 이동해서 등록 된 도서들의 목록을 볼 수 있다.
+
+## 도서 목록 페이지 이동
+
+![도서 목록 페이지 이동](https://github.com/user-attachments/assets/e5865f1d-6448-4c75-863c-b1460bbf3730)
+
+- 도서 목록 내에서 페이징바를 이용하여 페이지 이동을 할 수 있습니다.
+
+</div>
+</details>
+
+ <details>
+   <summary>도서 상세페이지</summary>
+   <div markdown="1">
+
+## 도서 상세페이지
+
+![도서 상세페이지로 이동](https://github.com/user-attachments/assets/b0a8e37f-c79f-40c7-aef7-f002c499d3a3)
+
+- 도서 목록에서 특정 도서 상세페이지로 이동할 수 있습니다.
+
+</div>
+</details>
+
+ <details>
+   <summary>리뷰</summary>
+   <div markdown="1">
+
+## 리뷰 작성
+
+![리뷰 작성](https://github.com/user-attachments/assets/5365f213-1076-4e29-8d6d-90ad580db89c)
+
+- 도서 상세페이지에서 리뷰를 작성할 수 있다.
+
+## 리뷰 작성 취소
+
+![리뷰 작성 취소](https://github.com/user-attachments/assets/cf51f634-4a8b-4476-8793-b1c975e2a406)
+
+- 리뷰를 작성 중에 취소하여 도서 상세페이지로 이동할 수 있다.
+
+## 리뷰 수정
+
+![리뷰 수정](https://github.com/user-attachments/assets/29ee01bc-46ad-46c2-b484-26c6e4bc7feb)
+
+- 리뷰를 수정 할 수 있다.
+
+## 리뷰 정렬
+
+![리뷰 정렬](https://github.com/user-attachments/assets/a3935c4d-cf0c-4415-a4be-4484ee952a02)
+
+- 리뷰를 최신순이나 별점순으로 정렬할 수 있다.
+
+## 리뷰 삭제
+
+![리뷰 삭제](https://github.com/user-attachments/assets/1c597d87-8a17-4d02-98f4-c1a8a4ba252e)
+
+- 리뷰를 삭제할 수 있다.
+
+## 리뷰 신고
+
+![리뷰 신고](https://github.com/user-attachments/assets/b72df4d2-cab5-4e68-990c-555eedbbe2c8)
+
+- 리뷰를 신고 할 수 있고 신고 버튼을 잘못 클릭 했다면 취소할 수도 있다.
+
+</div>
+</details>
+
+ <details>
    <summary>예시(여기에 필요한 제목 추가)</summary>
    <div markdown="1">
   
