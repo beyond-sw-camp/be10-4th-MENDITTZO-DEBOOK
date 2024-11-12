@@ -10,9 +10,9 @@ const router = useRouter();
 
 
 const images = [
-  "/src/assets/image/ad1.png",
-  "/src/assets/image/ad2.png",
-  "/src/assets/image/ad3.png"
+  "https://debook.s3.ap-southeast-2.amazonaws.com/ad1.png",
+  "https://debook.s3.ap-southeast-2.amazonaws.com/ad2.png",
+  "https://debook.s3.ap-southeast-2.amazonaws.com/ad3.png"
 ];
 
 const chatrooms = ref([
